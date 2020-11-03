@@ -13,11 +13,12 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "focus-visible": "^5.2.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
     "del": "^6.0.0",
-    "electron": "9.4.0",
+    "electron": "^9.4.0",
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",

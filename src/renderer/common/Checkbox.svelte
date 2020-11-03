@@ -1,12 +1,16 @@
 <script>
+    import {handleKeyboardToggle} from "../stores/controls.js";
+
     export let label;
     export let checked = false;
     export let disabled = false;
+
+    let checkbox;
 </script>
 
-<div class="checkbox">
+<div class="checkbox" on:keypress={handleKeyboardToggle(checkbox)}>
     <label>
-        <input type="checkbox" {disabled} bind:checked on:change>
+        <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change>
         {#if label}
             <span>{label}</span>
         {/if}
@@ -36,6 +40,7 @@
         -webkit-appearance: none;
         appearance: none;
         box-sizing: border-box;
+        flex: 0 0 auto;
         margin: 0;
         border-radius: 2px;
         width: 20px;

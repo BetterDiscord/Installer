@@ -4,6 +4,7 @@
     import Footer from "./common/Footer.svelte";
     import Router from "svelte-spa-router";
     import routes from "./routes";
+    require("focus-visible");
 </script>
 
 <div class="main-window platform-{process.platform}">
@@ -13,15 +14,19 @@
         <Titlebar />
     {/if}
     <main class="installer-body">
-        <section class="sections">
+        <div class="sections">
             <Router {routes} />
-        </section>
+        </div>
         <Footer />
     </main>
 </div>
 
 <style>
     @import url('https://rsms.me/inter/inter.css');
+
+    :global(.focus-visible) {
+        box-shadow: 0 0 0 4px var(--accent-faded) !important;
+    }
 
     :root {
         --bg1: #040405;
@@ -35,6 +40,7 @@
         --text-muted: #95989d;
         --accent: #3a71c1;
         --accent-hover: #2f5b9d;
+        --accent-faded: rgba(58, 113, 193, .4);
     }
 
     :global(html),
@@ -62,12 +68,13 @@
     }
 
     :global(::selection) {
-        background-color: var(--accent);
-        color: #fff;
+        background-color: var(--accent-faded);
+        color: var(--text-normal);
     }
 
     :global(::-webkit-scrollbar) {
         width: 4px;
+        height: 4px;
     }
 
     :global(::-webkit-scrollbar-thumb) {
@@ -83,6 +90,10 @@
         background-color: rgba(255, 255, 255, 0.1);
     }
 
+    :global(::-webkit-scrollbar-corner) {
+        display: none;
+    }
+
     .main-window {
         display: flex;
         flex-direction: column;
@@ -93,6 +104,7 @@
         /* margin: 11.5px 7.5px; */
         width: 100%;
         height: 100%;
+        word-break: break-word;
     }
 
     .main-window.platform-darwin {
@@ -134,7 +146,7 @@
 
     :global(.page) {
         flex: 1 1 auto;
-        overflow: auto;
+        overflow: visible;
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -144,7 +156,7 @@
 
     .sections {
         flex: 1 1 auto;
-        overflow: hidden;
+        overflow: visible;
         position: relative;
     }
 </style>
