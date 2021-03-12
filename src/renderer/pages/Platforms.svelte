@@ -1,0 +1,49 @@
+<script>
+    import Header from "../common/Header.svelte";
+    import Multiselect from "../common/Multiselect.svelte";
+    import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
+    import {action, platforms, paths} from "../stores/installation";
+    import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
+    import {remote} from "electron";
+
+    if (Object.values($platforms).some(r => r)) canGoForward.set(true);
+    else canGoForward.set(false);
+    canGoBack.set(true);
+    nextPage.set(`/${$action}`);
+
+    function change({target}) {
+        platforms.update(s => {
+            s[target.value] = target.checked;
+            return s;
+        });
+
+        if (Object.values($platforms).some(r => r)) canGoForward.set(true);
+        else canGoForward.set(false);
+    }
+
+    async function click(event) {
+        const platform = event.detail;
+        const result = await remote.dialog.showOpenDialog({
+            title: `Browsing to ${platformLabels[platform]}`,
+            defaultPath: getBrowsePath(platform),
+            properties: ["openDirectory", "treatPackageAsDirectory"]
+        });
+        if (result.canceled || !result.filePaths[0]) return;
+
+        const resourcesPath = validatePath(platform, result.filePaths[0]);
+        paths.update(obj => {
+            obj[platform] = resourcesPath;
+            return obj;
+        });
+    }
+</script>
+
+<Header hasMargin>Choose Discord Versions</Header>
+
+{#each Object.entries(platformLabels) as [channel, label]}
+    <Multiselect on:change={change} on:click={click} value={channel} checked={$platforms[channel]} disabled={!$paths[channel]}>
+        <img src="images/{channel}.png" slot="icon" alt="label" width="30" height="30" />
+        <strong slot="label">{label}</strong>
+        {#if $paths[channel]}<span>{$paths[channel]}</span>{:else}<span>Not Found</span>{/if}
+    </Multiselect>
+{/each}

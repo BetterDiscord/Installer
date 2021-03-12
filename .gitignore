@@ -1,4 +1,5 @@
-/node_modules/
-/public/build/
-
 .DS_Store
+dist/
+node_modules/
+thumbs.db
+.idea/
