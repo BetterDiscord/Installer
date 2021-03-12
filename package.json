@@ -1,22 +1,48 @@
 {
-  "name": "bdi",
+  "name": "betterdiscord",
+  "productName": "BetterDiscord",
+  "description": "test",
+  "author": "Zerebos",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
-    "rollup": "^2.40.0",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^7.1.0",
-    "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.34.0"
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "lint": "eslint --ext .svelte,.js src/",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "bent": "^7.3.12",
+    "source-map-support": "^0.5.16"
+  },
+  "devDependencies": {
+    "electron": "8.2.0",
+    "electron-builder": "^22.4.1",
+    "electron-webpack": "^2.8.2",
+    "eslint": "^7.21.0",
+    "eslint-plugin-svelte3": "^3.1.2",
+    "find-process": "^1.4.4",
+    "svelte": "^3.35.0",
+    "svelte-loader": "^3.0.0",
+    "svelte-spa-router": "^3.1.0",
+    "tree-kill": "^1.2.2",
+    "webpack": "~4.42.1"
+  },
+  "build": {
+    "appId": "app.betterdiscord.installer",
+    "productName": "BetterDiscord",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "portable"
+    }
+  },
+  "electronWebpack": {
+    "staticSourceDirectory": "assets",
+    "renderer": {
+      "webpackConfig": "webpack.renderer.js"
+    }
   }
 }
