@@ -48,6 +48,13 @@ function createMainWindow() {
         });
     });
 
+    // force <a> tags to open in browser
+
+    window.webContents.on('new-window', (e, url) => {
+        e.preventDefault();
+        require('electron').shell.openExternal(url);
+    });  
+
     return window;
 }
 
