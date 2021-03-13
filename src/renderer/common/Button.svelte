@@ -39,6 +39,7 @@
     }
 
     .btn.primary {
+        border: 1px solid transparent;
         background-color: var(--accent);
         color: #ffffff;
     }

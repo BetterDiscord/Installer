@@ -53,7 +53,7 @@
 
     .check-item.disabled {
         background-color: var(--bg2-alt);
-        cursor: default;
+        cursor: not-allowed;
     }
     
     .check-container input:checked + .check-item {

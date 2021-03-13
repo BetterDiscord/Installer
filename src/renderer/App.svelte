@@ -18,6 +18,7 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
     :root {
         --bg1: #040405;
@@ -37,7 +38,7 @@
         border-radius: 3px;
         overflow: hidden;
         contain: strict;
-        box-shadow: rgb(0 0 0 / 2%) 0px 0.221381px 0.304398px 0px, rgb(0 0 0 / 4%) 0px 0.532008px 0.731511px 0px, rgb(0 0 0 / 4%) 0px 1.00172px 1.37737px 0px, rgb(0 0 0 / 6%) 0px 1.7869px 2.45699px 0px, rgb(0 0 0 / 6%) 0px 3.34221px 4.59554px 0px, rgb(0 0 0 / 9%) 0px 8px 11px 0px;
+        box-shadow: rgb(0 0 0 / 2%) 0 0.221381px 0.304398px 0, rgb(0 0 0 / 4%) 0 0.532008px 0.731511px 0, rgb(0 0 0 / 4%) 0 1.00172px 1.37737px 0, rgb(0 0 0 / 6%) 0 1.7869px 2.45699px 0, rgb(0 0 0 / 6%) 0 3.34221px 4.59554px 0, rgb(0 0 0 / 9%) 0 8px 11px 0;
         margin: 10px;
         width: calc(100% - 24px);
         height: calc(100% - 24px);
@@ -63,6 +64,11 @@
     :global(a) {
         color: var(--accent);
         text-decoration: none;
+    }
+
+    :global(::selection) {
+        background-color: var(--accent);
+        color: #fff;
     }
 
     :global(::-webkit-scrollbar) {

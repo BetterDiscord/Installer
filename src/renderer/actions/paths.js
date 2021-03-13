@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
-export const platforms = {stable: "Discord", canary: "Discord Canary", ptb: "Discord PTB"};
-export const locations = {stable: "", canary: "", ptb: ""};
+export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
+export const locations = {stable: "", ptb: "", canary: ""};
 
 const getDiscordPath = function(releaseChannel) {
     let resourcePath = "";
