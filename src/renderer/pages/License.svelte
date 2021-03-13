@@ -34,4 +34,4 @@
 
 <Header hasMargin>License</Header>
 <TextDisplay value={licenseText} />
-<Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} flexcenter={true} />
+<Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />

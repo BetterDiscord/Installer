@@ -3,7 +3,7 @@
     export let disabled = false;
 </script>
 
-<button {disabled} on:click class="btn {(type == "primary" || type == "secondary") ? type : "secondary"}">
+<button {disabled} on:click|stopPropagation class="btn {(type == "primary" || type == "secondary") ? type : "secondary"}">
     <span>
         <slot></slot>
     </span>
@@ -17,7 +17,7 @@
         align-items: center;
         justify-content: center;
         text-decoration: none;
-        transition: 150ms ease border, 150ms ease background;
+        transition: 150ms ease;
         cursor: pointer;
         padding: 0 12px;
         height: 28px;
@@ -39,6 +39,7 @@
     }
 
     .btn.primary {
+        border: 1px solid transparent;
         background-color: var(--accent);
         color: #ffffff;
     }

@@ -8,12 +8,15 @@ app.name = "BetterDiscord";
 let mainWindow; // global reference to mainWindow (necessary to prevent window from being garbage collected)
 
 function createMainWindow() {
-    const window = new BrowserWindow({
+    const window = new BrowserWindow({  
         title: "BetterDiscord Installer",
         frame: false,
-        width: 550, // 500
-        height: 340,
+        transparent: true,
+        width: 570,
+        height: 375,
         resizable: false,
+        fullscreenable: false,
+        maximizable: false,
         webPreferences: {
             nodeIntegration: true
         }
@@ -25,9 +28,8 @@ function createMainWindow() {
 
     if (isDevelopment) {
         window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-        // window.loadURL("https://google.com")
-    }
-    else {
+        // window.loadURL("https://test.com");
+    } else {
         window.loadURL(URL.format({
             pathname: path.join(__dirname, "index.html"),
             protocol: "file",

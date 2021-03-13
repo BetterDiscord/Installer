@@ -4,12 +4,12 @@ export default async function() {
     const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "question",
         title: "Are you sure?",
-        message: "Are you sure you want to quit?",
+        message: "Are you sure you want to quit the installation?",
         noLink: true,
-        buttons: ["Cancel", "Quit"]
+        buttons: ["Quit", "Cancel"]
     });
 
-    if (confirmation.response === 1) {
+    if (confirmation.response === 2) {
         remote.app.quit();
     }
 }

@@ -2,10 +2,9 @@
     export let label;
     export let checked = false;
     export let disabled = false;
-    export let flexcenter = false;
 </script>
 
-<div class="checkbox" class:flexcenter>
+<div class="checkbox">
     <label>
         <input type="checkbox" {disabled} bind:checked on:change>
         {#if label}
@@ -66,9 +65,5 @@
         background-color: #fff;
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cpath d='M40.1389 12.8711C40.6243 13.362 40.6198 14.1535 40.1289 14.6389L17.8789 36.6389C17.3947 37.1176 16.6163 37.1208 16.1283 36.6459L6.87831 27.6459C6.38351 27.1645 6.37267 26.3731 6.85409 25.8783C7.33552 25.3835 8.1269 25.3727 8.62169 25.8541L16.993 33.9991L38.3711 12.8611C38.862 12.3757 39.6535 12.3802 40.1389 12.8711Z' fill='%23ffffff'/%3E%3C/svg%3E") center/contain no-repeat;
         -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' fill='none'%3E%3Cpath d='M40.1389 12.8711C40.6243 13.362 40.6198 14.1535 40.1289 14.6389L17.8789 36.6389C17.3947 37.1176 16.6163 37.1208 16.1283 36.6459L6.87831 27.6459C6.38351 27.1645 6.37267 26.3731 6.85409 25.8783C7.33552 25.3835 8.1269 25.3727 8.62169 25.8541L16.993 33.9991L38.3711 12.8611C38.862 12.3757 39.6535 12.3802 40.1389 12.8711Z' fill='%23ffffff'/%3E%3C/svg%3E") center/contain no-repeat;
-    }
-
-    .checkbox.flexcenter {
-        align-self: center;
     }
 </style>

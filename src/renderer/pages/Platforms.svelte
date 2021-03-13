@@ -41,9 +41,7 @@
 <Header hasMargin>Choose Discord Versions</Header>
 
 {#each Object.entries(platformLabels) as [channel, label]}
-    <Multiselect on:change={change} on:click={click} value={channel} checked={$platforms[channel]} disabled={!$paths[channel]}>
-        <img src="images/{channel}.png" slot="icon" alt="label" width="30" height="30" />
-        <strong slot="label">{label}</strong>
-        {#if $paths[channel]}<span>{$paths[channel]}</span>{:else}<span>Not Found</span>{/if}
+    <Multiselect title={label} description={($paths[channel]) ? $paths[channel] : 'Not Found'} on:change={change} on:click={click} value={channel} checked={$platforms[channel]} disabled={!$paths[channel]}>
+        <img src="images/{channel}.png" slot="icon" alt="Platform Icon" />
     </Multiselect>
 {/each}

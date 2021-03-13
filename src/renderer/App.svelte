@@ -18,6 +18,7 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
     :root {
         --bg1: #040405;
@@ -33,8 +34,17 @@
         --accent-hover: #2f5b9d;
     }
 
+    :global(body) {
+        border-radius: 3px;
+        overflow: hidden;
+        contain: strict;
+        box-shadow: rgb(0 0 0 / 2%) 0 0.221381px 0.304398px 0, rgb(0 0 0 / 4%) 0 0.532008px 0.731511px 0, rgb(0 0 0 / 4%) 0 1.00172px 1.37737px 0, rgb(0 0 0 / 6%) 0 1.7869px 2.45699px 0, rgb(0 0 0 / 6%) 0 3.34221px 4.59554px 0, rgb(0 0 0 / 9%) 0 8px 11px 0;
+        margin: 10px;
+        width: calc(100% - 24px);
+        height: calc(100% - 24px);
+    }
+
     :global(html),
-    :global(body),
     :global(#app) {
         margin: 0;
         height: 100%;
@@ -55,6 +65,28 @@
         color: var(--accent);
         text-decoration: none;
     }
+
+    :global(::selection) {
+        background-color: var(--accent);
+        color: #fff;
+    }
+
+    :global(::-webkit-scrollbar) {
+        width: 4px;
+    }
+
+    :global(::-webkit-scrollbar-thumb) {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+
+    :global(::-webkit-scrollbar-thumb:hover) {
+        background-color: rgba(255, 255, 255, 0.075);
+    }
+
+    :global(::-webkit-scrollbar-thumb:active) {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
     
     .main-window {
         display: flex;
@@ -71,7 +103,6 @@
         z-index: 1;
         padding: 20px;
         background: radial-gradient(var(--bg2) 50%, var(--bg2-alt));
-        /* border-radius: 4px; */
         flex: 1;
     }
 
@@ -92,7 +123,7 @@
 
     .page {
         flex: 1 1 auto;
-        overflow: hidden;
+        overflow: auto;
         display: flex;
         flex-direction: column;
     }

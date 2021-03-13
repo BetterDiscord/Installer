@@ -1,52 +1,87 @@
 <script>
     import Spinner from "./Spinner.svelte";
+    import Button from "./Button.svelte";
     export let value;
     export let element;
+    
+    let copyInputContainer;
+    let isCopyButtonActive = false;
+
+    function copyDisplayContents() {
+        const range = document.createRange();
+        range.selectNode(element);
+        window.getSelection().addRange(range);
+        document.execCommand('Copy');
+        document.getSelection().removeAllRanges();
+        isCopyButtonActive = true;
+        setTimeout(() => {
+            isCopyButtonActive = false;
+        }, 500);
+    }
 </script>
 
-<div class="textarea{value ? "" : " loading"}" bind:this={element}>
-{#if value}
-{value}
-{:else}
-<Spinner />
-{/if}
+<div class="text-display{value ? "" : " loading"}" bind:this={element}>
+    {#if value}
+    <div class="display-inner">{value}</div>
+    <div bind:this={copyInputContainer} class="copy-input">
+        {#if isCopyButtonActive}
+            <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
+            {:else}
+            <Button type="secondary" on:click={copyDisplayContents}>Copy</Button>
+        {/if}
+    </div>
+    {:else}
+    <Spinner />
+    {/if}
 </div>
 
 <style>
-    .textarea {
-        background: var(--bg3);
-        /* border: 1px solid var(--text-light); */
-        padding: 5px;
-        color: var(--text-normal);
-        font-size: 12px;
-        border-radius: 5px;
-        flex: 1;
-        word-wrap: normal;
-        overflow-y: auto;
-        margin-bottom: 10px;
-        white-space: pre-wrap;
+
+    :global(.text-display .copy-input .btn[class]) {
+        background-color: var(--bg4);
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .copy-input {
+        opacity: 0;
+        transition: 150ms ease;
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
     }
 
-    .textarea.loading {
+    .text-display:hover .copy-input {
+        opacity: 1;
+    }
+
+    .text-display {
+        position: relative;
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        margin-bottom: 10px;
+        background: var(--bg3);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+    }
+
+    .text-display .display-inner {
+        /* font-family: 'Fira Code', 'Courier New', Courier, monospace; */
+        color: var(--text-normal);
+        font-size: 12px;
+        word-wrap: normal;
+        white-space: pre-wrap;
+        user-select: text;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        padding: 12px;
+    }
+
+    .text-display.loading {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .textarea::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .textarea::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-    }
-
-    .textarea::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.075);
-    }
-
-    .textarea::-webkit-scrollbar-thumb:active {
-        background-color: rgba(255, 255, 255, 0.1);
     }
 </style>
