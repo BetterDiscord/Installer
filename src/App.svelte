@@ -41,7 +41,6 @@
         z-index: 1;
         padding: 20px;
         background: radial-gradient(var(--bg2) 50%, var(--bg2-alt));
-        border-radius: 4px;
         width: 500px;
         height: 300px;
     }
@@ -59,5 +58,22 @@
         pointer-events: none;
         mask: radial-gradient(transparent, #000);
         -webkit-mask: radial-gradient(transparent, #000);
+    }
+
+    :global(::-webkit-scrollbar) {
+        width: 4px;
+    }
+
+    :global(::-webkit-scrollbar-thumb) {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+
+    :global(::-webkit-scrollbar-thumb:hover) {
+        background-color: rgba(255, 255, 255, 0.075);
+    }
+
+    :global(::-webkit-scrollbar-thumb:active) {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 </style>

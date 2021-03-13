@@ -10,6 +10,7 @@ const getDiscordPath = function(releaseChannel) {
         const basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, ""));
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
+        if (!version) return "";
         resourcePath = path.join(basedir, version, "resources");
     }
     else if (process.platform === "darwin") {

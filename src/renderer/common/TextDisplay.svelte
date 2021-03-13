@@ -16,10 +16,10 @@
     .textarea {
         background: var(--bg3);
         /* border: 1px solid var(--text-light); */
-        padding: 5px;
+        padding: 8px;
         color: var(--text-normal);
         font-size: 12px;
-        border-radius: 5px;
+        border-radius: 2px;
         flex: 1;
         word-wrap: normal;
         overflow-y: auto;
@@ -31,22 +31,5 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .textarea::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .textarea::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-    }
-
-    .textarea::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.075);
-    }
-
-    .textarea::-webkit-scrollbar-thumb:active {
-        background-color: rgba(255, 255, 255, 0.1);
     }
 </style>
