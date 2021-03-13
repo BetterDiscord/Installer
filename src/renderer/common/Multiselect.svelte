@@ -37,7 +37,6 @@
         border-radius: 3px;
         background-color: var(--bg3);
         padding: 12px;
-        margin-bottom: 12px;
         user-select: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
@@ -47,7 +46,11 @@
         overflow: hidden;
     }
 
-    .check-container:last-child .check-item {
+    .check-container {
+        margin-bottom: 12px;
+    }
+
+    .check-container:last-child {
         margin: 0;  
     }
 
@@ -122,6 +125,6 @@
     }
 
     :global(.check-container input:checked + .check-item .btn:active) {
-        opacity: .75;
+        opacity: .8;
     }
 </style>
