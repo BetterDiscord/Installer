@@ -1,1 +1,0 @@
-require("C:\\Users\\Tropical\\AppData\\Roaming\\BetterDiscord\\data\\betterdiscord.asar");
