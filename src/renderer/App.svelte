@@ -34,7 +34,7 @@
     }
 
     :global(body) {
-        border-radius: 2px;
+        border-radius: 3px;
         overflow: hidden;
         contain: strict;
         box-shadow: rgb(0 0 0 / 2%) 0px 0.221381px 0.304398px 0px, rgb(0 0 0 / 4%) 0px 0.532008px 0.731511px 0px, rgb(0 0 0 / 4%) 0px 1.00172px 1.37737px 0px, rgb(0 0 0 / 6%) 0px 1.7869px 2.45699px 0px, rgb(0 0 0 / 6%) 0px 3.34221px 4.59554px 0px, rgb(0 0 0 / 9%) 0px 8px 11px 0px;
