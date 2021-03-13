@@ -9,7 +9,7 @@ export default async function() {
         buttons: ["Quit", "Cancel"]
     });
 
-    if (confirmation.response === 1) {
+    if (confirmation.response === 0) {
         remote.app.quit();
     }
 }
