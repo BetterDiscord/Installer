@@ -117,7 +117,7 @@
 
     :global(.check-container input:checked + .check-item .btn) {
         background-color: #fff;
-        border: none;
+        border-color: transparent;
         color: var(--accent);
     }
 
