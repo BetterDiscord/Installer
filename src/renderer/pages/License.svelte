@@ -32,6 +32,6 @@
     readLicenseFile();
 </script>
 
-<Header hasMargin>License</Header>
+<Header hasMargin>License Agreement</Header>
 <TextDisplay value={licenseText} />
 <Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />

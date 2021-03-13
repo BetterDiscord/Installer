@@ -18,7 +18,6 @@
         border-radius: 3px;
         background-color: var(--bg3);
         padding: 12px;
-        margin-bottom: 12px;
         color: var(--text-normal);
         font-weight: 500;
         font-size: 13px;
@@ -26,6 +25,14 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: 100ms ease;
+    }
+
+    .radio-container {
+        margin-bottom: 12px;
+    }
+
+    .radio-container:last-child {
+        margin: 0;
     }
 
     .radio-item:hover {

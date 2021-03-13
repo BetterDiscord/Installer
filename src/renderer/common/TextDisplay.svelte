@@ -67,7 +67,7 @@
     }
 
     .text-display .display-inner {
-        /* font-family: 'Fira Code', 'Courier New', Courier, monospace; */
+        font-family: 'Fira Code', 'Courier New', Courier, monospace;
         color: var(--text-normal);
         font-size: 12px;
         word-wrap: normal;
