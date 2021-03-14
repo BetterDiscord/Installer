@@ -81,12 +81,12 @@
     }
 
     button#close:hover {
-        background-color: #b12a2a;
+        background-color: #d13d3d;
         color: #fff;
     }
 
     button#close:active {
-        background-color: #882020;
+        background-color: #b12a2a;
         color: #fff;
     }
 </style>
