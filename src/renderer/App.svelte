@@ -38,7 +38,7 @@
         border-radius: 3px;
         overflow: hidden;
         contain: strict;
-        box-shadow: rgb(0 0 0 / 2%) 0 0.221381px 0.304398px 0, rgb(0 0 0 / 4%) 0 0.532008px 0.731511px 0, rgb(0 0 0 / 4%) 0 1.00172px 1.37737px 0, rgb(0 0 0 / 6%) 0 1.7869px 2.45699px 0, rgb(0 0 0 / 6%) 0 3.34221px 4.59554px 0, rgb(0 0 0 / 9%) 0 8px 11px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
         margin: 12px;
         width: calc(100% - 24px);
         height: calc(100% - 24px);
