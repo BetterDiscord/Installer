@@ -6,8 +6,6 @@
     import {canGoForward, canGoBack, nextPage} from "../stores/navigation";
     import {push, pop} from "svelte-spa-router";
 
-    // export let hasLicense = false;
-
     let hasAgreed = false;
     function toggleAgree({detail}) {
         hasAgreed = detail;
