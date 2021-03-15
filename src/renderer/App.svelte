@@ -38,18 +38,10 @@
         --accent-hover: #2f5b9d;
     }
 
-    :global(body) {
-        border-radius: 3px;
-        overflow: hidden;
-        contain: strict;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-        margin: 11.5px 7.5px;
-        width: calc(100% - 15px);
-        height: calc(100% - 23px);
-    }
-
     :global(html),
+    :global(body),
     :global(#app) {
+        overflow: hidden;
         margin: 0;
         height: 100%;
         width: 100%;
@@ -91,12 +83,25 @@
     :global(::-webkit-scrollbar-thumb:active) {
         background-color: rgba(255, 255, 255, 0.1);
     }
-    
+
     .main-window {
         display: flex;
         flex-direction: column;
+        border-radius: 3px;
         overflow: hidden;
+        contain: strict;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        margin: 11.5px 7.5px;
+        width: calc(100% - 15px);
+        height: calc(100% - 23px);
+    }
+
+    .main-window.platform-darwin {
+        border-radius: 0;
+        box-shadow: none;
+        width: 100%;
         height: 100%;
+        margin: 0;
     }
 
     .installer-body {
