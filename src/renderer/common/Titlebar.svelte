@@ -2,7 +2,7 @@
     import {remote} from "electron";
     import quit from "../actions/quit";
 
-    export let macButtons = true;
+    export let macButtons;
 
     function minimize() {
         remote.BrowserWindow.getFocusedWindow().minimize();
