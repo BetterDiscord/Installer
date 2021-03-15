@@ -39,9 +39,9 @@
         overflow: hidden;
         contain: strict;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-        margin: 12px;
-        width: calc(100% - 24px);
-        height: calc(100% - 24px);
+        margin: 11.5px 7.5px;
+        width: calc(100% - 15px);
+        height: calc(100% - 23px);
     }
 
     :global(html),
