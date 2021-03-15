@@ -8,8 +8,6 @@ import kill from "tree-kill";
 import findProcess from "find-process";
 
 const downloadFile = bent("buffer");
-// console.log(downloadFile);
-// console.log();
 
 function log(entry) {
     logs.update(a => {
@@ -19,38 +17,46 @@ function log(entry) {
 }
 
 let progressCache = 0;
-function setProgress(val) {
-    progress.set(val);
-}
 
 function addProgress(val) {
     progressCache += val;
-    setProgress(progressCache);
+    progress.set(progressCache);
+}
+
+function failInstallation() {
+    const discordURL = 'https://discord.gg/0Tmfo5ZbORCRqbAd';
+    log("");
+    log(`The installation seems to have failed. If this problem is recurring, join our discord community for support. ${discordURL}`);
+    document.querySelector('.progress').classList.add('error');
 }
 
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
 const bdThemesFolder = path.join(bdFolder, "themes");
-function makeDirectories() {
+async function makeDirectories() {
     const folders = [bdFolder, bdDataFolder, bdThemesFolder, bdPluginsFolder];
     for (const folder of folders) {
-        addProgress(20 / folders.length);
         if (fs.existsSync(folder)) {
-            log(`    ✅ Directory exists: ${folder}`);
+            log(`✅: Directory exists: ${folder}`);
             continue;
         }
         try {
             fs.mkdirSync(folder);
-            log(`    ✅ Directory created: ${folder}`);
+            log(`✅: Directory created: ${folder}`);
         }
-        catch {
-            log(`    ❌ Failed to create directory: ${folder}`);
+        catch { 
+            log(`❌: Failed to create directory: ${folder}`);
+            failInstallation();
+            return;
         }
     }
+    setTimeout(() => {
+        addProgress(25);
+    }, 250);
 }
 
-const downloadUrl = `https://bd.zerebos.com/betterdiscord.asar`;
+const downloadUrl = `https://bd.zerebos.com/`;
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
     const buffer = await downloadFile(downloadUrl);
@@ -70,21 +76,35 @@ async function restartDiscord() {
 
 
 export default async function(discordPaths) {
-    log("Starting to install...");
-    if (!discordPaths || !discordPaths.length) return log("Something went wrong");
+    log("Starting installation...");
+    log("");
+    log("Locating Discord paths");
+    if (!discordPaths || !discordPaths.length) {
+        log("❌: Failed to locate required directories.");
+        failInstallation();
+        return;
+    }
 
-    makeDirectories();
-    setProgress(20);
+    try {
+        await makeDirectories();
+    } catch(err) {
+        log(`❌: Failed to create directories - ${err.message}`);
+        failInstallation();
+        return;
+    }
 
-    // progress.set(10);
     log("");
     log(`Downloading asar file from: ${downloadUrl}`);
-    await downloadAsar();
-    log("    ✅ Package downloaded");
-    progress.set(50);
 
-
-    progress.set(60);
+    try {
+        await downloadAsar();
+        log("✅: Package downloaded");
+        addProgress(25);
+    } catch(err) {
+        log(`❌: Failed to download package - ${err.message}`);
+        failInstallation();
+        return;
+    }
 
     log("");
     log("Injecting shims");
@@ -93,16 +113,21 @@ export default async function(discordPaths) {
         const appPath = path.join(discordPath, "app");
         const pkgFile = path.join(appPath, "package.json");
         const indexFile = path.join(appPath, "index.js");
-        if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
-        fs.writeFileSync(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
-        fs.writeFileSync(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
-        log("    ✅ Injection successful");
-        log("");
+        try {
+            if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
+            fs.writeFileSync(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
+            fs.writeFileSync(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
+            log("✅: Injection successful");
+        } catch(err) {
+            log(`❌: Injection Error - ${err.message}`);
+            failInstallation();
+            return;
+        }
     }
 
-
-
-    progress.set(100);
-    log("");
-    log("✅ Installation completed!");
+    setTimeout(() => {
+        log("");
+        log("Installation completed!");
+        progress.set(100);
+    }, 500);
 };

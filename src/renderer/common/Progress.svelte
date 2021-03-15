@@ -20,8 +20,12 @@
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
-        transition: 500ms ease width;
+        transition: 500ms ease width, 150ms ease background-color;
         transform-origin: left;
         background-color: var(--accent);
+    }
+
+    :global(.error .bar) {
+        background-color: #d13d3d;
     }
 </style>
