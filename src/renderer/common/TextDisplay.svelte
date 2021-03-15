@@ -26,7 +26,7 @@
     <div bind:this={copyInputContainer} class="copy-input">
         {#if isCopyButtonActive}
             <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
-            {:else}
+        {:else}
             <Button type="secondary" on:click={copyDisplayContents}>Copy</Button>
         {/if}
     </div>
