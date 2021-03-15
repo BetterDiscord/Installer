@@ -78,7 +78,7 @@ async function restartDiscord() {
 export default async function(discordPaths) {
     log("Starting installation...");
     log("");
-    log("Locating Discord paths");
+    log("Locating Discord paths...");
     if (!discordPaths || !discordPaths.length) {
         log("❌: Failed to locate required directories.");
         failInstallation();
@@ -107,7 +107,7 @@ export default async function(discordPaths) {
     }
 
     log("");
-    log("Injecting shims");
+    log("Injecting shims...");
     for (const discordPath of discordPaths) {
         log("Injecting into: " + discordPath);
         const appPath = path.join(discordPath, "app");
