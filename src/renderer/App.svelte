@@ -6,8 +6,12 @@
     import routes from "./routes";
 </script>
 
-<div class="main-window">
-    <Titlebar />
+<div class="main-window platform-{process.platform}">
+    {#if process.platform == 'darwin'}
+        <Titlebar macButtons />
+    {:else}
+        <Titlebar />
+    {/if}
     <main class="installer-body">
         <section class="page">
             <Router {routes} />
