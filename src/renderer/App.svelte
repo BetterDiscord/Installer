@@ -21,8 +21,8 @@
 </div>
 
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
     :root {
         --bg1: #040405;

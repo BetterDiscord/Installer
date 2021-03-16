@@ -1,8 +1,14 @@
 <script>
     import Spinner from "./Spinner.svelte";
     import Button from "./Button.svelte";
+    import { beforeUpdate, afterUpdate } from 'svelte';
     export let value;
     export let element;
+    export let autoscroll;
+
+    let scrollEventCount = 0;
+    let autoscrollEnabled;
+    let scroller;
     
     let copyInputContainer;
     let isCopyButtonActive = false;
@@ -18,11 +24,24 @@
             isCopyButtonActive = false;
         }, 500);
     }
+
+    if (autoscroll) {
+        beforeUpdate(() => {
+		    autoscrollEnabled = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight);
+        });
+        afterUpdate(() => {
+            if (autoscrollEnabled) scroller.scrollTo(0, scroller.scrollHeight);
+        });
+    }
+
+    $: if (autoscroll && scroller && scrollEventCount < 2) {
+        setImmediate(() => scroller.scrollTop = scroller.scrollHeight);
+    }
 </script>
 
 <div class="text-display{value ? "" : " loading"}" bind:this={element}>
     {#if value}
-    <div class="display-inner">{value}</div>
+    <div on:scroll={ () => {if (autoscroll) scrollEventCount++}} bind:this={scroller} class="display-inner">{value}</div>
     <div bind:this={copyInputContainer} class="copy-input">
         {#if isCopyButtonActive}
             <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
@@ -47,8 +66,8 @@
         opacity: 0;
         transition: 150ms ease;
         position: absolute;
-        bottom: 12px;
-        right: 12px;
+        bottom: 8px;
+        right: 8px;
     }
 
     .text-display:hover .copy-input {
