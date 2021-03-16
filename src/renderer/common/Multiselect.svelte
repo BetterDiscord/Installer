@@ -89,6 +89,7 @@
 
     .content span,
     .content h5 {
+        transition: 100ms ease;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -102,7 +103,6 @@
     }
 
     .content h5 {
-        transition: 100ms ease;
         color: var(--text-normal);
         font-weight: 600;
         font-size: 13px;
@@ -111,6 +111,10 @@
 
     .check-item:not(.disabled):hover .content h5 {
         color: var(--text-light);
+    }
+
+    .check-item:not(.disabled):hover .content span {
+        color: var(--text-normal);
     }
 
     .check-container input:checked + .check-item .content h5,

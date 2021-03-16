@@ -11,17 +11,12 @@
     canGoForward.set(false);
     canGoBack.set(false);
 
-    let scroller;
+    let display;
     const unsubscribe = logs.subscribe(() => {
-        if (!scroller) return;
-        setImmediate(() => scroller.scrollTop = scroller.scrollHeight);
+        if (!display) return;
     });
 
     onDestroy(unsubscribe);
-
-    // $: if (scroller) {
-    //     setImmediate(() => scroller.scrollTop = scroller.scrollHeight);
-    // }
 
     install(Object.values($paths)).then(() => {
         nextPage.set(null);
@@ -31,5 +26,5 @@
 </script>
 
 <Header hasMargin>{$action[0].toUpperCase()}{$action.slice(1)}</Header>
-<TextDisplay value={$logs.join("\n")} bind:element={scroller} />
+<TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
 <Progress value={$progress} max={100} />
