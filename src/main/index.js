@@ -12,7 +12,7 @@ function createMainWindow() {
         title: "BetterDiscord Installer",
         frame: false,
         transparent: true,
-        width: 562,
+        width: 542,
         height: 367,
         resizable: false,
         fullscreenable: false,
