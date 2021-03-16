@@ -92,6 +92,7 @@ export default async function(discordPaths) {
         failInstallation();
         return;
     }
+    
 
     log("");
     log(`Downloading asar file from: ${downloadUrl}`);

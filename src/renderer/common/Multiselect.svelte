@@ -22,7 +22,7 @@
         </div>
         <div class="content">
             <h5>{title}</h5>
-            <span>{description}</span>
+            <span title={description}>{description}</span>
         </div>
         <div class="button">
             <Button type="secondary" on:click={click}>Browse</Button>

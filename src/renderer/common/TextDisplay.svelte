@@ -41,7 +41,7 @@
 
 <div class="text-display{value ? "" : " loading"}" bind:this={element}>
     {#if value}
-    <div on:scroll={ () => {if (autoscroll) scrollEventCount++}} bind:this={scroller} class="display-inner">{value}</div>
+    <div on:scroll={() => {if (autoscroll) scrollEventCount++;}} bind:this={scroller} class="display-inner">{value}</div>
     <div bind:this={copyInputContainer} class="copy-input">
         {#if isCopyButtonActive}
             <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
@@ -60,6 +60,10 @@
         background-color: var(--bg4);
         border: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    :global(.text-display .copy-input .btn[class]:hover) {
+        color: var(--text-light);
     }
     
     .copy-input {
