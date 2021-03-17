@@ -44,19 +44,16 @@
         justify-content: center;
         transition: 150ms ease;
         outline: none;
-    }
-
-    .social:hover {
-        color: var(--text-normal);
-    }
-
-    .social:active {
-        background-color: var(--bg4);
-    }
-
-    .social svg {
-        width: 14px;
-        height: auto;
-        fill: currentColor;
+        svg {
+            width: 14px;
+            height: auto;
+            fill: currentColor;
+        }
+        &:hover {
+            color: var(--text-normal);
+        }
+        &:active {
+            background-color: var(--bg4);
+        }
     }
 </style>

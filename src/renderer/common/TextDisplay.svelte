@@ -56,14 +56,16 @@
 
 <style>
 
-    :global(.text-display .copy-input .btn[class]) {
-        background-color: var(--bg4);
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    :global{
+        .text-display .copy-input .btn[class] {
+            background-color: var(--bg4);
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    :global(.text-display .copy-input .btn[class]:hover) {
-        color: var(--text-light);
+        .text-display .copy-input .btn[class]:hover {
+            color: var(--text-light);
+        }
     }
     
     .copy-input {

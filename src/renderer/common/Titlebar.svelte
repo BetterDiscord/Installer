@@ -44,6 +44,7 @@
 </header>
 
 <style>
+    // Cross-platform rules
     .titlebar {
         background-color: var(--bg2);
         color: white;
@@ -66,95 +67,79 @@
         align-items: center;
         margin-left: auto;
         -webkit-app-region: no-drag;
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+        }
     }
 
-    .window-controls button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        border: none;
-    }
-
-    /* Standard Titlebar */
-
+    // Standard Titlebar
     .type-standard button {
         height: 28px;
         width: 40px;
         transition: 50ms ease;
         background-color: transparent;
         color: var(--text-muted);
+        svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+        &:hover {
+            background-color: var(--bg3);
+        }
+        &:active {
+            background-color: var(--bg3-alt);
+        }
+        &#close:hover {
+            background-color: #d13d3d;
+            color: #fff;
+        }
+        &#close:active {
+            background-color: #b12a2a;
+            color: #fff;
+        }
     }
 
-    .type-standard button svg {
-        width: 12px;
-        height: 12px;
-        fill: currentColor;
-    }
-
-    .type-standard button:hover {
-        background-color: var(--bg3);
-    }
-
-    .type-standard button:active {
-        background-color: var(--bg3-alt);
-    }
-
-    .type-standard button#close:hover {
-        background-color: #d13d3d;
-        color: #fff;
-    }
-
-    .type-standard button#close:active {
-        background-color: #b12a2a;
-        color: #fff;
-    }
-
-    /* Mac Titlebar */
-
+    // Mac Titlebar
     .type-mac {
         justify-content: space-between;
-    }
-
-    .type-mac .window-controls {
-        order: -1;
-        margin: 0 3px;
-    }
-
-    .type-mac .window-controls button {
-        margin: 0 4px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-size: auto 12px;
-        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
-    }
-
-    .type-mac .window-controls svg {
-        visibility: hidden;
-        width: 12px;
-        height: 12px;
-    }
-
-    .type-mac .window-controls:hover svg {
-        visibility: visible;
-    }
-
-    .type-mac .window-controls button:not([disabled]):active {
-        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), inset 0 0 0 12px rgba(0,0,0,0.25);
-    }
-
-    .type-mac .window-controls #close {
-        margin-left: 6px;
-        background-color: #ff5e57;
-    }
-
-    .type-mac .window-controls #minimize {
-        background-color: #ffbb2e;
-    }
-
-    .type-mac .window-controls button[disabled] {
-        background-color: var(--bg3-alt);
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.012);
+        .window-controls {
+            order: -1;
+            margin: 0 3px;
+            button {
+                margin: 0 4px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-size: auto 12px;
+                box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
+                &:not([disabled]):active {
+                    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), inset 0 0 0 12px rgba(0,0,0,0.25);
+                }
+                &#close {
+                    margin-left: 6px;
+                    background-color: #ff5e57;
+                }
+                &#minimize {
+                    background-color: #ffbb2e;
+                }
+                &[disabled] {
+                    background-color: var(--bg3-alt);
+                    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.012);
+                }
+            }
+            svg {
+                visibility: hidden;
+                width: 12px;
+                height: 12px;
+            }
+            &:hover svg {
+                visibility: visible;
+            }
+        }
     }
 </style>

@@ -13,9 +13,8 @@
         font-weight: 600;
         font-size: 16px;
         line-height: normal;
-    }
-
-    .header.has-margin {
-        margin-bottom: 10px;
+        &.has-margin {
+            margin-bottom: 10px;
+        }
     }
 </style>

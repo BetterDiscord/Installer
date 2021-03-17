@@ -21,8 +21,9 @@
 </div>
 
 <style>
-@import url('https://rsms.me/inter/inter.css');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+    // Variables and imports
+    @import url('https://rsms.me/inter/inter.css');
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
     :root {
         --bg1: #040405;
@@ -38,52 +39,57 @@
         --accent-hover: #2f5b9d;
     }
 
-    :global(html),
-    :global(body),
-    :global(#app) {
-        overflow: hidden;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+    // General styling applied everywhere
+    :global {
+        html,
+        body,
+        #app {
+            font-family: "Inter", sans-serif;
+            overflow: hidden;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        *,
+        *::after,
+        *::before {
+            box-sizing: border-box;
+            -webkit-user-drag: none;
+            user-select: none;
+            outline: none;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        ::selection {
+            background-color: var(--accent);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.075);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
 
-    :global(*),
-    :global(*::after),
-    :global(*::before) {
-        box-sizing: border-box;
-        -webkit-user-drag: none;
-        font-family: "Inter", sans-serif;
-        user-select: none;
-        outline: none;
-    }
 
-    :global(a) {
-        color: var(--accent);
-        text-decoration: none;
-    }
-
-    :global(::selection) {
-        background-color: var(--accent);
-        color: #fff;
-    }
-
-    :global(::-webkit-scrollbar) {
-        width: 4px;
-    }
-
-    :global(::-webkit-scrollbar-thumb) {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-    }
-
-    :global(::-webkit-scrollbar-thumb:hover) {
-        background-color: rgba(255, 255, 255, 0.075);
-    }
-
-    :global(::-webkit-scrollbar-thumb:active) {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-
+    // Window background and page configuration
     .main-window {
         display: flex;
         flex-direction: column;
@@ -94,14 +100,13 @@
         margin: 11.5px 7.5px;
         width: calc(100% - 15px);
         height: calc(100% - 23px);
-    }
-
-    .main-window.platform-darwin {
-        border-radius: 0;
-        box-shadow: none;
-        width: 100%;
-        height: 100%;
-        margin: 0;
+        &.platform-darwin {
+            border-radius: 0;
+            box-shadow: none;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
     }
 
     .installer-body {
@@ -113,21 +118,20 @@
         padding: 20px;
         background: radial-gradient(var(--bg2) 50%, var(--bg2-alt));
         flex: 1;
-    }
-
-    .installer-body::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('images/background.png');
-        z-index: -1;
-        opacity: 0.35;
-        pointer-events: none;
-        mask: radial-gradient(transparent, #000);
-        -webkit-mask: radial-gradient(transparent, #000);
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/background.png');
+            z-index: -1;
+            opacity: 0.35;
+            pointer-events: none;
+            mask: radial-gradient(transparent, #000);
+            -webkit-mask: radial-gradient(transparent, #000);
+        }
     }
 
     .page {

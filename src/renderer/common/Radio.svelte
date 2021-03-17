@@ -12,6 +12,18 @@
 </label>
 
 <style>
+    .radio-container {
+        margin-bottom: 12px;
+        input:checked + .radio-item {
+            color: #fff;
+            background-color: var(--accent);
+        }
+    }
+
+    .radio-container:last-child {
+        margin: 0;
+    }
+
     .radio-item {
         display: flex;
         align-items: center;
@@ -25,28 +37,13 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: 100ms ease;
-    }
-
-    .radio-container {
-        margin-bottom: 12px;
-    }
-
-    .radio-container:last-child {
-        margin: 0;
-    }
-
-    .radio-item:hover {
-        color: var(--text-light);
-    }
-
-    :global(.radio-item svg) {
-        width: 16px;
-        height: 16px;
-        margin-right: 10px;
-    }
-
-    .radio-container input:checked + .radio-item {
-        color: #fff;
-        background-color: var(--accent);
+        &:hover {
+            color: var(--text-light);
+        }
+        :global(svg) {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
     }
 </style>
