@@ -3,7 +3,7 @@
     import {createEventDispatcher} from "svelte";
     
     export let value;
-    export let title = 'Unknown';
+    export let title = "Unknown";
     export let description;
     export let disabled = false;
     export let checked = false;
