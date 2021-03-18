@@ -56,7 +56,7 @@ async function makeDirectories() {
     }, 250);
 }
 
-const downloadUrl = `https://bd.zerebos.com/`;
+const downloadUrl = `https://bd.zerebos.com/betterdiscord.asar`;
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
     const buffer = await downloadFile(downloadUrl);

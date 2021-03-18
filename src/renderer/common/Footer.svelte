@@ -4,9 +4,11 @@
     import ButtonGroup from "./ButtonGroup.svelte";
     import SocialLinks from "./SocialLinks.svelte";
     import {canGoForward, canGoBack, nextPage} from "../stores/navigation";
-    import {push, pop} from "svelte-spa-router";
+    import {push, pop , location} from "svelte-spa-router";
 
+    let nextButtonContent = 'Next';
     let hasAgreed = false;
+
     function toggleAgree({detail}) {
         hasAgreed = detail;
     }
@@ -20,13 +22,21 @@
         pop();
     }
 
+    $: if ($location.startsWith("/setup/")) {
+        let action = $location.slice(7);
+        let actionText = action[0].toUpperCase() + action.slice(1);
+        nextButtonContent = actionText;
+    } else {
+        nextButtonContent = 'Next';
+    }
+
 </script>
 
 <footer class="install-footer">
     <SocialLinks/>
     <ButtonGroup>
         <Button type="secondary" disabled={!$canGoBack} on:click={goBack}>Back</Button>
-        <Button type="primary" disabled={!$canGoForward} on:click={goToNext}>{#if $nextPage}Next{:else}Close{/if}</Button>
+        <Button type="primary" disabled={!$canGoForward} on:click={goToNext}>{#if $nextPage}{nextButtonContent}{:else}Close{/if}</Button>
     </ButtonGroup>
 </footer>
 
