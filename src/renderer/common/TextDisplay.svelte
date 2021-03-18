@@ -1,7 +1,7 @@
 <script>
     import Spinner from "./Spinner.svelte";
     import Button from "./Button.svelte";
-    import { beforeUpdate, afterUpdate } from 'svelte';
+    import {beforeUpdate, afterUpdate} from "svelte";
     export let value;
     export let element;
     export let autoscroll;
@@ -17,7 +17,7 @@
         const range = document.createRange();
         range.selectNode(element);
         window.getSelection().addRange(range);
-        document.execCommand('Copy');
+        document.execCommand("Copy");
         document.getSelection().removeAllRanges();
         isCopyButtonActive = true;
         setTimeout(() => {
@@ -27,7 +27,7 @@
 
     if (autoscroll) {
         beforeUpdate(() => {
-		    autoscrollEnabled = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight);
+            autoscrollEnabled = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight);
         });
         afterUpdate(() => {
             if (autoscrollEnabled) scroller.scrollTo(0, scroller.scrollHeight);

@@ -28,7 +28,8 @@ function createMainWindow() {
 
     if (isDevelopment) {
         window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-    } else {
+    }
+    else {
         window.loadURL(URL.format({
             pathname: path.join(__dirname, "index.html"),
             protocol: "file",
@@ -49,9 +50,9 @@ function createMainWindow() {
 
     // force <a> tags to open in browser
 
-    window.webContents.on('new-window', (e, url) => {
+    window.webContents.on("new-window", (e, url) => {
         e.preventDefault();
-        require('electron').shell.openExternal(url);
+        require("electron").shell.openExternal(url);
     });  
 
     return window;
