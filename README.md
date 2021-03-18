@@ -1,46 +1,76 @@
-# electron-webpack-quick-start
-> A bare minimum project structure to get started developing with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
+<h1 align="center">BetterDiscord Installer</h1>
 
-Thanks to the power of `electron-webpack` this template comes packed with...
+<p align="center">
+  <a href="#overview">Overview</a> |
+  <a href="#building">Building</a> |
+  <a href="#contributors">Contributors</a>
+</p>
 
-* Use of [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) for development
-* HMR for both `renderer` and `main` processes
-* Use of [`babel-preset-env`](https://github.com/babel/babel-preset-env) that is automatically configured based on your `electron` version
-* Use of [`electron-builder`](https://github.com/electron-userland/electron-builder) to package and build a distributable electron application
+<p align="center">
+  <img alt="Preview" width="524" src="https://i.imgur.com/OV4yQJG.png">
+<p align="center">
 
-Make sure to check out [`electron-webpack`'s documentation](https://webpack.electron.build/) for more details.
+<p align="center">A simple standalone program which automates the installation, removal and maintenance of <a href="https://github.com/BetterDiscord/BetterDiscord">BetterDiscord</a>.</p>
 
-## Getting Started
-Simply clone down this repository, install dependencies, and get started on your application.
+---
 
-The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
+# Overview
 
-```bash
-# create a directory of your choice, and copy template using curl
-mkdir new-electron-webpack-project && cd new-electron-webpack-project
-curl -fsSL https://github.com/electron-userland/electron-webpack-quick-start/archive/master.tar.gz | tar -xz --strip-components 1
+### About
 
-# or copy template using git clone
-git clone https://github.com/electron-userland/electron-webpack-quick-start.git
-cd electron-webpack-quick-start
-rm -rf .git
+This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/). Downloads can be found [here](https://github.com/BetterDiscord/Installer/releases/latest).
 
-# install dependencies
-yarn
+### Codebase
+
+```
+.
+├───assets                // Contains static assets (such as images) used by the installer.
+└───src                   // The installer's source code.
+    ├───main              // Electron "main" process. Creates and configures the BrowserWindow.
+    └───renderer          // Electron "renderer" process. Contains most components and scripts.
+        ├───actions       // Scripts performed by the installer such as installing, repairing and uninstalling.
+        ├───common        // Common UI components such as buttons, checkboxes, radios, etc...
+        ├───pages         // Component files for each page in the installer's setup process.
+        └───stores        // Svelte store used for storing global data.
 ```
 
-### Development Scripts
+# Building
 
-```bash
-# run application in development mode
-yarn dev
+> This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer) page of this repository.
 
-# compile source code and create webpack output
-yarn compile
 
-# `yarn compile` & create build with electron-builder
-yarn dist
+### Prerequisites
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org/en/) with `npm`.
+- Command line of your choice.
 
-# `yarn compile` & create unpacked build with electron-builder
-yarn dist:dir
+### Step 1: Clone the repository.
 ```
+git clone https://github.com/BetterDiscord/installer | cd installer
+```
+This will create a local copy of this repostory and navigate you to the root folder of the repository.
+
+### Step 2: Install Dependencies
+Run this command at the root folder to install dependencies:
+```
+npm i
+```
+
+### Step 3: Run Build Script
+To run the installer in development mode, simply run the following command:
+```
+npm run dev
+```
+
+### Linting
+This project uses [ESLint](https://eslint.org/). Run this command to lint your changes:
+```
+npm run lint
+```
+
+
+# Contributors
+
+| <a href="https://github.com/rauenzi" target="_blank"> <img src="https://avatars.githubusercontent.com/u/6865942?s=460&u=4645ddecc8f441ff2af33d18dffd1d2f6b46ecd5&v=4" alt="Github avatar" width="96px" height="96px"> </a> | <a href="https://github.com/Tropix126" target="_blank"> <img src="https://avatars1.githubusercontent.com/u/42101043?s=460&u=f44f07cf7122e1ba61a9e9e8ca83d133c741d011&v=4" alt="Github avatar" width="96px" height="96px"> </a> |
+|:-:|:-:|
+| rauenzi | Tropix126 |

@@ -2,6 +2,7 @@
     import Spinner from "./Spinner.svelte";
     import Button from "./Button.svelte";
     import {beforeUpdate, afterUpdate} from "svelte";
+    import {fade} from "svelte/transition";
     export let value;
     export let element;
     export let autoscroll;
@@ -11,7 +12,8 @@
     let scroller;
     
     let copyInputContainer;
-    let isCopyButtonActive = false;
+    let copyButtonActive = false;
+    let copyButtonVisible = false;
 
     function copyDisplayContents() {
         const range = document.createRange();
@@ -19,9 +21,9 @@
         window.getSelection().addRange(range);
         document.execCommand("Copy");
         document.getSelection().removeAllRanges();
-        isCopyButtonActive = true;
+        copyButtonActive = true;
         setTimeout(() => {
-            isCopyButtonActive = false;
+            copyButtonActive = false;
         }, 500);
     }
 
@@ -39,23 +41,24 @@
     }
 </script>
 
-<div class="text-display{value ? "" : " loading"}" bind:this={element}>
+<div on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
     {#if value}
-    <div on:scroll={() => {if (autoscroll) scrollEventCount++;}} bind:this={scroller} class="display-inner">{value}</div>
-    <div bind:this={copyInputContainer} class="copy-input">
-        {#if isCopyButtonActive}
-            <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
-        {:else}
-            <Button type="secondary" on:click={copyDisplayContents}>Copy</Button>
-        {/if}
-    </div>
+    <div on:scroll={() => {if (autoscroll) {scrollEventCount++;} copyButtonVisible = false}} bind:this={scroller} class="display-inner">{value}</div>
+    {#if copyButtonVisible}
+        <div transition:fade={{duration: 100}} bind:this={copyInputContainer} class="copy-input">
+            {#if copyButtonActive}
+                <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
+            {:else}
+                <Button type="secondary" on:click={copyDisplayContents}>Copy</Button>
+            {/if}
+        </div>
+    {/if}
     {:else}
     <Spinner />
     {/if}
 </div>
 
 <style>
-
     :global(.text-display .copy-input .btn[class]) {
         background-color: var(--bg4);
         border: none;
@@ -67,15 +70,10 @@
     }
     
     .copy-input {
-        opacity: 0;
         transition: 150ms ease;
         position: absolute;
         bottom: 8px;
         right: 8px;
-    }
-
-    .text-display:hover .copy-input {
-        opacity: 1;
     }
 
     .text-display {
