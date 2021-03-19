@@ -4,14 +4,9 @@
     import ButtonGroup from "./ButtonGroup.svelte";
     import SocialLinks from "./SocialLinks.svelte";
     import {canGoForward, canGoBack, nextPage} from "../stores/navigation";
-    import {push, pop , location} from "svelte-spa-router";
+    import {push, pop, location} from "svelte-spa-router";
 
-    let nextButtonContent = 'Next';
-    let hasAgreed = false;
-
-    function toggleAgree({detail}) {
-        hasAgreed = detail;
-    }
+    let nextButtonContent = "Next";
 
     async function goToNext() {
         if ($nextPage) push($nextPage);
@@ -23,11 +18,12 @@
     }
 
     $: if ($location.startsWith("/setup/")) {
-        let action = $location.slice(7);
-        let actionText = action[0].toUpperCase() + action.slice(1);
+        const action = $location.slice(7);
+        const actionText = action[0].toUpperCase() + action.slice(1);
         nextButtonContent = actionText;
-    } else {
-        nextButtonContent = 'Next';
+    }
+    else {
+        nextButtonContent = "Next";
     }
 
 </script>
