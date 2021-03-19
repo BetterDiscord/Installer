@@ -1,6 +1,6 @@
 <script>
     import Header from "../common/Header.svelte";
-    import {page} from "../common/PageTransition.svelte";
+    import page from "../transitions/page.js";
     import Checkbox from "../common/Checkbox.svelte";
     import {canGoBack, canGoForward, nextPage, hasLoaded} from "../stores/navigation";
     import {hasAgreed} from "../stores/installation";
@@ -37,7 +37,7 @@
     readLicenseFile();
 </script>
 
-<section class="page" in:page="{{x: 550, duration: $hasLoaded ? 250 : 0}}" out:page="{{x: -550}}">
+<section class="page" in:page="{{duration: $hasLoaded ? undefined : 0}}" out:page="{{out: true}}">
     <Header hasMargin>License Agreement</Header>
     <TextDisplay value={licenseText} />
     <Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />

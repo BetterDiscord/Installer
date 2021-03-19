@@ -1,5 +1,5 @@
 <script>
-    import {page} from "../common/PageTransition.svelte";
+    import page from "../transitions/page.js";
     import Header from "../common/Header.svelte";
     import Multiselect from "../common/Multiselect.svelte";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
@@ -39,7 +39,7 @@
     }
 </script>
 
-<section class="page" in:page="{{x: 550}}" out:page="{{x: -550}}">
+<section class="page" in:page out:page="{{out: true}}">
     <Header hasMargin>Choose Discord Versions</Header>
 
     {#each Object.entries(platformLabels) as [channel, label]}
