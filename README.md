@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="#overview">Overview</a> |
-  <a href="#building">Building</a> |
+  <a href="#development">Development</a> |
   <a href="#contributors">Contributors</a>
 </p>
 
@@ -16,51 +16,57 @@
 
 # Overview
 
-### About
+## About
 
 This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/). Downloads can be found [here](https://github.com/BetterDiscord/Installer/releases/latest).
 
-### Codebase
+## Codebase
 
 ```
 .
-├───assets                // Contains static assets (such as images) used by the installer.
-└───src                   // The installer's source code.
-    ├───main              // Electron "main" process. Creates and configures the BrowserWindow.
-    └───renderer          // Electron "renderer" process. Contains most components and scripts.
-        ├───actions       // Scripts performed by the installer such as installing, repairing and uninstalling.
-        ├───common        // Common UI components such as buttons, checkboxes, radios, etc...
-        ├───pages         // Component files for each page in the installer's setup process.
-        └───stores        // Svelte store used for storing global data.
+├───assets                  // Contains static assets (such as images) used by the installer.
+└───src                     // The installer's source code.
+    ├───main                // Electron "main" process. Creates and configures the BrowserWindow.
+    └───renderer            // Electron "renderer" process. Contains most components and scripts.
+        ├───actions         // Scripts performed by the installer such as installing, repairing and uninstalling.
+        ├───common          // Common UI components such as buttons, checkboxes, radios, etc...
+        ├───pages           // Component files for each page in the installer's setup process.
+        └───transitions     // Contains custom Svelte transitions and animations.
+        └───stores          // Svelte store used for storing global data.
 ```
 
-# Building
+---
+
+# Development
 
 > This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer) page of this repository.
-
 
 ### Prerequisites
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/) with `npm`.
 - Command line of your choice.
 
-### Step 1: Clone the repository.
+## Building
+
+### 1: Clone the repository.
 ```
 git clone https://github.com/BetterDiscord/installer | cd installer
 ```
 This will create a local copy of this repostory and navigate you to the root folder of the repository.
 
-### Step 2: Install Dependencies
+### 2: Install Dependencies
 Run this command at the root folder to install dependencies:
 ```
 npm i
 ```
 
-### Step 3: Run Build Script
+### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```
 npm run dev
 ```
+
+## Additional Scripts
 
 ### Linting
 This project uses [ESLint](https://eslint.org/). Run this command to lint your changes:
@@ -68,6 +74,9 @@ This project uses [ESLint](https://eslint.org/). Run this command to lint your c
 npm run lint
 ```
 
+### Compiling & Distribution
+
+---
 
 # Contributors
 
