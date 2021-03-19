@@ -1,5 +1,4 @@
 import {remote} from "electron";
-
 export default async function() {
     const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "question",

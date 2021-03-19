@@ -1,7 +1,7 @@
 import {state} from "../stores/navigation";
-import {cubicInOut} from "svelte/easing";
+import {cubicOut} from "svelte/easing";
 
-export default function page(node, {delay = 0, duration = 250, easing = cubicInOut, x = 550, y = 0, out = false}) {
+export default function page(node, {delay = 0, duration = 250, easing = cubicOut, x = 550, y = 0, out = false}) {
     const style = getComputedStyle(node);
     const transform = style.transform === "none" ? "" : style.transform;
 

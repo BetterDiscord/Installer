@@ -16,8 +16,6 @@
 
 # Overview
 
-## About
-
 This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/). Downloads can be found [here](https://github.com/BetterDiscord/Installer/releases/latest).
 
 ## Codebase
@@ -31,8 +29,8 @@ This repository contains the source code for the BetterDiscord installer. This i
         ├───actions         // Scripts performed by the installer such as installing, repairing and uninstalling.
         ├───common          // Common UI components such as buttons, checkboxes, radios, etc...
         ├───pages           // Component files for each page in the installer's setup process.
+        ├───stores          // Svelte store used for storing global data.
         └───transitions     // Contains custom Svelte transitions and animations.
-        └───stores          // Svelte store used for storing global data.
 ```
 
 ---
@@ -41,7 +39,7 @@ This repository contains the source code for the BetterDiscord installer. This i
 
 > This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer) page of this repository.
 
-### Prerequisites
+## Prerequisites
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/) with `npm`.
 - Command line of your choice.
