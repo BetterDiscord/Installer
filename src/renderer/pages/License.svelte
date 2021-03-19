@@ -37,7 +37,7 @@
     readLicenseFile();
 </script>
 
-<section class="page" in:page="{{x: 550, duration: $hasLoaded ? 300 : 0}}" out:page="{{x: -550, duration: 250}}">
+<section class="page" in:page="{{x: 550, duration: $hasLoaded ? 250 : 0}}" out:page="{{x: -550}}">
     <Header hasMargin>License Agreement</Header>
     <TextDisplay value={licenseText} />
     <Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />
