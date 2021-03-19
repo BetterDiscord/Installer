@@ -91,8 +91,8 @@
         contain: strict;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
         /* margin: 11.5px 7.5px; */
-        width: calc(100%);
-        height: calc(100%);
+        width: 100%;
+        height: 100%;
     }
 
     .main-window.platform-darwin {
