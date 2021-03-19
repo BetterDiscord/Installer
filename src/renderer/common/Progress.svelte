@@ -1,9 +1,10 @@
 <script>
     export let value = 0;
     export let max = 100;
+    export let className = "";
 </script>
 
-<div class="progress">
+<div class={"progress" + (className ? ` ${className}` : "")}>
     <div class="bar" style="width: {(value / max) * 100}%;"></div>
 </div>
 
@@ -27,5 +28,9 @@
 
     :global(.error .bar) {
         background-color: #d13d3d;
+    }
+
+    :global(.success .bar) {
+        background-color: #43B581;
     }
 </style>

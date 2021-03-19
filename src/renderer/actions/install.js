@@ -1,5 +1,5 @@
 import logs from "../stores/logs";
-import {progress} from "../stores/installation";
+import {progress, status} from "../stores/installation";
 import {remote, shell} from "electron";
 import fs from "fs";
 import path from "path";
@@ -27,9 +27,7 @@ function failInstallation() {
     const discordURL = "https://discord.gg/0Tmfo5ZbORCRqbAd";
     log("");
     log(`The installation seems to have failed. If this problem is recurring, join our discord community for support. ${discordURL}`);
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelector(".progress").classList.add("error");
-    });
+    status.set("error");
 }
 
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
@@ -133,4 +131,5 @@ export default async function(discordPaths) {
 
     log("Installation completed!");
     progress.set(100);
+    status.set("success");
 };
