@@ -43,7 +43,7 @@
 
 <div on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
     {#if value}
-    <div on:scroll={() => {if (autoscroll) {scrollEventCount++;} copyButtonVisible = false}} bind:this={scroller} class="display-inner">{value}</div>
+    <div on:scroll={() => {if (autoscroll) {scrollEventCount++;} copyButtonVisible = false;}} bind:this={scroller} class="display-inner">{value}</div>
     {#if copyButtonVisible}
         <div transition:fade={{duration: 100}} bind:this={copyInputContainer} class="copy-input">
             {#if copyButtonActive}
