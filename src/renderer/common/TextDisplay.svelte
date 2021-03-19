@@ -90,6 +90,7 @@
     .text-display .display-inner {
         color: var(--text-normal);
         font-size: 12px;
+        line-height: 1.5;
         word-wrap: normal;
         white-space: pre-wrap;
         user-select: text;
