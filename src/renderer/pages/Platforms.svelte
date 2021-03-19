@@ -1,4 +1,5 @@
 <script>
+    import {fly} from "svelte/transition";
     import Header from "../common/Header.svelte";
     import Multiselect from "../common/Multiselect.svelte";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
@@ -38,10 +39,12 @@
     }
 </script>
 
-<Header hasMargin>Choose Discord Versions</Header>
+<section class="page" in:fly="{{x: 550, duration: 500}}" out:fly="{{x: -550, duration: 500}}">
+    <Header hasMargin>Choose Discord Versions</Header>
 
-{#each Object.entries(platformLabels) as [channel, label]}
-    <Multiselect title={label} description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
-        <img src="images/{channel}.png" slot="icon" alt="Platform Icon" />
-    </Multiselect>
-{/each}
+    {#each Object.entries(platformLabels) as [channel, label]}
+        <Multiselect title={label} description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
+            <img src="images/{channel}.png" slot="icon" alt="Platform Icon" />
+        </Multiselect>
+    {/each}
+</section>
