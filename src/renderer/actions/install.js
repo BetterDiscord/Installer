@@ -38,22 +38,21 @@ async function makeDirectories() {
     const folders = [bdFolder, bdDataFolder, bdThemesFolder, bdPluginsFolder];
     for (const folder of folders) {
         if (fs.existsSync(folder)) {
-            log(`✅: Directory exists: ${folder}`);
+            log(`✅ Directory exists: ${folder}`);
             continue;
         }
         try {
             fs.mkdirSync(folder);
-            log(`✅: Directory created: ${folder}`);
+            log(`✅ Directory created: ${folder}`);
         }
         catch {
-            log(`❌: Failed to create directory: ${folder}`);
+            log(`❌ Failed to create directory: ${folder}`);
             failInstallation();
             return;
         }
     }
-    setTimeout(() => {
-        addProgress(25);
-    }, 250);
+
+    addProgress(25);
 }
 
 const downloadUrl = `https://bd.zerebos.com/betterdiscord.asar`;
@@ -80,7 +79,7 @@ export default async function(discordPaths) {
     log("");
     log("Locating Discord paths...");
     if (!discordPaths || !discordPaths.length) {
-        log("❌: Failed to locate required directories.");
+        log("❌ Failed to locate required directories.");
         failInstallation();
         return;
     }
@@ -89,7 +88,7 @@ export default async function(discordPaths) {
         await makeDirectories();
     }
     catch (err) {
-        log(`❌: Failed to create directories - ${err.message}`);
+        log(`❌ Failed to create directories - ${err.message}`);
         failInstallation();
         return;
     }
@@ -100,11 +99,11 @@ export default async function(discordPaths) {
 
     try {
         await downloadAsar();
-        log("✅: Package downloaded");
+        log("✅ Package downloaded");
         addProgress(25);
     }
     catch (err) {
-        log(`❌: Failed to download package - ${err.message}`);
+        log(`❌ Failed to download package - ${err.message}`);
         failInstallation();
         return;
     }
@@ -120,18 +119,16 @@ export default async function(discordPaths) {
             if (!fs.existsSync(appPath)) fs.mkdirSync(appPath);
             fs.writeFileSync(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
             fs.writeFileSync(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
-            log("✅: Injection successful");
+            log("✅ Injection successful");
         }
         catch (err) {
-            log(`❌: Injection Error - ${err.message}`);
+            log(`❌ Injection Error - ${err.message}`);
             failInstallation();
             return;
         }
     }
 
-    setTimeout(() => {
-        log("");
-        log("Installation completed!");
-        progress.set(100);
-    }, 500);
+
+    log("Installation completed!");
+    progress.set(100);
 };
