@@ -44,7 +44,7 @@
     }
 </script>
 
-<section class="page" in:page="{{x: 550, duration: 250}}" out:page="{{x: -550, duration: 250}}">
+<section class="page" in:page="{{x: 550}}" out:page="{{x: -550}}">
     <Header hasMargin>{currentAction[0].toUpperCase()}{currentAction.slice(1)}</Header>
     <TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
     <Progress value={$progress} max={100} />

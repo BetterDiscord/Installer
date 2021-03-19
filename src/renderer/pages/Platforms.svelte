@@ -39,7 +39,7 @@
     }
 </script>
 
-<section class="page" in:page="{{x: 550, duration: 250}}" out:page="{{x: -550, duration: 250}}">
+<section class="page" in:page="{{x: 550}}" out:page="{{x: -550}}">
     <Header hasMargin>Choose Discord Versions</Header>
 
     {#each Object.entries(platformLabels) as [channel, label]}
