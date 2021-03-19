@@ -1,5 +1,6 @@
 <script>
-    import quit from "../actions/quit";
+    const electron = require("electron");
+
     import Button from "./Button.svelte";
     import ButtonGroup from "./ButtonGroup.svelte";
     import SocialLinks from "./SocialLinks.svelte";
@@ -11,7 +12,7 @@
     async function goToNext() {
         state.direction = 1;
         if ($nextPage) push($nextPage);
-        else quit();
+        else electron.remote.app.exit();
     }
 
     function goBack() {
