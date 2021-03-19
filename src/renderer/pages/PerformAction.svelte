@@ -1,17 +1,18 @@
 <script>
-    import {page} from "../common/PageTransition.svelte";
+    import page from "../transitions/page.js";
     import {onDestroy} from "svelte";
     import Header from "../common/Header.svelte";
     import Progress from "../common/Progress.svelte";
     import TextDisplay from "../common/TextDisplay.svelte";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
-    import {action, paths, progress, platforms} from "../stores/installation";
+    import {action, paths, progress, platforms, status} from "../stores/installation";
     import logs from "../stores/logs";
     import install from "../actions/install";
     import debug from "../actions/debug";
 
     canGoForward.set(false);
     canGoBack.set(false);
+    status.set("");
 
     let display;
     const unsubscribe = logs.subscribe(() => {
@@ -44,8 +45,8 @@
     }
 </script>
 
-<section class="page" in:page="{{x: 550}}" out:page="{{x: -550}}">
+<section class="page" in:page out:page="{{out: true}}">
     <Header hasMargin>{currentAction[0].toUpperCase()}{currentAction.slice(1)}</Header>
     <TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
-    <Progress value={$progress} max={100} />
+    <Progress value={$progress} max={100} className={$status} />
 </section>

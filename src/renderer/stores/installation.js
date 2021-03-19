@@ -1,6 +1,7 @@
 import {writable} from "svelte/store";
 import {locations} from "../actions/paths";
 
+export const status = writable("");
 export const hasAgreed = writable(false);
 export const action = writable("install");
 export const platforms = writable({stable: false, canary: false, ptb: false});

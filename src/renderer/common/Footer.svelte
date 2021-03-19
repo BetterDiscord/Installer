@@ -3,17 +3,19 @@
     import Button from "./Button.svelte";
     import ButtonGroup from "./ButtonGroup.svelte";
     import SocialLinks from "./SocialLinks.svelte";
-    import {canGoForward, canGoBack, nextPage} from "../stores/navigation";
+    import {canGoForward, canGoBack, nextPage, state} from "../stores/navigation";
     import {push, pop, location} from "svelte-spa-router";
 
     let nextButtonContent = "Next";
 
     async function goToNext() {
+        state.direction = 1;
         if ($nextPage) push($nextPage);
         else quit();
     }
 
     function goBack() {
+        state.direction = -1;
         pop();
     }
 
