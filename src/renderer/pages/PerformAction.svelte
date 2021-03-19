@@ -1,5 +1,5 @@
 <script>
-    import {fly} from "svelte/transition";
+    import {page} from "../common/PageTransition.svelte";
     import {onDestroy} from "svelte";
     import Header from "../common/Header.svelte";
     import Progress from "../common/Progress.svelte";
@@ -44,7 +44,7 @@
     }
 </script>
 
-<section class="page" in:fly="{{x: 550, duration: 500}}" out:fly="{{x: -550, duration: 500}}">
+<section class="page" in:page="{{x: 550}}" out:page="{{x: -550}}">
     <Header hasMargin>{currentAction[0].toUpperCase()}{currentAction.slice(1)}</Header>
     <TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
     <Progress value={$progress} max={100} />
