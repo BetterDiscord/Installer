@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="#overview">Overview</a> |
-  <a href="#building">Building</a> |
+  <a href="#development">Development</a> |
   <a href="#contributors">Contributors</a>
 </p>
 
