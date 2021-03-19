@@ -11,9 +11,8 @@ function createMainWindow() {
     const window = new BrowserWindow({  
         title: "BetterDiscord Installer",
         frame: false,
-        transparent: true,
-        width: 542,
-        height: 367,
+        width: 550,
+        height: 350,
         resizable: false,
         fullscreenable: false,
         maximizable: false,
