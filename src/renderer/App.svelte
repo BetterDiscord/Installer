@@ -13,7 +13,7 @@
         <Titlebar />
     {/if}
     <main class="installer-body">
-        <section class="page">
+        <section class="sections">
             <Router {routes} />
         </section>
         <Footer />
@@ -129,10 +129,19 @@
         -webkit-mask: radial-gradient(transparent, #000);
     }
 
-    .page {
+    :global(.page) {
         flex: 1 1 auto;
         overflow: auto;
         display: flex;
         flex-direction: column;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sections {
+        flex: 1 1 auto;
+        overflow: hidden;
+        position: relative;
     }
 </style>

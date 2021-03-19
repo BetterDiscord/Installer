@@ -1,12 +1,17 @@
 <script>
     import Header from "../common/Header.svelte";
-    import Spinner from "../common/Spinner.svelte";
+    import {fly} from "svelte/transition";
     import Checkbox from "../common/Checkbox.svelte";
-    import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
+    import {canGoBack, canGoForward, nextPage, hasLoaded} from "../stores/navigation";
     import {hasAgreed} from "../stores/installation";
     import TextDisplay from "../common/TextDisplay.svelte";
     import fs from "fs";
     import path from "path";
+    import {onMount} from "svelte";
+
+    onMount(() => {
+        hasLoaded.set(true); // Use this to avoid initial transition caused by router
+    });
 
     if (!$hasAgreed) canGoForward.set(false);
     else canGoForward.set(true);
@@ -32,6 +37,8 @@
     readLicenseFile();
 </script>
 
-<Header hasMargin>License Agreement</Header>
-<TextDisplay value={licenseText} />
-<Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />
+<section class="page" in:fly="{{x: 550, duration: $hasLoaded ? 500 : 0}}" out:fly="{{x: -550, duration: 500}}">
+    <Header hasMargin>License Agreement</Header>
+    <TextDisplay value={licenseText} />
+    <Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />
+</section>
