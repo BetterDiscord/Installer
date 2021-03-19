@@ -34,6 +34,8 @@ This repository contains the source code for the BetterDiscord installer. This i
         └───stores        // Svelte store used for storing global data.
 ```
 
+---
+
 # Development
 
 > This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer) page of this repository.
@@ -45,19 +47,19 @@ This repository contains the source code for the BetterDiscord installer. This i
 
 ## Building
 
-#### 1: Clone the repository.
+### 1: Clone the repository.
 ```
 git clone https://github.com/BetterDiscord/installer | cd installer
 ```
 This will create a local copy of this repostory and navigate you to the root folder of the repository.
 
-#### 2: Install Dependencies
+### 2: Install Dependencies
 Run this command at the root folder to install dependencies:
 ```
 npm i
 ```
 
-#### 3: Run Build Script
+### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```
 npm run dev
@@ -65,15 +67,15 @@ npm run dev
 
 ## Additional Scripts
 
-#### Linting
+### Linting
 This project uses [ESLint](https://eslint.org/). Run this command to lint your changes:
 ```
 npm run lint
 ```
 
-#### Compiling & Distribution
+### Compiling & Distribution
 
-
+---
 
 # Contributors
 
