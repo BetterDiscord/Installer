@@ -27,7 +27,9 @@ function failInstallation() {
     const discordURL = "https://discord.gg/0Tmfo5ZbORCRqbAd";
     log("");
     log(`The installation seems to have failed. If this problem is recurring, join our discord community for support. ${discordURL}`);
-    document.querySelector(".progress").classList.add("error");
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelector(".progress").classList.add("error");
+    });
 }
 
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");

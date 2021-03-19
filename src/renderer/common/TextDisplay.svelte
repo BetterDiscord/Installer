@@ -89,7 +89,7 @@
 
     .text-display .display-inner {
         color: var(--text-normal);
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1.5;
         word-wrap: normal;
         white-space: pre-wrap;
