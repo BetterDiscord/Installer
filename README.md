@@ -22,15 +22,15 @@ This repository contains the source code for the BetterDiscord installer. This i
 
 ```
 .
-├───assets                  // Contains static assets (such as images) used by the installer.
-└───src                     // The installer's source code.
-    ├───main                // Electron "main" process. Creates and configures the BrowserWindow.
-    └───renderer            // Electron "renderer" process. Contains most components and scripts.
-        ├───actions         // Scripts performed by the installer such as installing, repairing and uninstalling.
-        ├───common          // Common UI components such as buttons, checkboxes, radios, etc...
-        ├───pages           // Component files for each page in the installer's setup process.
-        ├───stores          // Svelte store used for storing global data.
-        └───transitions     // Contains custom Svelte transitions and animations.
+├──assets                  // Contains static assets (such as images) used by the installer.
+└──src                     // The installer's source code.
+    ├──main                // Electron "main" process. Creates and configures the BrowserWindow.
+    └──renderer            // Electron "renderer" process. Contains most components and scripts.
+        ├──actions         // Scripts performed by the installer such as installing, repairing and uninstalling.
+        ├──common          // Common UI components such as buttons, checkboxes, radios, etc...
+        ├──pages           // Component files for each page in the installer's setup process.
+        ├──stores          // Svelte store used for storing global data.
+        └──transitions     // Contains custom Svelte transitions and animations.
 ```
 
 ---
@@ -47,20 +47,20 @@ This repository contains the source code for the BetterDiscord installer. This i
 ## Building
 
 ### 1: Clone the repository.
-```
+```console
 git clone https://github.com/BetterDiscord/installer | cd installer
 ```
 This will create a local copy of this repostory and navigate you to the root folder of the repository.
 
 ### 2: Install Dependencies
 Run this command at the root folder to install dependencies:
-```
+```console
 npm i
 ```
 
 ### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
-```
+```console
 npm run dev
 ```
 
@@ -68,7 +68,7 @@ npm run dev
 
 ### Linting
 This project uses [ESLint](https://eslint.org/). Run this command to lint your changes:
-```
+```console
 npm run lint
 ```
 

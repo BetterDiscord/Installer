@@ -2,11 +2,11 @@
     import Header from "../common/Header.svelte";
     import page from "../transitions/page.js";
     import Checkbox from "../common/Checkbox.svelte";
-    import {canGoBack, canGoForward, nextPage, hasLoaded} from "../stores/navigation";
-    import {hasAgreed} from "../stores/installation";
     import TextDisplay from "../common/TextDisplay.svelte";
     import fs from "fs";
     import path from "path";
+    import {canGoBack, canGoForward, nextPage, hasLoaded} from "../stores/navigation";
+    import {hasAgreed} from "../stores/installation";
     import {onMount} from "svelte";
 
     onMount(() => {
