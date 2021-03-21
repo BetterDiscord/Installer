@@ -1,5 +1,4 @@
 <script>
-
 </script>
 
 <div class="spinner">
@@ -40,7 +39,7 @@
     }
 
     .spinner .spinner-ring {
-        stroke: var(--bg3);
+        stroke: var(--bg2-alt);
     }
 
     .spinner .spinner-fill {

@@ -1,14 +1,14 @@
 <script>
     import page from "../transitions/page.js";
-    import {onDestroy} from "svelte";
     import Header from "../common/Header.svelte";
     import Progress from "../common/Progress.svelte";
     import TextDisplay from "../common/TextDisplay.svelte";
-    import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
-    import {action, paths, progress, platforms, status} from "../stores/installation";
     import logs from "../stores/logs";
     import install from "../actions/install";
     import debug from "../actions/debug";
+    import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
+    import {action, paths, progress, platforms, status} from "../stores/installation";
+    import {onDestroy} from "svelte";
 
     canGoForward.set(false);
     canGoBack.set(false);
