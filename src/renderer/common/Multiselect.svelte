@@ -3,7 +3,6 @@
     import {createEventDispatcher} from "svelte";
     
     export let value;
-    export let title = "Unknown";
     export let description;
     export let disabled = false;
     export let checked = false;
@@ -21,7 +20,9 @@
             <slot name="icon" />
         </div>
         <div class="content">
-            <h5>{title}</h5>
+            <h5>
+                <slot>Unknown</slot>
+            </h5>
             <span title={description}>{description}</span>
         </div>
         <div class="button">

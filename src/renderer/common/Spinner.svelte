@@ -39,7 +39,7 @@
     }
 
     .spinner .spinner-ring {
-        stroke: var(--bg2-alt);
+        stroke: var(--bg3);
     }
 
     .spinner .spinner-fill {
