@@ -49,8 +49,9 @@
     </PageHeader>
 
     {#each Object.entries(platformLabels) as [channel, label]}
-        <Multiselect title={label} description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
+        <Multiselect description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
             <img src="images/{channel}.png" slot="icon" alt="Platform Icon" />
+            {label}
         </Multiselect>
     {/each}
 </section>
