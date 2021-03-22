@@ -1,6 +1,6 @@
 <script>
-    import Spinner from "./Spinner.svelte";
     import Button from "./Button.svelte";
+    import LoadingPage from "../pages/Loading.svelte";
     import {beforeUpdate, afterUpdate} from "svelte";
     import {fade} from "svelte/transition";
     export let value;
@@ -55,7 +55,7 @@
         {/if}
     </div>
 {:else}
-    <Spinner />
+    <LoadingPage />
 {/if}
 
 <style>
