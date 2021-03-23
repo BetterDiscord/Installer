@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img alt="Preview" width="524" src="https://i.imgur.com/OV4yQJG.png">
+  <img alt="Preview" width="524" alt="Hero image" src="https://i.imgur.com/OV4yQJG.png">
 <p align="center">
 
 <p align="center">A simple standalone program which automates the installation, removal and maintenance of <a href="https://github.com/BetterDiscord/BetterDiscord">BetterDiscord</a>.</p>
@@ -16,7 +16,18 @@
 
 # Overview
 
-This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/). Downloads can be found [here](https://github.com/BetterDiscord/Installer/releases/latest).
+This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/).
+
+## Downloads
+
+These will link you to the latest builds found in the [releases](https://github.com/BetterDiscord/installer/releases/) tab of this repository.
+
+> todo:
+
+| [Windows (7+)](https://github.com/BetterDiscord/installer)  | [macOS (10.10+)](https://github.com/BetterDiscord/installer) | [Linux](https://github.com/BetterDiscord/installer) |
+| ------------- | ------------- | ------------- |
+
+
 
 ## Codebase
 
