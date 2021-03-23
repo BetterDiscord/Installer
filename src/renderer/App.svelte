@@ -122,6 +122,9 @@
         width: 100%;
         height: 100%;
         background-image: url('images/background.png');
+        background-size: 60px;
+        background-repeat: repeat;
+        background-position: center;
         z-index: -1;
         opacity: 0.35;
         pointer-events: none;

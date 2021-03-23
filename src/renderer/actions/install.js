@@ -34,6 +34,7 @@ const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
 const bdThemesFolder = path.join(bdFolder, "themes");
+
 async function makeDirectories() {
     const folders = [bdFolder, bdDataFolder, bdThemesFolder, bdPluginsFolder];
     for (const folder of folders) {
