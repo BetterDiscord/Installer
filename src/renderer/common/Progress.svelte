@@ -27,10 +27,10 @@
     }
 
     :global(.error .bar) {
-        background-color: #d13d3d;
+        background-color: #c13a3a;
     }
 
     :global(.success .bar) {
-        background-color: #43B581;
+        background-color: #3ac172;
     }
 </style>

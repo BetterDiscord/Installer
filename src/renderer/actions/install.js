@@ -52,8 +52,7 @@ async function makeDirectories() {
             return;
         }
     }
-
-    addProgress(25);
+    progress.set(25);
 }
 
 const downloadUrl = `https://bd.zerebos.com/betterdiscord.asar`;
@@ -76,9 +75,12 @@ async function restartDiscord() {
 
 
 export default async function(discordPaths) {
+    progress.set(0);
+
     log("Starting installation...");
     log("");
     log("Locating Discord paths...");
+
     if (!discordPaths || !discordPaths.length) {
         log("❌ Failed to locate required directories.");
         failInstallation();
@@ -101,7 +103,7 @@ export default async function(discordPaths) {
     try {
         await downloadAsar();
         log("✅ Package downloaded");
-        addProgress(25);
+        progress.set(50);
     }
     catch (err) {
         log(`❌ Failed to download package - ${err.message}`);
