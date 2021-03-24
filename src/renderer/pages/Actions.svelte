@@ -3,7 +3,7 @@
     import PageHeader from "../common/PageHeader.svelte";
     import Radio from "../common/Radio.svelte";
     import RadioGroup from "../common/RadioGroup.svelte";
-    import {canGoBack, canGoForward, nextPage} from "../stores/controls";
+    import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {radioSelectedIndex} from "../stores/controls";
     import {action} from "../stores/installation";
 
