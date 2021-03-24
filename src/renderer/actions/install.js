@@ -30,6 +30,7 @@ function failInstallation() {
     status.set("error");
 }
 
+const wait = time => new Promise(res => setTimeout(res, time));
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
@@ -81,6 +82,8 @@ export default async function(discordPaths) {
     log("");
     log("Locating Discord paths...");
 
+    await wait(500);
+
     if (!discordPaths || !discordPaths.length) {
         log("❌ Failed to locate required directories.");
         failInstallation();
@@ -123,6 +126,7 @@ export default async function(discordPaths) {
             fs.writeFileSync(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
             fs.writeFileSync(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
             log("✅ Injection successful");
+            progress.set(75);
         }
         catch (err) {
             log(`❌ Injection Error - ${err.message}`);

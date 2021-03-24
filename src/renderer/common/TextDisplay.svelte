@@ -37,10 +37,9 @@
     }
 
     $: if (autoscroll && scroller && scrollEventCount < 2) {
-        try {
-            setImmediate(() => scroller.scrollTop = scroller.scrollHeight);
-        }
-        catch(e) {}
+        setImmediate(() => {
+            if (scroller.scrollHeight) scroller.scrollTop = scroller.scrollHeight;
+        });
     }
 </script>
 
