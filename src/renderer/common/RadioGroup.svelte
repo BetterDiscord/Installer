@@ -4,7 +4,7 @@
 
 <div style="--index: {index};" class="radio-group">
     <slot />
-    <div class="selected-indicator"></div>
+    <div class="selection-indicator"></div>
 </div>
 
 <style>
@@ -14,7 +14,7 @@
         flex-direction: column;
     }
 
-    .selected-indicator {
+    .selection-indicator {
         position: absolute;
         top: 0;
         left: 0;
