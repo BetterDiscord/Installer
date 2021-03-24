@@ -100,6 +100,6 @@ npm run lint
 
 # Contributors
 
-| <a href="https://github.com/rauenzi" target="_blank"> <img src="https://avatars.githubusercontent.com/u/6865942?s=460&u=4645ddecc8f441ff2af33d18dffd1d2f6b46ecd5&v=4" alt="Github avatar" width="96px" height="96px"> </a> | <a href="https://github.com/Tropix126" target="_blank"> <img src="https://avatars1.githubusercontent.com/u/42101043?s=460&u=f44f07cf7122e1ba61a9e9e8ca83d133c741d011&v=4" alt="Github avatar" width="96px" height="96px"> </a> |
-|:-:|:-:|
-| rauenzi | Tropix126 |
+<a href="https://github.com/betterdiscord/installer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=betterdiscord/installer" />
+</a>
