@@ -1,11 +1,14 @@
-<script>  
+<script>
+    import {toggleCheck} from "../stores/controls.js";
     export let group;
     export let value;
+
+    let checkbox;
 </script>
 
 <label class="radio-container">
-    <input type="radio" hidden bind:group on:change {value}>
-    <div class="radio-item">
+    <input bind:this={checkbox} type="radio" hidden bind:group on:change {value}>
+    <div on:keypress={() => toggleCheck(checkbox)} tabindex="0" class="radio-item">
         <div>
             <slot name="icon"></slot>
             <slot></slot>
@@ -56,5 +59,6 @@
 
     .radio-container input:checked + .radio-item {
         color: #fff;
+        transition: none;
     }
 </style>

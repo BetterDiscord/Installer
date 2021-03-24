@@ -18,7 +18,9 @@ function createMainWindow() {
         maximizable: false,
         backgroundColor: "#0c0d10",
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
         }
     });
 

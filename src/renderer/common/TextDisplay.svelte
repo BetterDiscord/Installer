@@ -45,13 +45,13 @@
 
 {#if value}
     <div on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
-        <div on:scroll={() => {if (autoscroll) {scrollEventCount++;} copyButtonVisible = false;}} bind:this={scroller} class="display-inner">{value}</div>
+        <div on:scroll={() => {if (autoscroll) scrollEventCount++; if (!copyButtonActive) copyButtonVisible = false;}} bind:this={scroller} class="display-inner">{value}</div>
         {#if copyButtonVisible}
             <div transition:fade={{duration: 100}} bind:this={copyInputContainer} class="copy-input">
                 {#if copyButtonActive}
-                    <Button type="primary" on:click={copyDisplayContents}>Copied!</Button>
+                    <Button tabindex="0" type="primary" on:click={copyDisplayContents}>Copied!</Button>
                 {:else}
-                    <Button type="secondary" on:click={copyDisplayContents}>Copy</Button>
+                    <Button tabindex="0" type="secondary" on:click={copyDisplayContents}>Copy</Button>
                 {/if}
             </div>
         {/if}
@@ -62,9 +62,12 @@
 
 <style>
     :global(.text-display .copy-input .btn[class]) {
-        background-color: var(--bg4);
         border: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    :global(.text-display .copy-input .btn[class].secondary) {
+        background-color: var(--bg4);
     }
 
     :global(.text-display .copy-input .btn[class]:hover) {

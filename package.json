@@ -14,10 +14,12 @@
   },
   "dependencies": {
     "bent": "^7.3.12",
+    "node-forge": "^0.10.0",
+    "serialize-javascript": "^5.0.1",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "electron": "9.4.0",
+    "electron": "^12.0.2",
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",

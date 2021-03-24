@@ -1,5 +1,6 @@
 <script>
     import Button from "./Button.svelte";
+    import {toggleCheck} from "../stores/controls.js";
     import {createEventDispatcher} from "svelte";
     
     export let value;
@@ -7,15 +8,18 @@
     export let disabled = false;
     export let checked = false;
 
+    let checkbox;
+
     const dispatch = createEventDispatcher();
     function click() {
         dispatch("click", value);
     }
+
 </script>
 
 <label class="check-container">
-    <input type="checkbox" hidden {disabled} {checked} on:change {value}>
-    <div class="check-item" class:disabled>
+    <input bind:this={checkbox} type="checkbox" hidden {disabled} {checked} on:change {value}>
+    <div on:keypress={() => toggleCheck(checkbox)} tabindex="0" class="check-item" class:disabled>
         <div class="icon">
             <slot name="icon" />
         </div>
@@ -25,7 +29,7 @@
             </h5>
             <span title={description}>{description}</span>
         </div>
-        <div class="button">
+        <div class="button" on:keypress={e => e.stopPropagation()}>
             <Button type="secondary" on:click={click}>Browse</Button>
         </div>
     </div>

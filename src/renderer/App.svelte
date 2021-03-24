@@ -23,6 +23,10 @@
 <style>
     @import url('https://rsms.me/inter/inter.css');
 
+    :global(:focus-visible) {
+        box-shadow: 0 0 0 4px var(--accent-focus-ring) !important;
+    }
+
     :root {
         --bg1: #040405;
         --bg2: #0c0d10;
@@ -35,6 +39,7 @@
         --text-muted: #95989d;
         --accent: #3a71c1;
         --accent-hover: #2f5b9d;
+        --accent-focus-ring: rgba(58, 113, 193, .4);
     }
 
     :global(html),
@@ -134,7 +139,7 @@
 
     :global(.page) {
         flex: 1 1 auto;
-        overflow: auto;
+        overflow: visible;
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -144,7 +149,7 @@
 
     .sections {
         flex: 1 1 auto;
-        overflow: hidden;
+        overflow: visible;
         position: relative;
     }
 </style>

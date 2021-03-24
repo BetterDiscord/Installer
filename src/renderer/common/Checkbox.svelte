@@ -1,12 +1,16 @@
 <script>
+    import {toggleCheck} from "../stores/controls.js";
+
     export let label;
     export let checked = false;
     export let disabled = false;
+
+    let checkbox;
 </script>
 
-<div class="checkbox">
+<div class="checkbox" on:keypress={() => toggleCheck(checkbox)}>
     <label>
-        <input type="checkbox" {disabled} bind:checked on:change>
+        <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change>
         {#if label}
             <span>{label}</span>
         {/if}

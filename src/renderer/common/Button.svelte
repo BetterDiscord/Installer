@@ -3,7 +3,7 @@
     export let disabled = false;
 </script>
 
-<button {disabled} on:click|preventDefault|stopPropagation class="btn {(type == "primary" || type == "secondary") ? type : "secondary"}">
+<button type="button"{disabled} on:keypress on:click|preventDefault|stopPropagation class="btn {(type == "primary" || type == "secondary") ? type : "secondary"}">
     <span>
         <slot></slot>
     </span>
