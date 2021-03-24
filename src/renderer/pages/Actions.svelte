@@ -4,7 +4,7 @@
     import Radio from "../common/Radio.svelte";
     import RadioGroup from "../common/RadioGroup.svelte";
     import {canGoBack, canGoForward, nextPage} from "../stores/controls";
-    import {radioSelectedIndex} from "../stores/radio";
+    import {radioSelectedIndex} from "../stores/controls";
     import {action} from "../stores/installation";
 
     let group = $action;
