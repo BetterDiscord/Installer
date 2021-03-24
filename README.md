@@ -10,11 +10,8 @@
   <img alt="Preview" width="524" alt="Hero image" src="https://i.imgur.com/OV4yQJG.png"/>
   <br/>
   A simple standalone program which automates the installation, removal and maintenance of <a href="https://github.com/BetterDiscord/BetterDiscord">BetterDiscord</a>.
-<p align="center">
-  
-<br/>
-
-<p align="center">
+  <br/>
+  <br/>
   <a href="https://discord.gg/0Tmfo5ZbORCRqbAd" target="_blank">
     <img src="https://img.shields.io/discord/86004744966914048?labelColor=0c0d10&color=3a71c1&style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE2LjUzNTMgNS40NTA1M0MzMy44MjMzIC0xLjQ2ODA5IDUwLjg4MTUgMTYuODg2MyA0MS41OTI1IDMzLjYwNjZDMzcuMzczMiA0MS4yMDEyIDI2Ljg5MDQgNDcuMzE3IDE0LjY4NDIgNDEuNTMyNkw2LjE5OTkgNDMuOTU2N0M0Ljg4MzQ2IDQ0LjMzMjggMy42NjY5MyA0My4xMjEyIDQuMDM2MzQgNDEuODAzN0M0LjU0MjcyIDM5Ljk5NzYgNS43NDI1NyAzNS43Mzk4IDYuNDQ0MSAzMy40MzIzQzEuMTgyNzkgMjQuMDQ0IDQuNzMwNSAxMC4xNzQ4IDE2LjUzNTMgNS40NTA1M1pNMTUuOTk1NCAyMC4yNDk2QzE1Ljk5NTQgMjAuOTM5OSAxNi41NTUgMjEuNDk5NiAxNy4yNDU0IDIxLjQ5OTZIMzAuNzQ5OEMzMS40NDAxIDIxLjQ5OTYgMzEuOTk5OCAyMC45Mzk5IDMxLjk5OTggMjAuMjQ5NkMzMS45OTk4IDE5LjU1OTIgMzEuNDQwMSAxOC45OTk2IDMwLjc0OTggMTguOTk5NkgxNy4yNDU0QzE2LjU1NSAxOC45OTk2IDE1Ljk5NTQgMTkuNTU5MiAxNS45OTU0IDIwLjI0OTZaTTE3LjI0OTggMjYuNDc0NkMxNi41NTk0IDI2LjQ3NDYgMTUuOTk5OCAyNy4wMzQyIDE1Ljk5OTggMjcuNzI0NkMxNS45OTk4IDI4LjQxNDkgMTYuNTU5NCAyOC45NzQ2IDE3LjI0OTggMjguOTc0NkgyNi43NDk4QzI3LjQ0MDEgMjguOTc0NiAyNy45OTk4IDI4LjQxNDkgMjcuOTk5OCAyNy43MjQ2QzI3Ljk5OTggMjcuMDM0MiAyNy40NDAxIDI2LjQ3NDYgMjYuNzQ5OCAyNi40NzQ2SDE3LjI0OThaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=" alt="Chat"/>
   </a>
