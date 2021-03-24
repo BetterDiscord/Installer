@@ -6,8 +6,10 @@
 <label class="radio-container">
     <input type="radio" hidden bind:group on:change {value}>
     <div class="radio-item">
-        <slot name="icon"></slot>
-        <slot></slot>
+        <div>
+            <slot name="icon"></slot>
+            <slot></slot>
+        </div>
     </div>
 </label>
 
@@ -25,6 +27,13 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: 100ms ease;
+    }
+
+    .radio-item > div {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
     }
 
     .radio-container {
@@ -47,6 +56,5 @@
 
     .radio-container input:checked + .radio-item {
         color: #fff;
-        background-color: var(--accent);
     }
 </style>
