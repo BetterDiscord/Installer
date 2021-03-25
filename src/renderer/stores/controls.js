@@ -2,6 +2,8 @@ import {writable} from "svelte/store";
 
 export const radioSelectedIndex = writable(0);
 
+let i = 0;
+
 function checkItem(item) {
     if (item.checked == true) {
         item.checked = false;
@@ -19,10 +21,9 @@ export const handleKeyboardToggle = (checkbox) => {
     }
 };
 
-let i = 0;
-
-export const handleArrowKeys = (container) => {
+export const handleArrowKeys = (container) => {''
     container.focus();
+    if (container.hasAttribute('selected-index')) i = container.getAttribute('selected-index');
     if (event.key === "ArrowDown") {
         if (i < (container.children.length - 2)) {
             i++;
