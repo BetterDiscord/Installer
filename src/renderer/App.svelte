@@ -24,7 +24,7 @@
     @import url('https://rsms.me/inter/inter.css');
 
     :global(:focus-visible) {
-        box-shadow: 0 0 0 4px var(--accent-focus-ring) !important;
+        box-shadow: 0 0 0 4px var(--accent-faded) !important;
     }
 
     :root {
@@ -39,7 +39,7 @@
         --text-muted: #95989d;
         --accent: #3a71c1;
         --accent-hover: #2f5b9d;
-        --accent-focus-ring: rgba(58, 113, 193, .4);
+        --accent-faded: rgba(58, 113, 193, .4);
     }
 
     :global(html),
@@ -67,8 +67,8 @@
     }
 
     :global(::selection) {
-        background-color: var(--accent);
-        color: #fff;
+        background-color: var(--accent-faded);
+        color: var(--text-normal);
     }
 
     :global(::-webkit-scrollbar) {
