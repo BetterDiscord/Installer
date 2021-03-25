@@ -8,7 +8,7 @@ app.name = "BetterDiscord";
 let mainWindow; // global reference to mainWindow (necessary to prevent window from being garbage collected)
 
 function createMainWindow() {
-    const window = new BrowserWindow({  
+    const window = new BrowserWindow({
         title: "BetterDiscord Installer",
         frame: false,
         width: 550,
@@ -56,6 +56,13 @@ function createMainWindow() {
         e.preventDefault();
         require("electron").shell.openExternal(url);
     });  
+
+    window.on('click', e => {
+        console.log('hi');
+        if (e.key === "ArrowRight") {
+            goToNext();
+        }
+    });
 
     return window;
 }

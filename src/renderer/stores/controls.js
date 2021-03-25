@@ -1,15 +1,15 @@
 import {writable} from "svelte/store";
 
-export let radioSelectedIndex = writable(0);
+export const radioSelectedIndex = writable(0);
 export const toggleCheck = (checkbox) => {
-    if ((event.key === 'Enter' || event.key === ' ') && checkbox.disabled != true) {
-        console.log(checkbox.disabled);
+    if ((event.key === "Enter" || event.key === " ") && checkbox.disabled != true) {
         if (checkbox.checked == true) {
             checkbox.checked = false;
-        } else {
+        }
+        else {
             checkbox.checked = true;
         }
-        const changeEvent = new Event('change');
+        const changeEvent = new Event("change");
         checkbox.dispatchEvent(changeEvent);
     }
-}
+};

@@ -28,8 +28,19 @@
     else {
         nextButtonContent = "Next";
     }
+    
+    function navigatePage() {
+        if ((event.key === "ArrowRight" && event.ctrlKey) && $canGoForward) {
+            goToNext();
+        }
+        else if ((event.key === "ArrowLeft" && event.ctrlKey) && $canGoBack) {
+            goBack();
+        }
+    }
 
 </script>
+
+<svelte:window on:keydown={navigatePage} />
 
 <footer class="install-footer">
     <SocialLinks/>
