@@ -55,13 +55,6 @@ function createMainWindow() {
     window.webContents.on("new-window", (e, url) => {
         e.preventDefault();
         require("electron").shell.openExternal(url);
-    });  
-
-    window.on('click', e => {
-        console.log('hi');
-        if (e.key === "ArrowRight") {
-            goToNext();
-        }
     });
 
     return window;

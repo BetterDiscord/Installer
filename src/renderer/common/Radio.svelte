@@ -58,6 +58,5 @@
 
     .radio-container input:checked + .radio-item {
         color: #fff;
-        transition: none;
     }
 </style>

@@ -26,7 +26,8 @@ export const handleArrowKeys = (container) => {
     if (event.key === "ArrowDown") {
         if (i < (container.children.length - 2)) {
             i++;
-        } else {
+        }
+        else {
             i = 0;
         }
         checkItem(container.children[i].children[0]);
@@ -34,7 +35,8 @@ export const handleArrowKeys = (container) => {
     if (event.key === "ArrowUp") {
         if (i > 0) {
             i--;
-        } else {
+        }
+        else {
             i = container.children.length - 2;
         }
         checkItem(container.children[i].children[0]);
