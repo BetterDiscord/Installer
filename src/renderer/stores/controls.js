@@ -22,7 +22,6 @@ export const handleKeyboardToggle = (checkbox) => {
 let i = 0;
 
 export const handleArrowKeys = (container) => {
-    event.preventDefault();
     container.focus();
     if (event.key === "ArrowDown") {
         if (i < (container.children.length - 2)) {
