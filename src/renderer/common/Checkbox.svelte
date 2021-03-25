@@ -1,5 +1,5 @@
 <script>
-    import {toggleCheck} from "../stores/controls.js";
+    import {handleKeyboardToggle} from "../stores/controls.js";
 
     export let label;
     export let checked = false;
@@ -8,7 +8,7 @@
     let checkbox;
 </script>
 
-<div class="checkbox" on:keypress={() => toggleCheck(checkbox)}>
+<div class="checkbox" on:keypress={() => handleKeyboardToggle(checkbox)}>
     <label>
         <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change>
         {#if label}

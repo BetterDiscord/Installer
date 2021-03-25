@@ -1,5 +1,4 @@
 <script>
-    import {toggleCheck} from "../stores/controls.js";
     export let group;
     export let value;
 
@@ -8,7 +7,7 @@
 
 <label class="radio-container">
     <input bind:this={checkbox} type="radio" hidden bind:group on:change {value}>
-    <div on:keypress={() => toggleCheck(checkbox)} tabindex="0" class="radio-item">
+    <div tabindex="-1" class="radio-item">
         <div>
             <slot name="icon"></slot>
             <slot></slot>
@@ -43,7 +42,7 @@
         margin-bottom: 12px;
     }
 
-    .radio-container:last-child {
+    .radio-container:nth-last-child(2) {
         margin: 0;
     }
 

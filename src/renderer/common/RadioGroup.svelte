@@ -1,8 +1,11 @@
 <script>
+    import {handleArrowKeys} from "../stores/controls.js";
     export let index = 0;
+
+    let container;
 </script>
 
-<div style="--index: {index};" class="radio-group">
+<div on:keydown={() => handleArrowKeys(container)} bind:this={container} tabindex="0" style="--index: {index};" class="radio-group">
     <slot />
     <div class="selection-indicator"></div>
 </div>

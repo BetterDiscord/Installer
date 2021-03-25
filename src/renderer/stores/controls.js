@@ -1,15 +1,43 @@
 import {writable} from "svelte/store";
 
 export const radioSelectedIndex = writable(0);
-export const toggleCheck = (checkbox) => {
+
+function checkItem(item) {
+    if (item.checked == true) {
+        item.checked = false;
+    }
+    else {
+        item.checked = true;
+    }
+    const changeEvent = new Event("change");
+    item.dispatchEvent(changeEvent);
+}
+
+export const handleKeyboardToggle = (checkbox) => {
     if ((event.key === "Enter" || event.key === " ") && checkbox.disabled != true) {
-        if (checkbox.checked == true) {
-            checkbox.checked = false;
+        checkItem(checkbox);
+    }
+};
+
+let i = 0;
+
+export const handleArrowKeys = (container) => {
+    event.preventDefault();
+    container.focus();
+    if (event.key === "ArrowDown") {
+        if (i < (container.children.length - 2)) {
+            i++;
+        } else {
+            i = 0;
         }
-        else {
-            checkbox.checked = true;
+        checkItem(container.children[i].children[0]);
+    }
+    if (event.key === "ArrowUp") {
+        if (i > 0) {
+            i--;
+        } else {
+            i = container.children.length - 2;
         }
-        const changeEvent = new Event("change");
-        checkbox.dispatchEvent(changeEvent);
+        checkItem(container.children[i].children[0]);
     }
 };

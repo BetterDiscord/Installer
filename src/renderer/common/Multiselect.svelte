@@ -1,6 +1,6 @@
 <script>
     import Button from "./Button.svelte";
-    import {toggleCheck} from "../stores/controls.js";
+    import {handleKeyboardToggle} from "../stores/controls.js";
     import {createEventDispatcher} from "svelte";
     
     export let value;
@@ -19,7 +19,7 @@
 
 <label class="check-container">
     <input bind:this={checkbox} type="checkbox" hidden {disabled} {checked} on:change {value}>
-    <div on:keypress={() => toggleCheck(checkbox)} tabindex="0" class="check-item" class:disabled>
+    <div on:keypress={() => handleKeyboardToggle(checkbox)} tabindex="0" class="check-item" class:disabled>
         <div class="icon">
             <slot name="icon" />
         </div>
