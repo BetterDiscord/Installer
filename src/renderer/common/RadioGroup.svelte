@@ -15,6 +15,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
+        border-radius: 3px;
     }
 
     .selection-indicator {
