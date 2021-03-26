@@ -21,7 +21,7 @@ export const handleKeyboardToggle = (checkbox) => {
     }
 };
 
-export const handleArrowKeys = (container) => {''
+export const handleArrowKeys = (container) => {
     container.focus();
     if (container.hasAttribute('selected-index')) i = container.getAttribute('selected-index');
     if (event.key === "ArrowDown") {

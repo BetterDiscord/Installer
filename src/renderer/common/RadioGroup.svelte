@@ -16,6 +16,7 @@
         display: flex;
         flex-direction: column;
         border-radius: 3px;
+        transition: 150ms ease;
     }
 
     .selection-indicator {
