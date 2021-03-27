@@ -36,6 +36,13 @@ function fail() {
     status.set("error");
 }
 
+function succeed() {
+    log("");
+    log("Uninstall completed!");
+    setProgress(MAX_PROGRESS);
+    status.set("success");
+}
+
 async function exists(file) {
     try {
         await fsp.stat(file);
@@ -115,12 +122,11 @@ export default async function(config) {
 
     log("Starting uninstall...");
 
-    log("");
     if (!paths || !paths.length) {
+        log("");
         log("❌ Something went wrong internally.");
         return fail();
     }
-
 
     log("");
     log("Deleting shims...");
@@ -138,8 +144,5 @@ export default async function(config) {
     else log("✅ Discord restarted");
     setProgress(RESTART_DISCORD_PROGRESS);
 
-
-    log("Uninstall completed!");
-    setProgress(MAX_PROGRESS);
-    status.set("success");
+    succeed();
 };

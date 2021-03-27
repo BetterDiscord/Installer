@@ -7,7 +7,9 @@ import del from "del";
 import path from "path";
 import kill from "tree-kill";
 import findProcess from "find-process";
-import {replace} from "svelte-spa-router";
+import install from "./install.js";
+
+let installPaths = {}; // Temporary installation config for setting up instalaltion script
 
 const discordURL = "https://discord.gg/0Tmfo5ZbORCRqbAd";
 
@@ -37,6 +39,13 @@ function fail() {
     log("");
     log(`The repair seems to have failed. If this problem is recurring, join our discord community for support. ${discordURL}`);
     status.set("error");
+}
+
+function succeed() {
+    log("");
+    log("Repair completed!");
+    setProgress(MAX_PROGRESS);
+    status.set("success");
 }
 
 async function exists(file) {
@@ -137,9 +146,9 @@ async function killProcesses(channels) {
 
 function showKillNotice() {
     remote.dialog.showMessageBox({
-        type: "info",
+        type: "error",
         title: "Shutdown Discord",
-        message: "BetterDiscord could not shutdown Discord. Please make sure Discord is shut down, then run the installer again."
+        message: "BetterDiscord could not shut down Discord. Please make sure Discord is fully closed, then run the installer again."
     });
 }
 
@@ -153,17 +162,28 @@ function showKillNotice() {
 
 async function showInstallNotice() {
     const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
-        type: "info",
-        title: "Reinstall BetterDiscord",
-        message: "After repairing, you need to reinstall BetterDiscord. Do you want to reinstall now?",
+        type: "question",
+        title: "Reinstall BetterDiscord?",
+        message: "After repairing, you need to reinstall BetterDiscord. Would you like to do that now?",
         noLink: true,
         cancelId: 1,
         buttons: ["Yes", "No"]
     });
 
     if (confirmation.response === 0) {
-        action.set("install");
-        replace("/actions");
+        status.set("");
+        setProgress(0);
+        log("");
+        install(installPaths).then(() => {
+            remote.dialog.showMessageBox({
+                type: "info",
+                title: "Reinstall Complete",
+                message: "Please relaunch discord manually to finish the repair."
+            });
+            succeed();
+        });
+    } else {
+        succeed();
     }
 }
 
@@ -179,8 +199,8 @@ export default async function(config) {
 
     log("Starting Repair...");
 
-    log("");
     if (!paths || !paths.length) {
+        log("");
         log("❌ Something went wrong internally.");
         return fail();
     }
@@ -221,10 +241,7 @@ export default async function(config) {
     // log("✅ Shims injected");
     // setProgress(START_DISCORD_PROGRESS);
 
-
-    log("Repair completed!");
-    setProgress(MAX_PROGRESS);
-    status.set("success");
-
     showInstallNotice();
+
+    installPaths = config; // Pass our config to the installation script if user decides to reinstall
 };

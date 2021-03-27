@@ -37,6 +37,13 @@ function fail() {
     status.set("error");
 }
 
+function succeed() {
+    log("");
+    log("Installation completed!");
+    setProgress(MAX_PROGRESS);
+    status.set("success");
+}
+
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
@@ -199,7 +206,5 @@ export default async function(config) {
     setProgress(RESTART_DISCORD_PROGRESS);
 
 
-    log("Installation completed!");
-    setProgress(MAX_PROGRESS);
-    status.set("success");
+    succeed();
 };
