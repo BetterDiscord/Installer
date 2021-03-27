@@ -3,7 +3,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(html|svelte)$/,
-                use: 'svelte-loader'
+                use: "svelte-loader"
               }
         ]
     }

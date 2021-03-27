@@ -40,7 +40,7 @@
         try {
             setImmediate(() => scroller.scrollTop = scroller.scrollHeight);
         }
-        catch(e) {}
+        catch (e) {}
     }
 </script>
 
