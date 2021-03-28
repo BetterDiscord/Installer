@@ -10,6 +10,7 @@
 
     let copyInputContainer;
     let copyButtonActive = false;
+    let copyButtonVisible = false;
 
     // Copy button
     function copyDisplayContents() {
@@ -40,11 +41,11 @@
 </script>
 
 {#if value}
-    <article class="text-display{value ? "" : " loading"}" bind:this={element}>
-        <div bind:this={scroller} class="display-inner" tabindex="0">
+    <article on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
+        <div bind:this={scroller} on:scroll={() => copyButtonVisible = false} class="display-inner" tabindex="0">
             {value}
         </div>
-        <div bind:this={copyInputContainer} class="copy-input">
+        <div bind:this={copyInputContainer} class="copy-input {(copyButtonVisible) ? "visible" : ""}">
             {#if copyButtonActive}
                 <Button tabindex="0" type="primary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copied!</Button>
             {:else}
@@ -113,8 +114,8 @@
         opacity: 0;
     }
 
-    :global(.text-display:hover .copy-input .btn),
-    :global(.text-display.focus-visible .copy-input .btn),
+    :global(.copy-input.visible .btn),
+    :global(.display-inner.focus-visible + .copy-input .btn),
     :global(.copy-input .btn.focus-visible) {
         opacity: 1;
     }
