@@ -1,86 +1,64 @@
 <script>
     import Button from "./Button.svelte";
     import LoadingPage from "../pages/Loading.svelte";
-    import {beforeUpdate, afterUpdate} from "svelte";
-    import {fade} from "svelte/transition";
+    import {beforeUpdate, afterUpdate, onMount} from "svelte";
     export let value;
     export let element;
     export let autoscroll;
 
-    let scrollEventCount = 0;
-    let autoscrollEnabled;
     let scroller;
     
     let copyInputContainer;
     let copyButtonActive = false;
     let copyButtonVisible = false;
 
+    // Copy button
     function copyDisplayContents() {
+        copyButtonActive = true;
+        copyButtonVisible = true;
         const range = document.createRange();
         range.selectNode(element);
         window.getSelection().addRange(range);
         document.execCommand("Copy");
         document.getSelection().removeAllRanges();
-        copyButtonActive = true;
         setTimeout(() => {
             copyButtonActive = false;
+            copyButtonVisible = false;
         }, 500);
     }
 
-    if (autoscroll) {
-        beforeUpdate(() => {
-            autoscrollEnabled = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight);
-        });
-        afterUpdate(() => {
-            if (autoscrollEnabled) scroller.scrollTo(0, scroller.scrollHeight);
-        });
+    function handleCopyKeyboardToggle() {
+        if (event.key == 'Enter') copyDisplayContents();
     }
 
-    $: if (autoscroll && scroller && scrollEventCount < 2) {
-        setImmediate(() => {
-            if (scroller.scrollHeight) scroller.scrollTop = scroller.scrollHeight;
-        });
-    }
+    // Autoscroll
+    beforeUpdate(() => {
+        autoscroll = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight - 20);
+    });
+
+    afterUpdate(() => {
+        if (autoscroll) scroller.scrollTo(0, scroller.scrollHeight);
+    });
 </script>
 
 {#if value}
-    <div on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
-        <div on:scroll={() => {if (autoscroll) scrollEventCount++; if (!copyButtonActive) copyButtonVisible = false;}} bind:this={scroller} class="display-inner">{value}</div>
-        {#if copyButtonVisible}
-            <div transition:fade={{duration: 100}} bind:this={copyInputContainer} class="copy-input">
-                {#if copyButtonActive}
-                    <Button tabindex="0" type="primary" on:click={copyDisplayContents}>Copied!</Button>
-                {:else}
-                    <Button tabindex="0" type="secondary" on:click={copyDisplayContents}>Copy</Button>
-                {/if}
-            </div>
-        {/if}
-    </div>
+    <article class="text-display{value ? "" : " loading"}" bind:this={element}>
+        <div bind:this={scroller} class="display-inner" tabindex="0">
+            {value}
+        </div>
+        <div bind:this={copyInputContainer} class="copy-input {(copyButtonVisible) ? "visible" : ""}">
+            {#if copyButtonActive}
+                <Button tabindex="0" type="primary" on:keypress={handleCopyKeyboardToggle} on:click={copyDisplayContents}>Copied!</Button>
+            {:else}
+                <Button tabindex="0" type="secondary" on:keypress={handleCopyKeyboardToggle} on:click={copyDisplayContents}>Copy</Button>
+            {/if}
+        </div>
+    </article>
 {:else}
     <LoadingPage />
 {/if}
 
 <style>
-    :global(.text-display .copy-input .btn[class]) {
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    :global(.text-display .copy-input .btn[class].secondary) {
-        background-color: var(--bg4);
-    }
-
-    :global(.text-display .copy-input .btn[class]:hover) {
-        color: var(--text-light);
-    }
-    
-    .copy-input {
-        transition: 150ms ease;
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-    }
-
     .text-display {
         position: relative;
         display: flex;
@@ -103,11 +81,41 @@
         width: 100%;
         overflow: auto;
         padding: 12px;
+        border-radius: inherit;
     }
 
     .text-display.loading {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Copy Button */
+
+    .copy-input {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+    }
+
+    :global(.copy-input .btn) {
+        opacity: 0;
+        border: none !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    :global(.copy-input .btn.secondary) {
+        background-color: var(--bg4) !important;
+    }
+
+    :global(.copy-input .btn:hover) {
+        color: var(--text-light) !important;
+    }
+
+    :global(.copy-input .btn.visible)
+    :global(.text-display:hover .copy-input .btn),
+    :global(.text-display:focus .copy-input .btn),
+    :global(.copy-input .btn:focus-within) {
+        opacity: 1;
     }
 </style>
