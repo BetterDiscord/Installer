@@ -1,13 +1,13 @@
 <script>
     import Button from "./Button.svelte";
     import LoadingPage from "../pages/Loading.svelte";
-    import {beforeUpdate, afterUpdate, onMount} from "svelte";
+    import {beforeUpdate, afterUpdate} from "svelte";
     export let value;
     export let element;
     export let autoscroll;
 
     let scroller;
-    
+
     let copyInputContainer;
     let copyButtonActive = false;
 
@@ -29,12 +29,13 @@
     }
 
     // Autoscroll
+
     beforeUpdate(() => {
         autoscroll = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight - 20);
     });
 
     afterUpdate(() => {
-        if (autoscroll) scroller.scrollTo(0, scroller.scrollHeight);
+        if (scroller && autoscroll) scroller.scrollTo(0, scroller.scrollHeight);
     });
 </script>
 

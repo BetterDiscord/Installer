@@ -2,6 +2,7 @@
     import page from "../transitions/page.js";
     import PageHeader from "../common/PageHeader.svelte";
     import Multiselect from "../common/Multiselect.svelte";
+    import getStatic from "../getstatic";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {action, platforms, paths} from "../stores/installation";
     import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
@@ -50,7 +51,7 @@
 
     {#each Object.entries(platformLabels) as [channel, label]}
         <Multiselect description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
-            <img src="images/{channel}.png" slot="icon" alt="Platform Icon" />
+            <img src={getStatic(`images/${channel}.png`)} slot="icon" alt="Platform Icon" />
             {label}
         </Multiselect>
     {/each}
