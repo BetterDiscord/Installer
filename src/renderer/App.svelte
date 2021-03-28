@@ -4,6 +4,7 @@
     import Footer from "./common/Footer.svelte";
     import Router from "svelte-spa-router";
     import routes from "./routes";
+    require("focus-visible");
 </script>
 
 <div class="main-window platform-{process.platform}">
@@ -23,7 +24,7 @@
 <style>
     @import url('https://rsms.me/inter/inter.css');
 
-    :global(:focus-visible) {
+    :global(.focus-visible) {
         box-shadow: 0 0 0 4px var(--accent-faded) !important;
     }
 

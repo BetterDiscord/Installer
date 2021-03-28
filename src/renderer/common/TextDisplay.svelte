@@ -113,8 +113,8 @@
     }
 
     :global(.text-display:hover .copy-input .btn),
-    :global(.text-display:focus .copy-input .btn),
-    :global(.copy-input .btn:focus-within) {
+    :global(.text-display.focus-visible .copy-input .btn),
+    :global(.copy-input .btn.focus-visible) {
         opacity: 1;
     }
 </style>
