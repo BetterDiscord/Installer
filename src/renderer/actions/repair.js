@@ -70,7 +70,7 @@ async function showInstallNotice(config) {
 
     await reset();
     await install(config);
-    remote.dialog.showMessageBox({
+    remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "info",
         title: "Reinstall Complete",
         message: "Please relaunch discord manually to finish the repair."
