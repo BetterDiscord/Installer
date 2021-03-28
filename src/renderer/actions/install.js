@@ -75,9 +75,14 @@ async function injectShims(paths) {
         const pkgFile = path.join(appPath, "package.json");
         const indexFile = path.join(appPath, "index.js");
         try {
-            if (!(await exists(appPath))) await fs.mkdir(appPath);
-            await fs.writeFile(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
-            await fs.writeFile(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
+            if (process.platform === "win32" || process.platform === "darwin") {
+                if (!(await exists(appPath))) await fs.mkdir(appPath);
+                await fs.writeFile(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
+                await fs.writeFile(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
+            }
+            else {
+                await fs.writeFile(path.join(discordPath, "index.js"), `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");\nmodule.exports = require("./core.asar");`);
+            }
             log("✅ Injection successful");
             progress.set(progress.value + progressPerLoop);
         }

@@ -1,7 +1,8 @@
-import {progress} from "../stores/installation";
+import {promises as fs} from "fs";
 import del from "del";
 import path from "path";
 
+import {progress} from "../stores/installation";
 
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -22,8 +23,14 @@ async function deleteShims(paths) {
     for (const discordPath of paths) {
         log("Removing " + discordPath);
         const appPath = path.join(discordPath, "app");
+        const indexFile = path.join(discordPath, "index.js");
         try {
-            if (await exists(appPath)) await del(appPath, {force: true});
+            if (process.platform === "win32" || process.platform === "darwin") {
+                if (await exists(appPath)) await del(appPath, {force: true});
+            }
+            else {
+                if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
+            }
             log("✅ Deletion successful");
             progress.set(progress.value + progressPerLoop);
         }
