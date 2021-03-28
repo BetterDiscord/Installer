@@ -121,7 +121,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('images/background.png');
+        background-image: var(--background);
         background-size: 60px;
         background-repeat: repeat;
         background-position: center;
