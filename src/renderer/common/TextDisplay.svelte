@@ -10,12 +10,10 @@
     
     let copyInputContainer;
     let copyButtonActive = false;
-    let copyButtonVisible = false;
 
     // Copy button
     function copyDisplayContents() {
         copyButtonActive = true;
-        copyButtonVisible = true;
         const range = document.createRange();
         range.selectNode(element);
         window.getSelection().addRange(range);
@@ -23,12 +21,11 @@
         document.getSelection().removeAllRanges();
         setTimeout(() => {
             copyButtonActive = false;
-            copyButtonVisible = false;
         }, 500);
     }
 
-    function handleCopyKeyboardToggle() {
-        if (event.key == 'Enter') copyDisplayContents();
+    function handleKeyboardCopyToggle() {
+        if (event.key === "Enter" || event.key === " ") copyDisplayContents();
     }
 
     // Autoscroll
@@ -46,11 +43,11 @@
         <div bind:this={scroller} class="display-inner" tabindex="0">
             {value}
         </div>
-        <div bind:this={copyInputContainer} class="copy-input {(copyButtonVisible) ? "visible" : ""}">
+        <div bind:this={copyInputContainer} class="copy-input">
             {#if copyButtonActive}
-                <Button tabindex="0" type="primary" on:keypress={handleCopyKeyboardToggle} on:click={copyDisplayContents}>Copied!</Button>
+                <Button tabindex="0" type="primary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copied!</Button>
             {:else}
-                <Button tabindex="0" type="secondary" on:keypress={handleCopyKeyboardToggle} on:click={copyDisplayContents}>Copy</Button>
+                <Button tabindex="0" type="secondary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copy</Button>
             {/if}
         </div>
     </article>
@@ -99,7 +96,6 @@
     }
 
     :global(.copy-input .btn) {
-        opacity: 0;
         border: none !important;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
@@ -112,7 +108,10 @@
         color: var(--text-light) !important;
     }
 
-    :global(.copy-input .btn.visible)
+    :global(.copy-input .btn:not(.primary)) {
+        opacity: 0;
+    }
+
     :global(.text-display:hover .copy-input .btn),
     :global(.text-display:focus .copy-input .btn),
     :global(.copy-input .btn:focus-within) {
