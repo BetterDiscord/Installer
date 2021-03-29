@@ -1,8 +1,8 @@
 {
   "name": "betterdiscord",
   "productName": "BetterDiscord",
-  "description": "test",
-  "author": "Zerebos",
+  "description": "Installer for BetterDiscord.",
+  "author": "BetterDiscord",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -13,16 +13,17 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "bent": "^7.3.12",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "del": "^6.0.0",
     "electron": "9.4.0",
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
     "eslint-plugin-svelte3": "^3.1.2",
     "find-process": "^1.4.4",
+    "phin": "^3.5.1",
     "svelte": "^3.35.0",
     "svelte-loader": "^3.0.0",
     "svelte-spa-router": "^3.1.0",
@@ -32,11 +33,32 @@
   "build": {
     "appId": "app.betterdiscord.installer",
     "productName": "BetterDiscord",
-    "mac": {
-      "category": "your.app.category.type"
-    },
+    "copyright": "Copyright © 2021 BetterDiscord",
+    "afterAllArtifactBuild": "scripts/fixmac.js",
     "win": {
-      "target": "portable"
+      "icon": "assets/icon.ico",
+      "target": {
+        "target": "portable",
+        "arch": ["ia32"]
+      }
+    },
+    "mac": {
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.social-networking",
+      "target": {
+        "target": "zip",
+        "arch": ["x64"]
+      }
+    },
+    "linux": {
+      "category": "Utility",
+      "target": {
+        "target": "AppImage",
+        "arch": ["x64"]
+      }
+    },
+    "appImage": {
+      "license": "assets/license.txt"
     }
   },
   "electronWebpack": {
