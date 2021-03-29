@@ -1,4 +1,3 @@
-
 import {progress, status} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
@@ -70,7 +69,7 @@ async function showInstallNotice(config) {
 
     await reset();
     await install(config);
-    remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
+    remote.dialog.showMessageBox({
         type: "info",
         title: "Reinstall Complete",
         message: "Please relaunch discord manually to finish the repair."

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+import {remote} from "electron";
 
 export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
 export const locations = {stable: "", ptb: "", canary: ""};
@@ -17,7 +18,11 @@ const getDiscordPath = function(releaseChannel) {
         resourcePath = path.join("/Applications", `${releaseChannel}.app`, "Contents", "Resources");
     }
     else {
-        resourcePath = path.join("/usr", "share", releaseChannel.toLowerCase().replace(/ /g, "-"), "resources");
+        const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
+        if (!fs.existsSync(basedir)) return "";
+        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
+        if (!version) return "";
+        resourcePath = path.join(basedir, version, "modules", "discord_desktop_core");
     }
 
     if (fs.existsSync(resourcePath)) return resourcePath;
@@ -31,7 +36,7 @@ for (const channel in platforms) {
 export const getBrowsePath = function(channel) {
     if (process.platform === "win32") return path.join(process.env.LOCALAPPDATA, platforms[channel].replace(" ", ""));
     else if (process.platform === "darwin") return path.join("/Applications", `${platforms[channel]}.app`);
-    return path.join("/usr", "share", platforms[channel].toLowerCase().replace(" ", "-"));
+    return path.join(remote.app.getPath("userData"), "..", platforms[channel].toLowerCase().replace(" ", ""));
 };
 
 export const validatePath = function(channel, proposedPath) {
@@ -76,14 +81,24 @@ const validateMac = function(channel, proposedPath) {
 };
 
 const validateLinux = function(channel, proposedPath) {
-    const channelName = platforms[channel].toLowerCase().replace(" ", "-");
+    if (proposedPath.includes("/snap/")) {
+        remote.dialog.showErrorBox("BetterDiscord Incompatible", "BetterDiscord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
+        return "";
+    }
+    const channelName = platforms[channel].toLowerCase().replace(" ", "");
 
     let resourcePath = "";
     const selected = path.basename(proposedPath);
-    if (selected === channelName) resourcePath = path.join(proposedPath, "resources");
-    if (selected === "resources") resourcePath = proposedPath;
+    if (selected === channelName) {
+        const version = fs.readdirSync(proposedPath).filter(f => fs.lstatSync(path.join(proposedPath, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
+        if (!version) return "";
+        resourcePath = path.join(proposedPath, version, "modules", "discord_desktop_core");
+    }
+    if (selected.split(".").length > 2) resourcePath = path.join(proposedPath, "modules", "discord_desktop_core");
+    if (selected === "modules") resourcePath = path.join(proposedPath, "discord_desktop_core");
+    if (selected === "discord_desktop_core") resourcePath = proposedPath;
 
-    const executablePath = path.join(resourcePath, "..", "MacOS", platforms[channel]);
-    if (fs.existsSync(executablePath)) return resourcePath;
+    const asarPath = path.join(resourcePath, "core.asar");
+    if (fs.existsSync(asarPath)) return resourcePath;
     return "";
 };

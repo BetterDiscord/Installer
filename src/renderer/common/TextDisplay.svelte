@@ -30,7 +30,6 @@
     }
 
     // Autoscroll
-
     beforeUpdate(() => {
         autoscroll = scroller && (scroller.offsetHeight + scroller.scrollTop) > (scroller.scrollHeight - 20);
     });

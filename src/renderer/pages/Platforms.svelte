@@ -7,6 +7,7 @@
     import {action, platforms, paths} from "../stores/installation";
     import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
     import {remote} from "electron";
+    import getStatic from "../getstatic";
 
     if (Object.values($platforms).some(r => r)) canGoForward.set(true);
     else canGoForward.set(false);
