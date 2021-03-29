@@ -8,4 +8,4 @@ export default function getStatic(val) {
       return url.resolve(window.location.origin, val);
     }
     return path.resolve(__static, val);
-} 
+}

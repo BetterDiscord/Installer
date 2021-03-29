@@ -2,7 +2,6 @@
     import page from "../transitions/page.js";
     import PageHeader from "../common/PageHeader.svelte";
     import Multiselect from "../common/Multiselect.svelte";
-    import getStatic from "../getstatic";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {action, platforms, paths} from "../stores/installation";
     import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
