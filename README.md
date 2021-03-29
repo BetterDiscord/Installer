@@ -33,9 +33,7 @@ This repository contains the source code for the BetterDiscord installer. This i
 
 These will link you to the latest builds found in the [releases](https://github.com/BetterDiscord/installer/releases/) tab of this repository.
 
-> todo:
-
-| [Windows (7+)](https://github.com/BetterDiscord/installer)  | [macOS (10.10+)](https://github.com/BetterDiscord/installer) | [Linux](https://github.com/BetterDiscord/installer) |
+| [Windows (7+)](https://github.com/BetterDiscord/Installer/releases/download/latest/BetterDiscord-Windows.exe)  | [macOS (10.10+)](https://github.com/BetterDiscord/Installer/releases/download/latest/BetterDiscord-Mac.zip) | [Linux](https://github.com/BetterDiscord/Installer/releases/download/latest/BetterDiscord-Linux.AppImage) |
 | ------------- | ------------- | ------------- |
 
 
@@ -83,7 +81,7 @@ npm i
 ### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```ps
-npm run dev
+npm run dev 
 ```
 
 ## Additional Scripts
@@ -95,6 +93,10 @@ npm run lint
 ```
 
 ### Compiling & Distribution
+
+```ps
+npm run dist
+```
 
 ---
 
