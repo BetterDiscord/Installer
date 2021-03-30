@@ -74,6 +74,7 @@
 
     :global(::-webkit-scrollbar) {
         width: 4px;
+        height: 4px;
     }
 
     :global(::-webkit-scrollbar-thumb) {
@@ -89,6 +90,10 @@
         background-color: rgba(255, 255, 255, 0.1);
     }
 
+    :global(::-webkit-scrollbar-corner) {
+        display: none;
+    }
+
     .main-window {
         display: flex;
         flex-direction: column;
@@ -99,6 +104,7 @@
         /* margin: 11.5px 7.5px; */
         width: 100%;
         height: 100%;
+        word-break: break-word;
     }
 
     .main-window.platform-darwin {

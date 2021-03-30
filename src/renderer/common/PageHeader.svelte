@@ -15,12 +15,16 @@
 
 <style>
     .page-header {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         display: flex;
         align-items: center;
         margin-bottom: 10px;
     }
 
     :global(.page-header svg) {
+        flex: 0 0 auto;
         width: 20px;
         height: 20px;
         margin-right: 8px;

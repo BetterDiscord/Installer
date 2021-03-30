@@ -40,6 +40,7 @@
         -webkit-appearance: none;
         appearance: none;
         box-sizing: border-box;
+        flex: 0 0 auto;
         margin: 0;
         border-radius: 2px;
         width: 20px;
