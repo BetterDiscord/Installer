@@ -1,6 +1,6 @@
 <script>
     const webUrl = "https://betterdiscord.net";
-    const githubUrl = "http://github.com/rauenzi/BetterDiscord";
+    const githubUrl = "http://github.com/rauenzi/BetterDiscordApp";
     const donateUrl = "https://www.patreon.com/Zerebos";
 </script>
 

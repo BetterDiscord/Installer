@@ -1,13 +1,17 @@
-<script>  
+<script>
     export let group;
     export let value;
+
+    let checkbox;
 </script>
 
 <label class="radio-container">
-    <input type="radio" hidden bind:group on:change {value}>
-    <div class="radio-item">
-        <slot name="icon"></slot>
-        <slot></slot>
+    <input bind:this={checkbox} type="radio" hidden bind:group on:change {value}>
+    <div tabindex="-1" class="radio-item">
+        <div>
+            <slot name="icon"></slot>
+            <slot></slot>
+        </div>
     </div>
 </label>
 
@@ -27,11 +31,18 @@
         transition: 100ms ease;
     }
 
+    .radio-item > div {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
     .radio-container {
         margin-bottom: 12px;
     }
 
-    .radio-container:last-child {
+    .radio-container:nth-last-child(2) {
         margin: 0;
     }
 
@@ -47,6 +58,5 @@
 
     .radio-container input:checked + .radio-item {
         color: #fff;
-        background-color: var(--accent);
     }
 </style>
