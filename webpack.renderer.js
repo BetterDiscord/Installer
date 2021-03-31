@@ -1,5 +1,4 @@
 module.exports = {
-    target: "node",
     module: {
         rules: [
             {
