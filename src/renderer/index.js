@@ -7,7 +7,7 @@ const app = new App({
 });
 
 // Setup this in a var because otherwise it won't work in prod
-appElement.style.setProperty("--background", `url('${getStatic("/images/background.png")}')`);
+appElement.style.setProperty("--background", `url('${getStatic("images/background.png")}')`);
 
 window.refresh = () => window.location.href = `http://${window.location.host}/`;
 
