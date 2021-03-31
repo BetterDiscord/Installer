@@ -16,7 +16,7 @@ const APP_DIST_PATH = path.join(currentWorkingDirectory, "dist");
 
 /* eslint-disable no-console */
 module.exports = function(buildResult) {
-    if (!buildResult.artifactPaths.some(p => p.endsWith("mac.zip"))) return console.log("No Mac build detected");
+    if (!buildResult.artifactPaths.some(p => p.toLowerCase().endsWith("mac.zip"))) return console.log("No Mac build detected");
     console.log("Zipping Started");
 
     execSync(

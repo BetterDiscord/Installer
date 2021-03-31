@@ -9,11 +9,12 @@
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "lint": "eslint --ext .svelte,.js src/",
+    "stats": "webpack --json --profile --config webpack.renderer.js > dist/stats.json",
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "focus-visible": "^5.2.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
@@ -24,42 +25,57 @@
     "eslint": "^7.21.0",
     "eslint-plugin-svelte3": "^3.1.2",
     "find-process": "^1.4.4",
+    "focus-visible": "^5.2.0",
     "phin": "^3.5.1",
     "svelte": "^3.35.0",
     "svelte-loader": "^3.0.0",
     "svelte-spa-router": "^3.1.0",
     "tree-kill": "^1.2.2",
-    "webpack": "~4.42.1"
+    "webpack": "~4.42.1",
+    "webpack-bundle-analyzer": "^4.4.0"
   },
   "build": {
     "appId": "app.betterdiscord.installer",
     "productName": "BetterDiscord",
     "copyright": "Copyright © 2021 BetterDiscord",
     "afterAllArtifactBuild": "scripts/fixmac.js",
+
     "win": {
+      "artifactName": "${productName}-Windows.${ext}",
       "icon": "assets/icon.ico",
       "target": {
         "target": "portable",
-        "arch": ["ia32"]
+        "arch": [
+          "ia32"
+        ]
       }
     },
+    "portable": {
+      "requestExecutionLevel": "user",
+      "useZip": true
+    },
+
     "mac": {
+      "artifactName": "${productName}-Mac.${ext}",
       "icon": "assets/icon.icns",
       "category": "public.app-category.social-networking",
       "target": {
         "target": "zip",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       }
     },
+
     "linux": {
+      "artifactName": "${productName}-Linux.${ext}",
       "category": "Utility",
       "target": {
         "target": "AppImage",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       }
-    },
-    "appImage": {
-      "license": "assets/license.txt"
     }
   },
   "electronWebpack": {
