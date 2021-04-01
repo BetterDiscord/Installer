@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img alt="Preview" width="524" alt="Hero image" src="https://i.imgur.com/OV4yQJG.png"/>
+  <img alt="Preview" width="524" alt="Hero image" src="https://i.imgur.com/evmFCAf.png"/>
   <br/>
   A simple standalone program which automates the installation, removal and maintenance of <a href="https://github.com/BetterDiscord/BetterDiscord">BetterDiscord</a>.
   <br/>
