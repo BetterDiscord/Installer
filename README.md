@@ -61,7 +61,7 @@ These will link you to the latest builds found in the [releases](https://github.
 
 # Development
 
-> This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer) page of this repository.
+> This is a tutorial designed for people looking to contribute to, or work directly with the installer's source code. If you are just looking to download and install BetterDiscord, visit the [releases](https://github.com/BetterDiscord/installer/releases/) page of this repository.
 
 ## Prerequisites
 - [Git](https://git-scm.com)
