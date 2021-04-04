@@ -72,9 +72,9 @@ These will link you to the latest builds found in the [releases](https://github.
 
 ### 1: Clone the repository.
 ```ps
-git clone https://github.com/BetterDiscord/installer | cd installer
+git clone https://github.com/BetterDiscord/installer && cd installer
 ```
-This will create a local copy of this repostory and navigate you to the root folder of the repository.
+This will create a local copy of this repository and navigate you to the root folder of the repository.
 
 ### 2: Install Dependencies
 Run this command at the root folder to install dependencies:
@@ -85,7 +85,7 @@ npm i
 ### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```ps
-npm run dev 
+npm run dev
 ```
 
 ## Additional Scripts
