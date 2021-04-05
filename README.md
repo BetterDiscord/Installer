@@ -106,6 +106,8 @@ npm run dist
 
 # Contributors
 
+For information on contributing to this project, please see [CONTRIBUTING.md](/CONTRIBUTING.md).
+
 <a href="https://github.com/betterdiscord/installer/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=betterdiscord/installer" />
 </a>
