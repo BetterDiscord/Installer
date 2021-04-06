@@ -5,12 +5,7 @@ export const radioSelectedIndex = writable(0);
 let i = 0;
 
 function checkItem(item) {
-    if (item.checked == true) {
-        item.checked = false;
-    }
-    else {
-        item.checked = true;
-    }
+    item.checked = !item.checked;
     const changeEvent = new Event("change");
     item.dispatchEvent(changeEvent);
 }
