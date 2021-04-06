@@ -1,5 +1,6 @@
 <script>
-    import {handleKeyboardToggle} from "../stores/controls.js";
+    // NOTES: preventing the default click event behavior is needed to stop the change event being fired twice when the spacebar is pressed.
+    import {handleKeyboardToggle, checkItem} from "../stores/controls.js";
 
     export let label;
     export let checked = false;
@@ -8,7 +9,7 @@
     let checkbox;
 </script>
 
-<div class="checkbox" on:keypress={handleKeyboardToggle(checkbox)}>
+<div class="checkbox" on:keypress={handleKeyboardToggle(checkbox)} on:click={checkItem(checkbox)}>
     <label>
         <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change>
         {#if label}

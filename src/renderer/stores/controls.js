@@ -4,14 +4,14 @@ export const radioSelectedIndex = writable(0);
 
 let i = 0;
 
-function checkItem(item) {
+export function checkItem(item) {
     item.checked = !item.checked;
     const changeEvent = new Event("change");
     item.dispatchEvent(changeEvent);
 }
 
 export const handleKeyboardToggle = (checkbox) => {
-    if ((event.key === "Enter" || event.key === " ") && checkbox.disabled != true) {
+    if ((event.key === "Enter" || event.key === " ") && !checkbox.disabled) {
         checkItem(checkbox);
     }
 };
