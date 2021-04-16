@@ -15,11 +15,11 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "del": "^6.0.0",
-    "electron": "^9.4.0",
+    "electron": "^9.4.4",
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
@@ -32,7 +32,7 @@
     "svelte-spa-router": "^3.1.0",
     "tree-kill": "^1.2.2",
     "webpack": "~4.42.1",
-    "webpack-bundle-analyzer": "^4.4.0"
+    "webpack-bundle-analyzer": "^4.4.1"
   },
   "build": {
     "appId": "app.betterdiscord.installer",
