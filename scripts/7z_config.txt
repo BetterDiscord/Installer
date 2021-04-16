@@ -1,0 +1,4 @@
+;!@Install@!UTF-8!
+Title="BetterDiscord Self-Extract"
+RunProgram="BetterDiscord.exe"
+;!@InstallEnd@!

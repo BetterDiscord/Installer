@@ -67,6 +67,9 @@ These will link you to the latest builds found in the [releases](https://github.
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/) with `npm`.
 - Command line of your choice.
+- For Windows build:
+  - [Resource Hacker](http://angusj.com/resourcehacker/)
+  - Extract the [7-Zip LZMA SDK](https://www.7-zip.org/sdk.html) and move its folder into the root of the project directory
 
 ## Building
 

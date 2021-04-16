@@ -13,10 +13,8 @@ const APP_NAME = packageInfo.build.productName;
 const APP_VERSION = process.argv[2] ? process.argv[2] : packageInfo.version;
 const APP_DIST_PATH = path.join(currentWorkingDirectory, "dist");
 
-
 /* eslint-disable no-console */
-module.exports = function(buildResult) {
-    if (!buildResult.artifactPaths.some(p => p.toLowerCase().endsWith("mac.zip"))) return console.log("No Mac build detected");
+function mac(buildResult) {
     console.log("Zipping Started");
 
     execSync(
@@ -46,4 +44,27 @@ module.exports = function(buildResult) {
     catch (e) {
         console.log("Error in updating YAML file and configurations with blockmap.", e);
     }
-};
+}
+
+function windows(buildResult) {
+    if (!fs.existsSync("lzma1900/bin/7zSD.sfx")) {
+        console.error("Please download the LZMA SDK from https://www.7-zip.org/a/lzma1900.7z and move its folder into the project root");
+        console.error("Also make sure to download and install Resource Hacker: http://angusj.com/resourcehacker/");
+        return;
+    }
+    console.log("Please wait for 7z...");
+    execSync(`cmd /C ${__dirname}\\7zsfx.bat`, { stdio: "inherit" });
+}
+
+module.exports = function(buildResult) {
+    for (const platform of buildResult.platformToTargets.keys()) {
+        switch (platform.name) {
+            case "windows":
+                windows(buildResult)
+                break;
+            case "mac":
+                mac(buildResult);
+                break;
+        }
+    }
+}

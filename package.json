@@ -38,13 +38,11 @@
     "appId": "app.betterdiscord.installer",
     "productName": "BetterDiscord",
     "copyright": "Copyright © 2021 BetterDiscord",
-    "afterAllArtifactBuild": "scripts/fixmac.js",
-
+    "afterAllArtifactBuild": "scripts/pkgfixes.js",
     "win": {
-      "artifactName": "${productName}-Windows.${ext}",
       "icon": "assets/icon.ico",
       "target": {
-        "target": "portable",
+        "target": "dir",
         "arch": [
           "ia32"
         ]
