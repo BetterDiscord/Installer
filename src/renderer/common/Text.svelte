@@ -4,15 +4,15 @@
 </script>
 
 {#if type == "header"}
-    <h3 class="header {(hasMargin == true) ? "has-margin" : ""}">
+    <h3 class="header"class:has-margin={hasMargin}>
         <slot/>
     </h3>
-{:else if type == "paragraph"}
-    <p class="paragraph {(hasMargin == true) ? "has-margin" : ""}">
+    {:else if type == "paragraph"}
+    <p class="paragraph" class:has-margin={hasMargin}>
         <slot/>
     </p>
-{:else if type == "subtext"}
-    <span class="subtext {(hasMargin == true) ? "has-margin" : ""}">
+    {:else if type == "subtext"}
+    <span class="subtext" class:has-margin={hasMargin}>
         <slot/>
     </span>
 {/if}

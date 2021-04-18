@@ -45,7 +45,7 @@
         <div bind:this={scroller} on:scroll={() => copyButtonVisible = false} class="display-inner" tabindex="0">
             {value}
         </div>
-        <div bind:this={copyInputContainer} class="copy-input {(copyButtonVisible) ? "visible" : ""}">
+        <div bind:this={copyInputContainer} class="copy-input" class:visible={copyButtonVisible}>
             {#if copyButtonActive}
                 <Button tabindex="0" type="primary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copied!</Button>
             {:else}
