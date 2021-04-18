@@ -1,7 +1,7 @@
 {
-  "name": "betterdiscord",
-  "productName": "BetterDiscord",
-  "description": "Installer for BetterDiscord.",
+  "name": "betterdiscord-installer",
+  "productName": "BetterDiscord Installer",
+  "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
   "version": "1.0.0",
   "license": "MIT",
