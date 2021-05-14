@@ -2,7 +2,7 @@
     import Button from "./Button.svelte";
     import {handleKeyboardToggle} from "../stores/controls.js";
     import {createEventDispatcher} from "svelte";
-    
+
     export let value;
     export let description;
     export let disabled = false;
@@ -56,14 +56,14 @@
     }
 
     .check-container:last-child {
-        margin: 0;  
+        margin: 0;
     }
 
     .check-item.disabled {
         background-color: var(--bg2-alt);
         cursor: not-allowed;
     }
-    
+
     .check-container input:checked + .check-item {
         background-color: var(--accent);
     }
@@ -128,11 +128,6 @@
     }
 
     :global(.check-container input:checked + .check-item .btn) {
-        border-color: #fff;
         color: #fff;
-    }
-
-    :global(.check-container input:checked + .check-item .btn:active) {
-        opacity: .8;
     }
 </style>
