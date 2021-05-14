@@ -50,11 +50,12 @@
 
     .btn.secondary {
         background-color: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.05);
         color: var(--text-normal);
     }
 
     .btn.secondary:hover {
-        border-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
     }
 </style>

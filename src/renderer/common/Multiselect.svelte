@@ -128,9 +128,8 @@
     }
 
     :global(.check-container input:checked + .check-item .btn) {
-        background-color: #fff;
-        border-color: transparent;
-        color: var(--accent);
+        border-color: #fff;
+        color: #fff;
     }
 
     :global(.check-container input:checked + .check-item .btn:active) {
