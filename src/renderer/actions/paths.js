@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 import {remote} from "electron";
+const semverRcompare = require("semver/functions/rcompare");
+const semverValid = require("semver/functions/valid");
 
 export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
 export const locations = {stable: "", ptb: "", canary: ""};
@@ -10,22 +12,49 @@ const getDiscordPath = function(releaseChannel) {
     if (process.platform === "win32") {
         const basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, ""));
         if (!fs.existsSync(basedir)) return "";
-        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
+        
+        const versionFolders = fs.readdirSync(basedir)
+                .filter(
+                    f => 
+                        fs.lstatSync(path.join(basedir, f)).isDirectory() && // filter for directories
+                        semverValid(f.replace("app-","")) && // which have valid semver name (ignoring the app- prefix)
+                        fs.existsSync(path.join(basedir, f, "resources") // that have a resources folder
+                ))
+                .sort((v1,v2)=>semverRcompare(v1.replace("app-",""),v2.replace("app-","")));
+        console.info(`Detected version folders for channel "${releaseChannel}":`, versionFolders);
+        
+        const version = versionFolders[0];
         if (!version) return "";
+
         resourcePath = path.join(basedir, version, "resources");
     }
     else if (process.platform === "darwin") {
         resourcePath = path.join("/Applications", `${releaseChannel}.app`, "Contents", "Resources");
     }
     else {
-        const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
+        const basedir = path.join(remote.app.getPath("appData"), releaseChannel.toLowerCase().replace(" ", ""));
         if (!fs.existsSync(basedir)) return "";
-        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
+        
+        const versionFolders = fs.readdirSync(basedir)
+                .filter(
+                    f => 
+                        fs.lstatSync(path.join(basedir, f)).isDirectory() && // filter for directories
+                        semverValid(f.replace("app-","")) && // which have valid semver name (ignoring the app- prefix)
+                        fs.existsSync(path.join(basedir, f, "modules", "discord_desktop_core") // that have a modules/discord_desktop_core folder
+                ))
+                .sort((v1,v2)=>semverRcompare(v1.replace("app-",""),v2.replace("app-","")));
+        console.info(`Detected version folders for channel "${releaseChannel}":`, versionFolders);
+        
+        const version = versionFolders[0];
         if (!version) return "";
+        
         resourcePath = path.join(basedir, version, "modules", "discord_desktop_core");
     }
 
-    if (fs.existsSync(resourcePath)) return resourcePath;
+    if (fs.existsSync(resourcePath)) {
+        console.info(`Detected path "${resourcePath}" for channel "${releaseChannel}".`);
+        return resourcePath;
+    }
     return "";
 };
 
