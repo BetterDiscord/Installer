@@ -111,11 +111,15 @@ export default async function(config) {
     log("✅ Directories created");
     progress.set(MAKE_DIR_PROGRESS);
     
-
-    lognewline("Downloading asar file");
-    const downloadErr = await downloadAsar();
-    if (downloadErr) return fail();
-    log("✅ Package downloaded");
+    if (!process.env.BD_SKIP_ASAR_DOWNLOAD) {
+        lognewline("Downloading asar file");
+        const downloadErr = await downloadAsar();
+        if (downloadErr) return fail();
+        log("✅ Package downloaded");
+    }
+    else {
+        lognewline("✅ Asar download skipped");
+    }
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
 
 
