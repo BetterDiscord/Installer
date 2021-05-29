@@ -66,6 +66,26 @@ async function downloadAsar() {
         return err;
     }
 }
+async function copyAsar() {
+    try {
+        const result = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+            title: `Browsing for betterdiscord.asar`,
+            filters: [
+                {name: "Electron Archive", extensions: ["asar"]}
+            ],
+            properties: ["openFile"]
+        });
+        if (result.canceled || !result.filePaths[0]) throw new Error("No asar file was selected.");
+
+        const originalFs = require("original-fs").promises; // because electron doesn't like when I write asar files
+        await originalFs.copyFile(result.filePaths[0], asarPath);
+    }
+    catch (err) {
+        log(`❌ Couldn't copy local asar file.`);
+        log(`❌ ${err.message}`);
+        return err;
+    }
+}
 
 async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
@@ -100,10 +120,8 @@ export default async function(config) {
     const sane = doSanityCheck(config);
     if (!sane) return fail();
 
-
     const channels = Object.keys(config);
     const paths = Object.values(config);
-
 
     lognewline("Creating required directories...");
     const makeDirErr = await makeDirectories(bdFolder, bdDataFolder, bdThemesFolder, bdPluginsFolder);
@@ -111,10 +129,32 @@ export default async function(config) {
     log("✅ Directories created");
     progress.set(MAKE_DIR_PROGRESS);
     
-
     lognewline("Downloading asar file");
-    const downloadErr = await downloadAsar();
-    if (downloadErr) return fail();
+    let downloadErr;
+    while (downloadErr = await downloadAsar()) {
+        const result = await remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+            title: "Failed to download package",
+            message: `The BetterDiscord asar file could not be downloaded. This is usually caused by firewalls or antivirus software. Disable them temporarily and try again.
+
+Alternatively you can provide a local asar file.`,
+            buttons: ["Retry", "Browse", "Cancel"],
+            defaultId: 2
+        });
+
+        if (result.response == 0) {
+            log("Retrying...");
+            continue;
+        }
+        else if (result.response == 1) {
+                log("Copying local asar file");
+                const copyErr = await copyAsar();
+                if (copyErr) return fail();
+                break;
+        }
+        else {
+            return fail();
+        }
+    }
     log("✅ Package downloaded");
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
 
