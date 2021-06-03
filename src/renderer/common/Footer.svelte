@@ -1,5 +1,6 @@
 <script>
     const electron = require("electron");
+    import {_} from "svelte-i18n";
 
     import Button from "./Button.svelte";
     import ButtonGroup from "./ButtonGroup.svelte";
@@ -26,7 +27,7 @@
         nextButtonContent = actionText;
     }
     else {
-        nextButtonContent = "Next";
+        nextButtonContent = $_("footer.button.next");
     }
     
     function navigatePage() {
@@ -45,8 +46,8 @@
 <footer class="install-footer">
     <SocialLinks/>
     <ButtonGroup>
-        <Button type="secondary" disabled={!$canGoBack} on:click={goBack}>Back</Button>
-        <Button type="primary" disabled={!$canGoForward} on:click={goToNext}>{#if $nextPage}{nextButtonContent}{:else}Close{/if}</Button>
+        <Button type="secondary" disabled={!$canGoBack} on:click={goBack}>{$_("footer.button.back")}</Button>
+        <Button type="primary" disabled={!$canGoForward} on:click={goToNext}>{#if $nextPage}{nextButtonContent}{:else}{$_("footer.button.close")}{/if}</Button>
     </ButtonGroup>
 </footer>
 

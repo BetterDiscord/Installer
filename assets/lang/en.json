@@ -1,0 +1,62 @@
+{
+  "action": {
+    "install": {},
+    "repair": {
+      "notice": {
+        "restart": {
+          "title": "Reinstall BetterDiscord?",
+          "message": "After repairing, you need to reinstall BetterDiscord. Would you like to do that now?",
+          "button.yes": "Yes",
+          "button.no": "No"
+        }
+      }
+    },
+    "uninstall": {}
+  },
+  "footer": {
+    "button": {
+      "back": "Back",
+      "close": "Close",
+      "next": "Next"
+    },
+    "social": {
+      "website": "Visit Website",
+      "github": "View Source on GitHub",
+      "support": "Support BetterDiscord"
+    }
+  },
+  "notice": {
+    "kill": {
+      "title": "Shutdown Discord",
+      "message": "BetterDiscord could not shut down Discord. Please make sure Discord is fully closed, then run the installer again."
+    },
+    "restart": {
+      "title": "Restart Discord",
+      "message": "BetterDiscord could not restart Discord. Please restart it manually."
+    }
+  },
+  "page": {
+    "actions": {
+      "title": "Choose an Action",
+      "install": "Install BetterDiscord",
+      "repair": "Repair BetterDiscord",
+      "uninstall": "Uninstall BetterDiscord"
+    },
+    "license": {
+      "title": "License Agreement",
+      "accept": "I accept the license agreement."
+    },
+    "perform_action": {
+      "install": "Install",
+      "repair": "Repair",
+      "uninstall": "Uninstall"
+    },
+    "platforms": {
+      "title": "Choose Discord Versions"
+    }
+  },
+  "textdisplay": {
+    "copied": "Copied!",
+    "copy": "Copy"
+  }
+}

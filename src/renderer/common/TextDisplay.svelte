@@ -1,4 +1,5 @@
 <script>
+    import {_} from "svelte-i18n";
     import Button from "./Button.svelte";
     import LoadingPage from "../pages/Loading.svelte";
     import {beforeUpdate, afterUpdate} from "svelte";
@@ -47,9 +48,9 @@
         </div>
         <div bind:this={copyInputContainer} class="copy-input" class:visible={copyButtonVisible}>
             {#if copyButtonActive}
-                <Button tabindex="0" type="primary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copied!</Button>
+                <Button tabindex="0" type="primary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>{$_("textdisplay.copied")}</Button>
             {:else}
-                <Button tabindex="0" type="secondary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>Copy</Button>
+                <Button tabindex="0" type="secondary" on:keypress={handleKeyboardCopyToggle} on:click={copyDisplayContents}>{$_("textdisplay.copy")}</Button>
             {/if}
         </div>
     </article>

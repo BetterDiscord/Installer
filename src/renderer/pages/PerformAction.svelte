@@ -1,4 +1,5 @@
 <script>
+    import {_} from "svelte-i18n";
     import page from "../transitions/page.js";
     import PageHeader from "../common/PageHeader.svelte";
     import Progress from "../common/Progress.svelte";
@@ -72,7 +73,7 @@
         <svg slot="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             {@html pageIcon}
         </svg>
-        {currentAction[0].toUpperCase()}{currentAction.slice(1)}  
+        {$_(`page.perform_action.${currentAction}`)}
     </PageHeader>
     <TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
     <Progress value={$progress} max={100} className={$status} />
