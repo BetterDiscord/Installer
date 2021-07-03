@@ -2,22 +2,46 @@
   "action": {
     "install": {},
     "repair": {
+      "log": {
+        "killing": "Beende Discord...",
+        "killed": "✅ Discord beendet",
+        "deleting_shims": "Lösche Shims...",
+        "deleted_shims": "✅ Shims gelöscht",
+        "deleting_modules": "Lösche Discord-Module...",
+        "deleted_modules": "✅ Discord-Module gelöscht"
+      },
       "notice": {
         "restart": {
           "title": "BetterDiscord neuinstallieren?",
           "message": "Nach dem Reperaturvorgang muss BetterDiscord neu installiert werden. Möchstest du das jetzt tun?",
           "button.yes": "Ja",
           "button.no": "Nein"
+        },
+        "complete": {
+          "title": "Neuinstalltion fertig",
+          "message": "Bitte starte Discord manuell neu um die Reperatur zu vervollständigen."
         }
       }
     },
-    "uninstall": {}
+    "uninstall": {
+      "log": {
+        "killing": "Beende Discord...",
+        "killed": "✅ Discord beendet",
+        "deleting_shims": "Lösche Shims...",
+        "deleted_shims": "✅ Shims gelöscht"
+      }
+    }
   },
   "footer": {
     "button": {
       "back": "Zurück",
       "close": "Beenden",
-      "next": "Weiter"
+      "next": "Weiter",
+      "action": {
+        "install": "Installieren",
+        "repair": "Reparieren",
+        "uninstall": "Deinstallieren"
+      }
     },
     "social": {
       "website": "Zur Website",

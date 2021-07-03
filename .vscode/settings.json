@@ -1,3 +1,9 @@
 {
-    "eslint.validate": [ "javascript", "svelte" ]
+    "eslint.validate": [
+        "javascript",
+        "svelte"
+    ],
+    "i18n-ally.localesPaths": [
+        "assets/lang"
+    ]
 }
