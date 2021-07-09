@@ -97,26 +97,26 @@
         right: 8px;
     }
 
-    :global(.copy-input .btn) {
+    :global(.copy-input .button) {
         border: none !important;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     
-    :global(.copy-input .btn.secondary) {
+    :global(.copy-input .button.type-secondary) {
         background-color: var(--bg4) !important;
     }
 
-    :global(.copy-input .btn:hover) {
+    :global(.copy-input .button:hover) {
         color: var(--text-light) !important;
     }
 
-    :global(.copy-input .btn:not(.primary)) {
+    :global(.copy-input .button:not(.type-primary)) {
         opacity: 0;
     }
 
-    :global(.copy-input.visible .btn),
-    :global(.display-inner.focus-visible + .copy-input .btn),
-    :global(.copy-input .btn.focus-visible) {
+    :global(.copy-input.visible .button),
+    :global(.display-inner.focus-visible + .copy-input .button),
+    :global(.copy-input .button.focus-visible) {
         opacity: 1;
     }
 </style>

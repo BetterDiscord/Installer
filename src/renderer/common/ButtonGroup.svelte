@@ -1,9 +1,9 @@
-<div class="btn-group">
+<div class="button-group" {...$$restProps}>
     <slot></slot>
 </div>
 
 <style>
-    .btn-group {
+    .button-group {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -11,7 +11,7 @@
         margin-right: -5px;
     }
 
-    :global(.btn-group > *) {
+    :global(.button-group > *) {
         margin-top: 5px;
         margin-right: 5px;
     }

@@ -1,7 +1,7 @@
 <script>
     import page from "../transitions/page.js";
     import PageHeader from "../common/PageHeader.svelte";
-    import Progress from "../common/Progress.svelte";
+    import ProgressBar from "../common/ProgressBar.svelte";
     import TextDisplay from "../common/TextDisplay.svelte";
     import logs from "../stores/logs";
     import install from "../actions/install";
@@ -75,5 +75,5 @@
         {currentAction[0].toUpperCase()}{currentAction.slice(1)}  
     </PageHeader>
     <TextDisplay value={$logs.join("\n")} bind:this={display} autoscroll />
-    <Progress value={$progress} max={100} className={$status} />
+    <ProgressBar value={$progress} max={100} class={$status} />
 </section>

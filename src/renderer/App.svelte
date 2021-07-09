@@ -22,25 +22,37 @@
 </div>
 
 <style>
-    @import url('https://rsms.me/inter/inter.css');
+    @import url("https://rsms.me/inter/inter.css");
 
     :global(.focus-visible) {
         box-shadow: 0 0 0 4px var(--accent-faded) !important;
     }
 
     :root {
+
+        /* Primary backgrounds */
         --bg1: #040405;
+        --bg3: #14151b;
+        --bg4: #20212b;
         --bg2: #0c0d10;
         --bg2-alt: #101116;
-        --bg3: #14151b;
         --bg3-alt: #191a21;
-        --bg4: #20212b;
+
+        /* Text Colors */
         --text-light: #f1f1f1;
         --text-normal: #bfc4c9;
         --text-muted: #95989d;
+        --text-link: #5a88ce;
+
+        /* Accent colors */
         --accent: #3a71c1;
         --accent-hover: #2f5b9d;
-        --accent-faded: rgba(58, 113, 193, .4);
+        --accent-faded: rgba(58, 113, 193, 0.4);
+
+        /* Danger colors */
+        --danger: #c13a3a;
+        --danger-hover: #992e2e;
+        --danger-faded: rgb(193, 58, 58, 0.4);
     }
 
     :global(html),
@@ -127,7 +139,7 @@
     }
 
     .installer-body::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;

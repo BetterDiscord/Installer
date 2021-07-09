@@ -1,16 +1,23 @@
 <script>
     export let type = "secondary";
-    export let disabled = false;
+
+    const types = ["primary", "secondary"];
 </script>
 
-<button type="button"{disabled} on:keypress on:click|preventDefault|stopPropagation class="btn {(type == "primary" || type == "secondary") ? type : "secondary"}">
+<button
+    class="button {types.includes(type) ? `type-${type}` : "type-secondary"}"
+    type="button"
+    on:keypress
+    on:click|preventDefault|stopPropagation
+    {...$$restProps}
+>
     <span>
         <slot></slot>
     </span>
 </button>
 
 <style>
-    .btn {
+    .button {
         width: auto;
         border: none;
         display: flex;
@@ -27,34 +34,34 @@
         border-radius: 2px;
     }
 
-    .btn[disabled] {
+    .button[disabled] {
         opacity: .5;
         pointer-events: none;
     }
 
-    .btn span {
+    .button span {
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    .btn.primary {
+    .button.type-primary {
         border: 1px solid transparent;
         background-color: var(--accent);
         color: #ffffff;
     }
 
-    .btn.primary:hover {
+    .button.type-primary:hover {
         background-color: var(--accent-hover);
     }
 
-    .btn.secondary {
+    .button.type-secondary {
         background-color: transparent;
         border: 1px solid rgba(255, 255, 255, 0.05);
         color: var(--text-normal);
     }
 
-    .btn.secondary:hover {
+    .button.type-secondary:hover {
         border-color: rgba(255, 255, 255, 0.1);
     }
 </style>

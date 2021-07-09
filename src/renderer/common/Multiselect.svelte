@@ -17,7 +17,7 @@
 
 </script>
 
-<label class="check-container">
+<label class="check-container" {...$$restProps}>
     <input bind:this={checkbox} type="checkbox" hidden {disabled} {checked} on:change {value}>
     <div on:keypress={handleKeyboardToggle(checkbox)} tabindex="0" class="check-item" class:disabled>
         <div class="icon">
@@ -29,7 +29,7 @@
             </h5>
             <span title={description}>{description}</span>
         </div>
-        <div class="button" on:keypress={e => e.stopPropagation()}>
+        <div class="controls" on:keypress={e => e.stopPropagation()}>
             <Button type="secondary" on:click={click}>Browse</Button>
         </div>
     </div>
@@ -74,7 +74,7 @@
         pointer-events: none;
     }
 
-    .button,
+    .controls,
     .icon {
         flex: 0 0 auto;
     }
@@ -127,13 +127,13 @@
         color: #fff;
     }
 
-    :global(.check-container input:checked + .check-item .btn) {
+    :global(.check-container input:checked + .check-item .button) {
         background-color: #fff;
-        border-color: transparent;
+        border-color: transparent !important;
         color: var(--accent);
     }
 
-    :global(.check-container input:checked + .check-item .btn:active) {
-        opacity: .8;
+    :global(.check-container input:checked + .check-item .button:active) {
+        opacity: 0.8;
     }
 </style>

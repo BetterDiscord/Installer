@@ -7,18 +7,25 @@
     export let disabled = false;
 
     let checkbox;
+
+    function handleKeyDown(e) {
+        if (e.key === " ") {
+            e.preventDefault();
+            checkItem(checkbox);
+        }
+    }
 </script>
 
-<div class="checkbox" on:keypress={handleKeyboardToggle(checkbox)} on:click={checkItem(checkbox)}>
+<div class="checkbox" on:keypress={handleKeyboardToggle(checkbox)}>
     <label>
-        <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change>
+        <input type="checkbox" {disabled} bind:this={checkbox} bind:checked on:change on:keydown={handleKeyDown} {...$$restProps} />
         {#if label}
             <span>{label}</span>
         {/if}
     </label>
 </div>
 
-<style> 
+<style>
     .checkbox label {
         display: flex;
         align-items: center;
