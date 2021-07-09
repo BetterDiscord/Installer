@@ -8,7 +8,7 @@
 </script>
 
 <div class="main-window platform-{process.platform}">
-    {#if process.platform == "darwin"}
+    {#if process.platform === "darwin"}
         <Titlebar macButtons />
     {:else}
         <Titlebar />
@@ -32,11 +32,11 @@
 
         /* Primary backgrounds */
         --bg1: #040405;
-        --bg3: #14151b;
-        --bg4: #20212b;
         --bg2: #0c0d10;
         --bg2-alt: #101116;
+        --bg3: #14151b;
         --bg3-alt: #191a21;
+        --bg4: #20212b;
 
         /* Text Colors */
         --text-light: #f1f1f1;

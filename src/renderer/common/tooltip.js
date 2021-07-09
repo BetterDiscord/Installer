@@ -44,16 +44,16 @@ export function tooltip (node, {
 
         // Tooltip Positioning
         if (component) {
-            if (position == "top") {
+            if (position === "top") {
                 component.x = node.getBoundingClientRect().left + (node.offsetWidth / 2) - (tooltipDOM.offsetWidth / 2);
                 component.y = (node.getBoundingClientRect().top - tooltipDOM.offsetHeight - 5) - spacing;
-            } else if (position == "bottom") {
+            } else if (position === "bottom") {
                 component.x = node.getBoundingClientRect().left + (node.offsetWidth / 2) - (tooltipDOM.offsetWidth / 2);
                 component.y = (node.getBoundingClientRect().bottom + 5) + spacing;
-            } else if (position == "left") {
+            } else if (position === "left") {
                 component.x = (node.getBoundingClientRect().left - tooltipDOM.offsetWidth - 5) - spacing;
                 component.y = node.getBoundingClientRect().top + (node.offsetHeight / 2) - (tooltipDOM.offsetHeight / 2);
-            } else if (position == "right") {
+            } else if (position === "right") {
                 component.x = (node.getBoundingClientRect().left + node.offsetWidth + 5) + spacing;
                 component.y = node.getBoundingClientRect().top + (node.offsetHeight / 2) - (tooltipDOM.offsetHeight / 2);
             }

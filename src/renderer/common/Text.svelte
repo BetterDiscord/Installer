@@ -5,15 +5,15 @@
     export { className as class };
 </script>
 
-{#if type == "header"}
+{#if type === "header"}
     <h3 class="header {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </h3>
-    {:else if type == "paragraph"}
+    {:else if type === "paragraph"}
     <p class="paragraph {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </p>
-    {:else if type == "subtext"}
+    {:else if type === "subtext"}
     <span class="subtext {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </span>
