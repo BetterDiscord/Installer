@@ -53,8 +53,7 @@ async function downloadAsar() {
     try {
         const response = await getJSON(downloadUrl);
         const releases = response.body;
-        const asset = releases[0].assets.find(a => a.name === "betterdiscord.asar");
-        downloadUrl = asset.url;
+        downloadUrl = releases[0].assets.browser_download_url;
 
         const resp = await downloadFile(downloadUrl);
         const originalFs = require("original-fs").promises; // because electron doesn't like when I write asar files
