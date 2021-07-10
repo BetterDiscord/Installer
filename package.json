@@ -15,6 +15,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "semver": "^7.3.5",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
