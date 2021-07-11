@@ -1,9 +1,14 @@
 <script>
     // import Page from "./containers/Page.svelte";
+    import {isLoading} from "svelte-i18n";
+    import initLocales from "./i18n";
+    initLocales();
+
     import Titlebar from "./common/Titlebar.svelte";
     import Footer from "./common/Footer.svelte";
     import Router from "svelte-spa-router";
     import routes from "./routes";
+    import LoadingPage from "./pages/Loading.svelte";
     require("focus-visible");
 </script>
 
@@ -13,12 +18,16 @@
     {:else}
         <Titlebar />
     {/if}
-    <main class="installer-body">
-        <div class="sections">
-            <Router {routes} />
-        </div>
-        <Footer />
-    </main>
+    {#if $isLoading}}
+        <LoadingPage />
+    {:else}
+        <main class="installer-body">
+            <div class="sections">
+                <Router {routes} />
+            </div>
+            <Footer />
+        </main>
+    {/if}
 </div>
 
 <style>

@@ -1,4 +1,6 @@
 import {remote} from "electron";
+import {format} from "svelte-i18n";
+import {get} from 'svelte/store';
 
 export function showRestartNotice() {
     remote.dialog.showMessageBox({
@@ -9,9 +11,10 @@ export function showRestartNotice() {
 }
 
 export function showKillNotice() {
+    const _ = get(format);
     remote.dialog.showMessageBox({
         type: "error",
-        title: "Shutdown Discord",
-        message: "BetterDiscord could not shut down Discord. Please make sure Discord is fully closed, then run the installer again."
+        title: _("action.repair.notice.restart.title"),
+        message: _("action.repair.notice.restart.message")
     });
 }

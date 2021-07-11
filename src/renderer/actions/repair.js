@@ -1,9 +1,10 @@
-
 import {progress, status} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
 import del from "del";
 import path from "path";
+import {format} from "svelte-i18n";
+import {get} from "svelte/store";
 import install from "./install.js";
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -57,10 +58,12 @@ async function deleteModuleDirs(config) {
 }
 
 async function showInstallNotice(config) {
+    const _ = get(format);
+    
     const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "question",
-        title: "Reinstall BetterDiscord?",
-        message: "After repairing, you need to reinstall BetterDiscord. Would you like to do that now?",
+        title: _("action.repair.notice.restart.title"),
+        message: _("action.repair.notice.restart.message"),
         noLink: true,
         cancelId: 1,
         buttons: ["Yes", "No"]
@@ -72,8 +75,8 @@ async function showInstallNotice(config) {
     await install(config);
     remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "info",
-        title: "Reinstall Complete",
-        message: "Please relaunch discord manually to finish the repair."
+        title: _("action.repair.notice.complete.title"),
+        message: _("action.repair.notice.complete.message")
     });
 }
 
@@ -83,34 +86,35 @@ export default async function(config) {
     const sane = doSanityCheck(config);
     if (!sane) return fail();
 
+    const _ = get(format);
 
     const channels = Object.keys(config);
     const paths = Object.values(config);
 
-
-    lognewline("Killing Discord...");
+    
+    lognewline(_("action.repair.log.killing"));
     const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length, false); // await killProcesses(channels);
     if (killErr) {
         showKillNotice();
         return fail();
     }
-    log("✅ Discord Killed");
+    log(_("action.repair.log.killed"));
     progress.set(KILL_DISCORD_PROGRESS);
 
 
     await new Promise(r => setTimeout(r, 200));
-    lognewline("Deleting shims...");
+    lognewline(_("action.repair.log.deleting_shims"));
     const deleteShimErr = await deleteAppDirs(paths);
     if (deleteShimErr) return fail();
-    log("✅ Shims deleted");
+    log(_("action.repair.log.deleted_shims"));
     progress.set(DELETE_APP_DIRS_PROGRESS);
     
 
     await new Promise(r => setTimeout(r, 200));
-    lognewline("Deleting discord modules...");
+    lognewline(_("action.repair.log.deleting_modules"));
     const deleteModulesErr = await deleteModuleDirs(config);
     if (deleteModulesErr) return fail();
-    log("✅ Shims deleted");
+    log(_("action.repair.log.deleted_modules"));
     progress.set(DELETE_MODULE_DIRS_PROGRESS);
 
 

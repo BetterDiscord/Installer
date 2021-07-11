@@ -1,6 +1,8 @@
 import {promises as fs} from "fs";
 import del from "del";
 import path from "path";
+import {format} from "svelte-i18n";
+import {get} from "svelte/store";
 
 import {progress} from "../stores/installation";
 
@@ -48,22 +50,23 @@ export default async function(config) {
     const sane = doSanityCheck(config);
     if (!sane) return fail();
 
+    const _ = get(format);
 
     const channels = Object.keys(config);
     const paths = Object.values(config);
 
 
-    lognewline("Deleting shims...");
+    lognewline(_("action.uninstall.log.deleting_shims"));
     const deleteErr = await deleteShims(paths);
     if (deleteErr) return fail();
-    log("✅ Shims deleted");
+    log(_("action.uninstall.log.deleted_shims"));
     progress.set(DELETE_SHIM_PROGRESS);
 
 
-    lognewline("Killing Discord...");
+    lognewline(_("action.uninstall.log.killing"));
     const killErr = await kill(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
     if (killErr) showRestartNotice(); // No need to bail out
-    else log("✅ Discord restarted");
+    log(_("action.uninstall.log.killed"));
     progress.set(RESTART_DISCORD_PROGRESS);
 
     succeed();

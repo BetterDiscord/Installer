@@ -3,7 +3,7 @@
   "productName": "BetterDiscord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -15,7 +15,9 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "source-map-support": "^0.5.16"
+    "semver": "^7.3.5",
+    "source-map-support": "^0.5.16",
+    "svelte-i18n": "^3.3.9"
   },
   "devDependencies": {
     "del": "^6.0.0",
@@ -39,7 +41,6 @@
     "productName": "BetterDiscord",
     "copyright": "Copyright © 2021 BetterDiscord",
     "afterAllArtifactBuild": "scripts/fixmac.js",
-
     "win": {
       "artifactName": "${productName}-Windows.${ext}",
       "icon": "assets/icon.ico",
@@ -54,7 +55,6 @@
       "requestExecutionLevel": "user",
       "useZip": true
     },
-
     "mac": {
       "artifactName": "${productName}-Mac.${ext}",
       "icon": "assets/icon.icns",
@@ -66,7 +66,6 @@
         ]
       }
     },
-
     "linux": {
       "artifactName": "${productName}-Linux.${ext}",
       "category": "Utility",

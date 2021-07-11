@@ -1,0 +1,86 @@
+{
+  "action": {
+    "install": {},
+    "repair": {
+      "log": {
+        "killing": "Beende Discord...",
+        "killed": "✅ Discord beendet",
+        "deleting_shims": "Lösche Shims...",
+        "deleted_shims": "✅ Shims gelöscht",
+        "deleting_modules": "Lösche Discord-Module...",
+        "deleted_modules": "✅ Discord-Module gelöscht"
+      },
+      "notice": {
+        "restart": {
+          "title": "BetterDiscord neuinstallieren?",
+          "message": "Nach dem Reperaturvorgang muss BetterDiscord neu installiert werden. Möchstest du das jetzt tun?",
+          "button.yes": "Ja",
+          "button.no": "Nein"
+        },
+        "complete": {
+          "title": "Neuinstalltion fertig",
+          "message": "Bitte starte Discord manuell neu um die Reperatur zu vervollständigen."
+        }
+      }
+    },
+    "uninstall": {
+      "log": {
+        "killing": "Beende Discord...",
+        "killed": "✅ Discord beendet",
+        "deleting_shims": "Lösche Shims...",
+        "deleted_shims": "✅ Shims gelöscht"
+      }
+    }
+  },
+  "footer": {
+    "button": {
+      "back": "Zurück",
+      "close": "Beenden",
+      "next": "Weiter",
+      "action": {
+        "install": "Installieren",
+        "repair": "Reparieren",
+        "uninstall": "Deinstallieren"
+      }
+    },
+    "social": {
+      "website": "Zur Website",
+      "github": "Zum Quellcode on GitHub",
+      "support": "BetterDiscord unterstützen"
+    }
+  },
+  "notice": {
+    "kill": {
+      "title": "Beende Discord",
+      "message": "BetterDiscord konnte Discord nicht beenden. Bitte stelle sicher das Discord komplett beendet wurde und starte den Vorgang erneut."
+    },
+    "restart": {
+      "title": "Starte Discord neu",
+      "message": "BetterDiscord konnte Discord nicht neustarten. Bitte starte es manuell neu."
+    }
+  },
+  "page": {
+    "actions": {
+      "title": "Wähle eine Aktion",
+      "install": "BetterDiscord installieren",
+      "repair": "BetterDiscord reparieren",
+      "uninstall": "BetterDiscord deinstallieren"
+    },
+    "license": {
+      "title": "Lizenzvereinbarung",
+      "accept": "Ich akzeptiere die Lizenzvereinbarung."
+    },
+    "perform_action": {
+      "install": "Installieren",
+      "repair": "Reparieren",
+      "uninstall": "Deinstallieren"
+    },
+    "platforms": {
+      "title": "Wähle eine Discord Version"
+    }
+  },
+  "textdisplay": {
+    "copied": "Kopiert!",
+    "copy": "Kopieren"
+  }
+}
