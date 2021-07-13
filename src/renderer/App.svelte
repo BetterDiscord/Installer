@@ -1,18 +1,15 @@
 <script>
+    import "focus-visible";
+
     // import Page from "./containers/Page.svelte";
     import Titlebar from "./common/Titlebar.svelte";
     import Footer from "./common/Footer.svelte";
     import Router from "svelte-spa-router";
     import routes from "./routes";
-    require("focus-visible");
 </script>
 
-<div class="main-window platform-{process.platform}">
-    {#if process.platform === "darwin"}
-        <Titlebar macButtons />
-    {:else}
-        <Titlebar />
-    {/if}
+<div class="main-window platform-{process.platform || "win32"}">
+    <Titlebar macButtons={process.platform === "darwin"} />
     <main class="installer-body">
         <div class="sections">
             <Router {routes} />
@@ -24,7 +21,7 @@
 <style>
     @import url("https://rsms.me/inter/inter.css");
 
-    :global(.focus-visible) {
+    :global([data-focus-visible-added]) {
         box-shadow: 0 0 0 4px var(--accent-faded) !important;
     }
 

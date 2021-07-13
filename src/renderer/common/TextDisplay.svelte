@@ -41,7 +41,12 @@
 </script>
 
 {#if value}
-    <article on:mousemove={() => copyButtonVisible = true} on:mouseleave={() => copyButtonVisible = false} class="text-display{value ? "" : " loading"}" bind:this={element}>
+    <article
+        bind:this={element}
+        on:mousemove={() => copyButtonVisible = true}
+        on:mouseleave={() => copyButtonVisible = false}
+        class="text-display{value ? "" : " loading"}"
+    >
         <div bind:this={scroller} on:scroll={() => copyButtonVisible = false} class="display-inner" tabindex="0">
             {value}
         </div>

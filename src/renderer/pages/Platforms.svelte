@@ -51,9 +51,9 @@
 
     {#each Object.entries(platformLabels) as [channel, label]}
         <Multiselect
-            description={$paths[channel] ? $paths[channel] : "Not Found"}
             on:change={change}
             on:click={click}
+            description={$paths[channel] || "Not Found"}
             value={channel}
             checked={$paths[channel] && $platforms[channel]}
             disabled={!$paths[channel]}

@@ -5,7 +5,15 @@
     let container;
 </script>
 
-<div on:keydown={handleArrowKeys(container)} bind:this={container} tabindex="0" selected-index={index} style="--index: {index};" class="radio-group" {...$$restProps}>
+<div
+    on:keydown={handleArrowKeys(container)}
+    bind:this={container}
+    tabindex="0"
+    selected-index={index}
+    style="--index: {index};"
+    class="radio-group"
+    {...$$restProps}
+>
     <slot />
     <div class="selection-indicator"></div>
 </div>
