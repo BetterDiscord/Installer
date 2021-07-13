@@ -45,7 +45,7 @@ async function makeDirectories(...folders) {
     }
 }
 
-const getJSON = phin.defaults({method: "GET", parse: "json", headers: {"User-Agent": "BetterDiscord Installer"}});
+const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer"}});
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {

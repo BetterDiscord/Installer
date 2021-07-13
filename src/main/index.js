@@ -1,6 +1,7 @@
-import {app, BrowserWindow, ipcMain} from "electron";
+import {app, BrowserWindow, shell} from "electron";
 import path from "path";
 import URL from "url";
+import updateInstaller from "./update_installer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 app.name = "BetterDiscord";
@@ -54,7 +55,7 @@ function createMainWindow() {
 
     window.webContents.on("new-window", (e, url) => {
         e.preventDefault();
-        require("electron").shell.openExternal(url);
+        shell.openExternal(url);
     });
 
     return window;
@@ -73,6 +74,7 @@ app.on("activate", () => {
 });
 
 // create main BrowserWindow when electron is ready
-app.on("ready", () => {
+app.on("ready", async () => {
     mainWindow = createMainWindow();
+    if (!process.env.BD_SKIP_UPDATECHECK) updateInstaller();
 });
