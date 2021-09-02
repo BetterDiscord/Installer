@@ -18,7 +18,7 @@
         background-color: var(--bg3);
     }
 
-    .progrss-fill {
+    .progress-fill {
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
