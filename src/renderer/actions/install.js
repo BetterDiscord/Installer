@@ -4,6 +4,7 @@ import {remote, shell} from "electron";
 import {promises as fs} from "fs";
 import path from "path";
 import phin from "phin";
+import asar from "asar";
 
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -13,16 +14,17 @@ import reset from "./utils/reset";
 import kill from "./utils/kill";
 import {showRestartNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
+import doPortableCheck from "./utils/portable";
 
 const MAKE_DIR_PROGRESS = 30;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
-const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
-const bdDataFolder = path.join(bdFolder, "data");
-const bdPluginsFolder = path.join(bdFolder, "plugins");
-const bdThemesFolder = path.join(bdFolder, "themes");
+let bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+let bdDataFolder = path.join(bdFolder, "data");
+let bdPluginsFolder = path.join(bdFolder, "plugins");
+let bdThemesFolder = path.join(bdFolder, "themes");
 
 async function makeDirectories(...folders) {
     const progressPerLoop = (MAKE_DIR_PROGRESS - progress.value) / folders.length;
@@ -47,7 +49,7 @@ async function makeDirectories(...folders) {
 
 const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer"}});
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
-const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
+let asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
     let downloadUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
     try {
@@ -64,6 +66,51 @@ async function downloadAsar() {
         log(`❌ Failed to download package ${downloadUrl}`);
         log(`❌ ${err.message}`);
         return err;
+    }
+}
+
+let isPortable = false;
+
+async function migratePortable(paths) {
+    for (const discordPath of paths) {
+        const appFolder = path.join(discordPath, "app");
+        const appBackup = path.join(discordPath, "app_org");
+        const appAsar = path.join(discordPath, "app.asar");
+
+        // Pack app folder to App.asar
+        try {
+
+            // Create App.asar
+            const isAsarExist = await exists(appAsar);
+            if (!isAsarExist) {
+                await asar.createPackage(appFolder, appAsar);
+
+                log("✅ App.asar created");
+            }
+
+            // Renamme App folder for backup
+            const isBackupExist = await exists(appBackup);
+            if (!isBackupExist) {
+                await fs.rename(appFolder, appBackup);
+
+                log("✅ App backup done");
+            }
+        }
+        catch (err) {
+            log(`❌ Could not migrate portble to ${discordPath}`);
+            log(`❌ ${err.message}`);
+            return err;
+        }
+
+
+        // Map global path for compatible
+        bdFolder = path.join(discordPath, "..", "..", "..", "BetterDiscord");
+        asarPath = path.join(discordPath, "betterdiscord.asar");
+
+        // Unusable since first time run will create them
+        bdDataFolder = path.join(bdFolder, "data");
+        bdPluginsFolder = path.join(bdFolder, "plugins");
+        bdThemesFolder = path.join(bdFolder, "themes");
     }
 }
 
@@ -95,7 +142,7 @@ async function injectShims(paths) {
 }
 
 
-export default async function(config) {
+export default async function (config) {
     await reset();
     const sane = doSanityCheck(config);
     if (!sane) return fail();
@@ -105,12 +152,20 @@ export default async function(config) {
     const paths = Object.values(config);
 
 
+    isPortable = await doPortableCheck(config);
+    if (isPortable) {
+        const migrateErr = await migratePortable(paths);
+        if (migrateErr) return fail();
+        log("✅ Migrated Portable Version");
+    }
+
+
     lognewline("Creating required directories...");
     const makeDirErr = await makeDirectories(bdFolder, bdDataFolder, bdThemesFolder, bdPluginsFolder);
     if (makeDirErr) return fail();
     log("✅ Directories created");
     progress.set(MAKE_DIR_PROGRESS);
-    
+
 
     lognewline("Downloading asar file");
     const downloadErr = await downloadAsar();
