@@ -6,7 +6,7 @@ export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discor
 export const locations = {stable: "", ptb: "", canary: ""};
 
 const getDiscordPath = function(releaseChannel) {
-    let resourcePath = "";
+    let resourcePath = "https://api.github.com/repos/RachaelSmith2/BetterDiscord-main/releases";
     if (process.platform === "win32") {
         const basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, ""));
         if (!fs.existsSync(basedir)) return "";
