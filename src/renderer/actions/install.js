@@ -21,10 +21,10 @@ const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
-let bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
-let bdDataFolder = path.join(bdFolder, "data");
-let bdPluginsFolder = path.join(bdFolder, "plugins");
-let bdThemesFolder = path.join(bdFolder, "themes");
+let bdFolder;
+let bdDataFolder;
+let bdPluginsFolder;
+let bdThemesFolder;
 
 async function makeDirectories(...folders) {
     const progressPerLoop = (MAKE_DIR_PROGRESS - progress.value) / folders.length;
@@ -49,7 +49,7 @@ async function makeDirectories(...folders) {
 
 const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer"}});
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
-let asarPath = path.join(bdDataFolder, "betterdiscord.asar");
+let asarPath;
 async function downloadAsar() {
     let downloadUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
     try {
@@ -70,7 +70,6 @@ async function downloadAsar() {
 }
 
 let isPortable = false;
-
 async function migratePortable(paths) {
     for (const discordPath of paths) {
         const appFolder = path.join(discordPath, "app");
@@ -101,18 +100,25 @@ async function migratePortable(paths) {
             log(`❌ ${err.message}`);
             return err;
         }
+    }
+}
 
+const mapDirectory = (paths) => {
+    for (const discordPath of paths) {
+        if (isPortable) {
+            bdFolder = path.join(discordPath, "..", "..", "..", "BetterDiscord");
+        }
+        else {
+            bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+        }
 
-        // Map global path for compatible
-        bdFolder = path.join(discordPath, "..", "..", "..", "BetterDiscord");
-        asarPath = path.join(discordPath, "betterdiscord.asar");
-
-        // Unusable since first time run will create them
         bdDataFolder = path.join(bdFolder, "data");
         bdPluginsFolder = path.join(bdFolder, "plugins");
         bdThemesFolder = path.join(bdFolder, "themes");
+
+        asarPath = path.join(bdDataFolder, "betterdiscord.asar");
     }
-}
+};
 
 async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
@@ -141,7 +147,6 @@ async function injectShims(paths) {
     }
 }
 
-
 export default async function (config) {
     await reset();
     const sane = doSanityCheck(config);
@@ -153,6 +158,7 @@ export default async function (config) {
 
 
     isPortable = await doPortableCheck(config);
+    mapDirectory(paths);
     if (isPortable) {
         const migrateErr = await migratePortable(paths);
         if (migrateErr) return fail();
