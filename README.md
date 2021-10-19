@@ -65,7 +65,8 @@ These will link you to the latest builds found in the [releases](https://github.
 
 ## Prerequisites
 - [Git](https://git-scm.com)
-- [Node.js](https://nodejs.org/en/) with `npm`.
+- [Node.js](https://nodejs.org/en/)
+- [yarn](https://yarnpkg.com)
 - Command line of your choice.
 
 ## Building
@@ -79,13 +80,13 @@ This will create a local copy of this repository and navigate you to the root fo
 ### 2: Install Dependencies
 Run this command at the root folder to install dependencies:
 ```ps
-npm i
+yarn install
 ```
 
 ### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```ps
-npm run dev
+yarn dev
 ```
 
 ## Additional Scripts
@@ -93,13 +94,13 @@ npm run dev
 ### Linting
 This project uses [ESLint](https://eslint.org/). Run this command to lint your changes:
 ```ps
-npm run lint
+yarn lint
 ```
 
 ### Compiling & Distribution
 
 ```ps
-npm run dist
+yarn dist
 ```
 
 ---
