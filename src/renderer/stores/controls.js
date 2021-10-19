@@ -18,23 +18,15 @@ export const handleKeyboardToggle = (checkbox) => {
 
 export const handleArrowKeys = (container) => {
     container.focus();
-    if (container.hasAttribute('selected-index')) i = container.getAttribute('selected-index');
+    if (container.hasAttribute("selected-index")) i = container.getAttribute("selected-index");
     if (event.key === "ArrowDown") {
-        if (i < (container.children.length - 2)) {
-            i++;
-        }
-        else {
-            i = 0;
-        }
+        if (i < (container.children.length - 2)) i++;
+        else i = 0;
         checkItem(container.children[i].children[0]);
     }
     if (event.key === "ArrowUp") {
-        if (i > 0) {
-            i--;
-        }
-        else {
-            i = container.children.length - 2;
-        }
+        if (i > 0) i--;
+        else i = container.children.length - 2;
         checkItem(container.children[i].children[0]);
     }
 };

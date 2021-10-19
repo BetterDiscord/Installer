@@ -7,7 +7,7 @@
 
 <label class="radio-container">
     <input bind:this={checkbox} type="radio" hidden bind:group on:change {value}>
-    <div tabindex="-1" class="radio-item">
+    <div tabindex="-1" class="radio-item" {...$$restProps}>
         <div>
             <slot name="icon"></slot>
             <slot></slot>

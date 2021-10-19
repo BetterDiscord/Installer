@@ -13,14 +13,17 @@
     canGoBack.set(true);
     nextPage.set(`/${$action}`);
 
+    function updateInstallButtonState() {
+        if (Object.values($platforms).some(r => r)) canGoForward.set(true);
+        else canGoForward.set(false);
+    }
+
     function change({target}) {
         platforms.update(s => {
             s[target.value] = target.checked;
             return s;
         });
-
-        if (Object.values($platforms).some(r => r)) canGoForward.set(true);
-        else canGoForward.set(false);
+        updateInstallButtonState();
     }
 
     async function click(event) {
@@ -37,6 +40,11 @@
             obj[platform] = resourcesPath;
             return obj;
         });
+        platforms.update(obj => {
+            obj[platform] = Boolean(resourcesPath);
+            return obj;
+        });
+        updateInstallButtonState();
     }
 </script>
 
@@ -50,7 +58,14 @@
     </PageHeader>
 
     {#each Object.entries(platformLabels) as [channel, label]}
-        <Multiselect description={($paths[channel]) ? $paths[channel] : "Not Found"} on:change={change} on:click={click} value={channel} checked={$paths[channel] && $platforms[channel]} disabled={!$paths[channel]}>
+        <Multiselect
+            on:change={change}
+            on:click={click}
+            description={$paths[channel] || "Not Found"}
+            value={channel}
+            checked={$paths[channel] && $platforms[channel]}
+            disabled={!$paths[channel]}
+        >
             <img src={getStatic(`images/${channel}.png`)} slot="icon" alt="Platform Icon" />
             {label}
         </Multiselect>

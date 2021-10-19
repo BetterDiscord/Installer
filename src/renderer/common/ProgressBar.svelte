@@ -1,15 +1,16 @@
 <script>
     export let value = 0;
     export let max = 100;
-    export let className = "";
+    let className;
+    export { className as class };
 </script>
 
-<div class={"progress" + (className ? ` ${className}` : "")}>
-    <div class="bar" style="width: {(value / max) * 100}%;"></div>
+<div class="progress-bar {className}" {...$$restProps}>
+    <div class="progress-fill" style="width: {(value / max) * 100}%;"></div>
 </div>
 
 <style>
-    .progress {
+    .progress-bar {
         width: 100%;
         height: 6px;
         border-radius: 6px;
@@ -17,7 +18,7 @@
         background-color: var(--bg3);
     }
 
-    .bar {
+    .progress-fill {
         height: 100%;
         border-radius: 6px;
         overflow: hidden;
@@ -26,11 +27,11 @@
         background-color: var(--accent);
     }
 
-    :global(.error .bar) {
-        background-color: #c13a3a;
+    :global(.progress-bar.error .progress-fill) {
+        background-color: var(--danger);
     }
 
-    :global(.success .bar) {
+    :global(.progress-bar.success .progress-fill) {
         background-color: #3ac172;
     }
 </style>

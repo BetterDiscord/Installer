@@ -1,18 +1,20 @@
 <script>
-    export let hasMargin;
+    export let hasMargin = undefined;;
     export let type = "paragraph";
+    let className = undefined;
+    export { className as class };
 </script>
 
-{#if type == "header"}
-    <h3 class="header"class:has-margin={hasMargin}>
+{#if type === "header"}
+    <h3 class="header {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </h3>
-    {:else if type == "paragraph"}
-    <p class="paragraph" class:has-margin={hasMargin}>
+    {:else if type === "paragraph"}
+    <p class="paragraph {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </p>
-    {:else if type == "subtext"}
-    <span class="subtext" class:has-margin={hasMargin}>
+    {:else if type === "subtext"}
+    <span class="subtext {className}" class:has-margin={hasMargin} {...$$restProps}>
         <slot/>
     </span>
 {/if}

@@ -45,15 +45,15 @@ async function makeDirectories(...folders) {
     }
 }
 
-const getJSON = phin.defaults({method: "GET", parse: "json", headers: {"User-Agent": "BetterDiscord Installer"}});
+const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer"}});
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
-    let downloadUrl = "https://api.github.com/repos/rauenzi/BetterDiscordApp/releases";
+    let downloadUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
     try {
         const response = await getJSON(downloadUrl);
         const releases = response.body;
-        const asset = releases[0].assets.find(a => a.name === "betterdiscord.asar");
+        const asset = releases && releases.length ? releases[0].assets.find(a => a.name === "betterdiscord.asar") : "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases/assets/39982244"; // temporary workaround
         downloadUrl = asset.url;
 
         const resp = await downloadFile(downloadUrl);
