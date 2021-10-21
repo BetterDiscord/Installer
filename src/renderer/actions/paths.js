@@ -8,7 +8,8 @@ export const locations = {stable: "", ptb: "", canary: ""};
 const getDiscordPath = function(releaseChannel) {
     let resourcePath = "";
     if (process.platform === "win32") {
-        const basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, ""));
+        let basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, "")); // Normal install path in AppData\Local
+        if (!fs.existsSync(basedir)) basedir = path.join(process.env.PROGRAMDATA, process.env.USERNAME, releaseChannel.replace(/ /g, "")); // Atypical location in ProgramData\%username%
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
