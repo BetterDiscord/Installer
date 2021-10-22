@@ -21,7 +21,7 @@ const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
-const oldBDFolder = path.join(remote.app.getPath("home"), "Preferences", "betterdiscord"); // MacOS
+const oldBDFolder = path.join(remote.app.getPath("home"), "Library", "Preferences", "betterdiscord"); // Old MacOS
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
@@ -41,7 +41,7 @@ async function transferOldAddons(oldFolder, newFolder) {
         for (let a = 0; a < addons.length; a++) {
             const oldName = path.join(oldFolder, addons[a]);
             const newName = path.join(newFolder, addons[a]);
-            const stats = await fs.stat();
+            const stats = await fs.stat(oldName);
             if (!stats.isFile()) continue;
             try {
                 await fs.rename(oldName, newName);
