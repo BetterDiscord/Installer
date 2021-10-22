@@ -1,5 +1,6 @@
 import {promises as fs} from "fs";
-import del from "del";
+import originalFs from "original-fs";
+import rimraf from "rimraf";
 import path from "path";
 
 import {progress} from "../stores/installation";
@@ -26,7 +27,10 @@ async function deleteShims(paths) {
         const indexFile = path.join(discordPath, "index.js");
         try {
             if (process.platform === "win32" || process.platform === "darwin") {
-                if (await exists(appPath)) await del(appPath, {force: true});
+                if (await exists(appPath)) {
+                    const error = await new Promise(r => rimraf(appPath, originalFs, r));
+                    if (error) throw error; // Throw instead because there are multiple throw points
+                }
             }
             else {
                 if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
