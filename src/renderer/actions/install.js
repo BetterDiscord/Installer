@@ -15,14 +15,43 @@ import {showRestartNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
 const MAKE_DIR_PROGRESS = 30;
+const CHECK_OLD_INSTALL = 40;
+const TRANSFER_OLD_ADDONS = 50;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
+const oldBDFolder = path.join(remote.app.getPath("home"), "Preferences", "betterdiscord"); // MacOS
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
 const bdThemesFolder = path.join(bdFolder, "themes");
+
+async function checkOldMacOS(folder) {
+    if (await exists(folder)) {
+        log(`⚠️ Found old BD installation: ${folder}`);
+        return true;
+    }
+    return false;
+}
+
+async function transferOldAddons(oldFolder, newFolder) {
+    if (await exists(oldFolder)) {
+        const addons = await fs.readdir(oldFolder);
+        for (let a = 0; a < addons.length; a++) {
+            const oldName = path.join(oldFolder, addons[a]);
+            const newName = path.join(newFolder, addons[a]);
+            const stats = await fs.stat();
+            if (!stats.isFile()) continue;
+            try {
+                await fs.rename(oldName, newName);
+            }
+            catch (err) {
+                log(`❌ Failed to transfer: ${addons[a]}`);
+            }
+        }
+    }
+}
 
 async function makeDirectories(...folders) {
     const progressPerLoop = (MAKE_DIR_PROGRESS - progress.value) / folders.length;
@@ -110,6 +139,29 @@ export default async function(config) {
     if (makeDirErr) return fail();
     log("✅ Directories created");
     progress.set(MAKE_DIR_PROGRESS);
+
+
+    if (process.platform === "darwin") {
+        lognewline("Checking for old MacOS installation...");
+        const found = await checkOldMacOS(oldBDFolder);
+        progress.set(CHECK_OLD_INSTALL);
+        if (found) {
+            const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
+                type: "question",
+                title: "Old Install Found",
+                message: "Found an old BD installation, do you want to transfer your plugins and themes?",
+                noLink: true,
+                cancelId: 1,
+                buttons: ["Yes", "No"]
+            });
+        
+            if (confirmation.response === 0) {
+                await transferOldAddons(path.join(oldBDFolder, "plugins"), path.join(bdFolder, "plugins"));
+                await transferOldAddons(path.join(oldBDFolder, "themes"), path.join(bdFolder, "themes"));
+                progress.set(TRANSFER_OLD_ADDONS);
+            }
+        }
+    }
     
 
     lognewline("Downloading asar file");
