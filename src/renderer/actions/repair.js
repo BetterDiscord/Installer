@@ -2,7 +2,8 @@
 import {progress, status} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
-import del from "del";
+import originalFs from "original-fs";
+import rimraf from "rimraf";
 import path from "path";
 import install from "./install.js";
 import {log, lognewline} from "./utils/log";
@@ -23,16 +24,16 @@ async function deleteAppDirs(paths) {
     for (const discordPath of paths) {
         log("Removing " + discordPath);
         const appPath = path.join(discordPath, "app");
-        try {
-            if (await exists(appPath)) await del(appPath, {force: true});
-            log("✅ Deletion successful");
-            progress.set(progress.value + progressPerLoop);
+        if (await exists(appPath)) {
+            const error = await new Promise(resolve => rimraf(appPath, originalFs, resolve));
+            if (error) {
+                log(` Could not delete folder ${appPath}`);
+                log(`❌ ${error.message}`);
+                return error;
+            }
         }
-        catch (err) {
-            log(` Could not delete folder ${appPath}`);
-            log(`❌ ${err.message}`);
-            return err;
-        }
+        log("✅ Deletion successful");
+        progress.set(progress.value + progressPerLoop);
     }
 }
 
@@ -44,7 +45,16 @@ async function deleteModuleDirs(config) {
         const roaming = path.join(remote.app.getPath("userData"), "..", platforms[channel].replace(" ", "").toLowerCase());
         try {
             const versionDir = (await fs.readdir(roaming)).find(d => d.split(".").length > 2);
-            if (await exists(path.join(versionDir, "modules"))) await del(versionDir, {force: true});
+            const modulesPath = path.join(roaming, versionDir, "modules");
+            log("Removing " + modulesPath);
+            if (await exists(modulesPath)) {
+                const error = await new Promise(resolve => rimraf(path.join(modulesPath), originalFs, resolve));
+                if (error) {
+                    log(`❌ Could not delete modules in ${roaming}`);
+                    log(`❌ ${error.message}`);
+                    return error;
+                }
+            }
             log("✅ Deletion successful");
             progress.set(progress.value + progressPerLoop);
         }
@@ -110,7 +120,7 @@ export default async function(config) {
     lognewline("Deleting discord modules...");
     const deleteModulesErr = await deleteModuleDirs(config);
     if (deleteModulesErr) return fail();
-    log("✅ Shims deleted");
+    log("✅ Modules deleted");
     progress.set(DELETE_MODULE_DIRS_PROGRESS);
 
 

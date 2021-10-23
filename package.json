@@ -3,7 +3,7 @@
   "productName": "BetterDiscord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -15,11 +15,9 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "semver": "^7.3.5",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "del": "^6.0.0",
     "electron": "^9.4.0",
     "electron-builder": "^22.4.1",
     "electron-webpack": "^2.8.2",
@@ -28,6 +26,8 @@
     "find-process": "^1.4.4",
     "focus-visible": "^5.2.0",
     "phin": "^3.6.0",
+    "rimraf": "^3.0.2",
+    "semver": "^7.3.5",
     "svelte": "^3.38.2",
     "svelte-loader": "^3.0.0",
     "svelte-spa-router": "^3.1.0",
