@@ -11,7 +11,7 @@
     "lint": "eslint --ext .svelte,.js src/",
     "stats": "webpack --json --profile --config webpack.renderer.js > dist/stats.json",
     "analyze": "webpack-bundle-analyzer dist/stats.json",
-    "dist": "yarn compile && electron-builder",
+    "dist": "yarn compile && electron-builder -p never",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
