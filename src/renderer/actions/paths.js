@@ -8,9 +8,10 @@ export const locations = {stable: "", ptb: "", canary: ""};
 const getDiscordPath = function(releaseChannel) {
     let resourcePath = "";
     if (process.platform === "win32") {
-        const basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, ""));
+        let basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, "")); // Normal install path in AppData\Local
+        if (!fs.existsSync(basedir)) basedir = path.join(process.env.PROGRAMDATA, process.env.USERNAME, releaseChannel.replace(/ /g, "")); // Atypical location in ProgramData\%username%
         if (!fs.existsSync(basedir)) return "";
-        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort()[0];
+        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         resourcePath = path.join(basedir, version, "resources");
     }
@@ -20,7 +21,7 @@ const getDiscordPath = function(releaseChannel) {
     else {
         const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
         if (!fs.existsSync(basedir)) return "";
-        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort()[0];
+        const version = fs.readdirSync(basedir).filter(f => fs.lstatSync(path.join(basedir, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         resourcePath = path.join(basedir, version, "modules", "discord_desktop_core");
     }
@@ -55,7 +56,7 @@ const validateWindows = function(channel, proposedPath) {
     const selected = path.basename(proposedPath);
     const isBaseDir = selected === channelName;
     if (isBaseDir) {
-        const version = fs.readdirSync(proposedPath).filter(f => fs.lstatSync(path.join(proposedPath, f)).isDirectory() && f.split(".").length > 1).sort()[0];
+        const version = fs.readdirSync(proposedPath).filter(f => fs.lstatSync(path.join(proposedPath, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         resourcePath = path.join(proposedPath, version, "resources");
     }
@@ -90,7 +91,7 @@ const validateLinux = function(channel, proposedPath) {
     let resourcePath = "";
     const selected = path.basename(proposedPath);
     if (selected === channelName) {
-        const version = fs.readdirSync(proposedPath).filter(f => fs.lstatSync(path.join(proposedPath, f)).isDirectory() && f.split(".").length > 1).sort()[0];
+        const version = fs.readdirSync(proposedPath).filter(f => fs.lstatSync(path.join(proposedPath, f)).isDirectory() && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         resourcePath = path.join(proposedPath, version, "modules", "discord_desktop_core");
     }

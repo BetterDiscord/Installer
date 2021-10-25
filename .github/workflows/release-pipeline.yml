@@ -1,0 +1,206 @@
+name: Release Pipeline
+
+# Execution needs to be triggered manually at https://github.com/BetterDiscord/Installer/actions/workflows/release-pipeline.yml.
+
+# This pipeline is pretty hard-coded and will deliver
+# identical results no matter the branch it's run against.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: The version label to be used for this release
+        required: true
+
+concurrency: release
+
+jobs:
+
+  # Checkout 'release', merge 'development', bump version, upload source artifact.
+  prepare:
+    name: Prepare Repo
+    runs-on: ubuntu-latest
+    outputs:
+      old_version: ${{ steps.version_bump.outputs.old_version }}
+      new_version: ${{ steps.version_bump.outputs.new_version }}
+    steps:
+
+      - name: checkout 'release'
+        uses: actions/checkout@v2
+        with:
+          ref: 'release'
+          fetch-depth: 0
+
+      - name: merge 'development' and bump version
+        id: version_bump
+        run: |
+          git config --global user.name "BetterDiscord CI"
+          git config --global user.email "BetterDiscord@users.noreply.github.com"
+          git merge --no-ff --no-commit 'origin/development'
+          node << 'EOF'
+            const fs = require("fs");
+            const packageJson = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+            let version = process.env.VERSION_TAG;
+            if (/^v\d/.test(version)) version = version.slice(1);
+            if (
+              !/^\d/.test(version) || version.includes("-") && !/[a-z\d]$/.test(version)
+            ) throw new Error(`Bad version tag: '${process.env.VERSION_TAG}'`);
+            if (version.includes("-") && !/\.\d+$/.test(version)) version += ".0";
+            version = version.replace(/\.+/g, ".");
+            fs.writeFileSync("package.json", JSON.stringify({
+              ...packageJson,
+              version,
+            }, null, 2) + "\n");
+            let oldVersion = "v" + packageJson.version;
+            let newVersion = "v" + version;
+            console.log(`::set-output name=old_version::${oldVersion}`);
+            console.log(`::set-output name=new_version::${newVersion}`);
+            fs.writeFileSync("commit-message", `CI: Prepare release '${ newVersion }`);
+          EOF
+          git add package.json
+          git commit -F commit-message
+        env:
+          VERSION_TAG: ${{ github.event.inputs.version_tag }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: source
+          path: |
+            ./*
+            !.git/config
+
+  # Download source artifact, build, upload build artifact.
+  # Runs once on each release platform.
+  build:
+    name: Build
+    needs: prepare
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          # ordered by how fast they build (muh cosmetics)
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: source
+
+      - run: yarn install && yarn dist
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ success() && matrix.os == 'ubuntu-latest' }}
+        with:
+          name: build
+          path: dist/BetterDiscord-Linux.AppImage
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ success() && matrix.os == 'windows-latest' }}
+        with:
+          name: build
+          path: dist/BetterDiscord-Windows.exe
+          if-no-files-found: error
+
+      - if: ${{ success() && matrix.os == 'macos-latest' }}
+        run: mv -f dist/BetterDiscord-*-mac.zip dist/BetterDiscord-Mac.zip
+      - if: ${{ success() && matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: dist/BetterDiscord-Mac.zip
+          if-no-files-found: error
+
+  # Download source artifact, push to 'release'.
+  push_changes:
+    name: Push Version Bump
+    needs:
+      - prepare
+      - build
+    runs-on: ubuntu-latest
+    outputs:
+      sha_1: ${{ steps.push.outputs.sha_1 }}
+    steps:
+
+      - name: checkout 'development'
+        uses: actions/checkout@v2
+        with:
+          ref: 'development'
+          token: ${{ secrets.CI_PAT }}
+          clean: false
+      - uses: actions/download-artifact@v2
+        with:
+          name: source
+
+      - name: merge 'release' and push everything
+        id: push
+        run: |
+          git checkout 'development'
+          git config --global user.name "BetterDiscord CI"
+          git config --global user.email "BetterDiscord@users.noreply.github.com"
+          # TODO: rebase 'development' on 'release'
+          git merge --ff-only --no-commit 'release'
+          SHA1=$(git rev-parse --verify HEAD)
+          git tag "$NEW_VERSION" "$SHA1"
+          git push --all --follow-tags
+          echo "::set-output name=sha_1::$SHA1"
+        env:
+          NEW_VERSION: ${{ needs.prepare.outputs.new_version }}
+
+  # Download build artifact, do github release.
+  publish:
+    name: Draft Release
+    needs:
+      - prepare
+      - build
+      - push_changes
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.push_changes.outputs.sha_1 }}
+
+      - name: authenticate gh-cli
+        run: echo "$GITHUB_TOKEN_STUPIDO" | gh auth login --with-token
+        env:
+          GITHUB_TOKEN_STUPIDO: ${{ secrets.CI_PAT }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+
+      - name: upload release draft
+        run: |
+          # Release notes template:
+          cat > draft-release << 'EOF'
+
+            ## What's Changed
+            - The installer repo now has CI-backed releases. (@Inve1951)
+            - .......
+
+            <!--
+            ## New Contributors
+            - @Baits4000 made their first contribution in #7000.
+            -->
+
+            The full list of changes can be viewed at https://github.com/BetterDiscord/Installer/compare/$OLD_VERSION...$NEW_VERSION
+
+          EOF
+          echo "$(cat draft-release)" \
+          | sed -e 's/$SHA1/'"$SHA1"'/' - \
+          | sed -e 's/$OLD_VERSION/'"$OLD_VERSION"'/' - \
+          | sed -e 's/$NEW_VERSION/'"$NEW_VERSION"'/' - \
+          | sed -e 's/$NAKED_INPUT_VERSION_TAG/'"$NAKED_INPUT_VERSION_TAG"'/' - \
+          | gh release create "$NEW_VERSION" --draft --title "$NEW_VERSION" --target "$SHA1" --notes-file - \
+            "BetterDiscord-Linux.AppImage#Linux (AppImage)" \
+            "BetterDiscord-Mac.zip#Mac OS (Zip)" \
+            "BetterDiscord-Windows.exe#Windows (Exe)"
+        env:
+          SHA1: ${{ needs.push_changes.outputs.sha_1 }}
+          OLD_VERSION: ${{ needs.prepare.outputs.old_version }}
+          NEW_VERSION: ${{ needs.prepare.outputs.new_version }}
+          NAKED_INPUT_VERSION_TAG: ${{ github.event.inputs.version_tag }}
