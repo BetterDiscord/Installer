@@ -55,7 +55,7 @@ jobs:
             let newVersion = "v" + version;
             console.log(`::set-output name=old_version::${oldVersion}`);
             console.log(`::set-output name=new_version::${newVersion}`);
-            fs.writeFileSync("commit-message", `CI: Prepare release '${ newVersion }`);
+            fs.writeFileSync("commit-message", `CI: Prepare release '${newVersion}`);
           EOF
           git add package.json
           git commit -F commit-message
@@ -175,22 +175,7 @@ jobs:
 
       - name: upload release draft
         run: |
-          # Release notes template:
-          cat > draft-release << 'EOF'
-
-            ## What's Changed
-            - The installer repo now has CI-backed releases. (@Inve1951)
-            - .......
-
-            <!--
-            ## New Contributors
-            - @Baits4000 made their first contribution in #7000.
-            -->
-
-            The full list of changes can be viewed at https://github.com/BetterDiscord/Installer/compare/$OLD_VERSION...$NEW_VERSION
-
-          EOF
-          echo "$(cat draft-release)" \
+          cat "$RELEASE_NOTES_TEMPLATE_LOCATION" \
           | sed -e 's/$SHA1/'"$SHA1"'/' - \
           | sed -e 's/$OLD_VERSION/'"$OLD_VERSION"'/' - \
           | sed -e 's/$NEW_VERSION/'"$NEW_VERSION"'/' - \
@@ -204,3 +189,4 @@ jobs:
           OLD_VERSION: ${{ needs.prepare.outputs.old_version }}
           NEW_VERSION: ${{ needs.prepare.outputs.new_version }}
           NAKED_INPUT_VERSION_TAG: ${{ github.event.inputs.version_tag }}
+          RELEASE_NOTES_TEMPLATE_LOCATION: .github/RELEASE_TEMPLATE.md
