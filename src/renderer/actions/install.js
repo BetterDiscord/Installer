@@ -22,7 +22,7 @@ const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
-let oldBDFolder = path.join(remote.app.getPath("home"), "Library", "Preferences", "betterdiscord"); // Old MacOS
+let oldBDFolder;
 let bdFolder;
 let bdDataFolder;
 let bdPluginsFolder;
