@@ -83,7 +83,7 @@ async function showInstallNotice(config) {
     remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
         type: "info",
         title: "Reinstall Complete",
-        message: "Please relaunch discord manually to finish the repair."
+        message: "Please relaunch Discord manually to finish the repair."
     });
 }
 
@@ -117,7 +117,7 @@ export default async function(config) {
     
 
     await new Promise(r => setTimeout(r, 200));
-    lognewline("Deleting discord modules...");
+    lognewline("Deleting Discord modules...");
     const deleteModulesErr = await deleteModuleDirs(config);
     if (deleteModulesErr) return fail();
     log("✅ Modules deleted");
