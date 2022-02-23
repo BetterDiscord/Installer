@@ -2833,10 +2833,10 @@ electron-webpack@^2.8.2:
     webpack-merge "^4.2.2"
     yargs "^15.3.1"
 
-electron@^9.4.0:
-  version "9.4.4"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-9.4.4.tgz#2a74a0655a74bd326216672c5ae6ed3a44451446"
-  integrity sha512-dcPlTrMWQu5xuSm6sYV42KK/BRIqh3erM8v/WtZqaDmG7pkCeJpvw26Dgbqhdt78XmqqGiN96giEe6A3S9vpAQ==
+electron@^11.5.0:
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-11.5.0.tgz#f1650543b9d8f2047d3807755bdb120153ed210f"
+  integrity sha512-WjNDd6lGpxyiNjE3LhnFCAk/D9GIj1rU3GSDealVShhkkkPR3Vh4q8ErXGDl1OAO/faomVa10KoFPUN/pLbNxg==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
