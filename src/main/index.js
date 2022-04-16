@@ -12,8 +12,8 @@ function createMainWindow() {
     const window = new BrowserWindow({
         title: "Powercord Installer",
         frame: false,
-        width: 550,
-        height: 350,
+        width: 650,
+        height: 450,
         resizable: false,
         fullscreenable: false,
         maximizable: false,

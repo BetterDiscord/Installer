@@ -20,19 +20,26 @@ const UNINJECT_PROGRESS = 40;
 const DELETE_FOLDER_PROGRESS = 70;
 const RESTART_DISCORD_PROGRESS = 100;
 
-export async function uninjectClient() {
-    let command = "{sudo}npm run unplug";
-    if (process.platform === "linux") {
-        command = command.replace("{sudo}", "sudo ");
+export async function uninjectClient(channels) {
+    for (const channel of channels) {
+        log(`Uninjecting from: ${channel}`);
+
+        let command = `{sudo}node powercord-injector/new-injectors/index.js uninject ${channel} --no-exit-codes`;
+        if (process.platform === "linux") {
+            command = command.replace("{sudo}", "sudo ");
+        } else {
+            command = command.replace("{sudo}", "");
+        }
+    
+        try {
+            await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
+        } catch(err) {
+            return err;
+        }
     }
- else {command = command.replace("{sudo}", "");}
-
-    const success = await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
-
-    if (!success) return success;
 }
 
-export async function deleteFolder() {
+async function deleteFolder() {
     const error = await new Promise(r => rimraf(powercordFolder, originalFs, r));
 
     if (error) return error;
@@ -46,7 +53,7 @@ export default async function(config) {
     const channels = Object.keys(config);
 
     lognewline("Uninjecting client...");
-    const uninjectClientErrors = await uninjectClient();
+    const uninjectClientErrors = await uninjectClient(channels);
     if (uninjectClientErrors) return fail();
     log("✅ Injection successful");
     progress.set(UNINJECT_PROGRESS);

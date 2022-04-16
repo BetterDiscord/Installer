@@ -4,6 +4,8 @@ import {promises as fs} from "fs";
 import path from "path";
 import cloneRepo from "git-clone/promise";
 import {execSync} from "child_process";
+import originalFs from "original-fs";
+import rimraf from "rimraf";
 
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -16,7 +18,8 @@ import doSanityCheck from "./utils/sanity";
 
 const MAKE_DIR_PROGRESS = 30;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
-const DOWNLOAD_DEPENDENCIES_PROGRESS = 70;
+const DOWNLOAD_INJECTORS_PROGRESS = 70;
+const DOWNLOAD_DEPENDENCIES_PROGRESS = 80;
 const INJECT_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
@@ -67,18 +70,32 @@ export async function downloadDependencies() {
     }
 }
 
-export async function injectClient() {
-    let command = "{sudo}npm run plug";
-    if (process.platform === "linux") {
-        command = command.replace("{sudo}", "sudo ");
-    } else {
-        command = command.replace("{sudo}", "");
-    }
-
+async function cloneInjectorsRepository() {
     try {
-        await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
+        await cloneRepo("git@github.com:xHyroM/powercord-injector.git", `${powercordFolder}/powercord-injector`);
+        await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/powercord`, originalFs, r));
+        await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/.gitmodules`, originalFs, r));
     } catch(err) {
         return err;
+    }
+}
+
+export async function injectClient(channels) {
+    for (const channel of channels) {
+        log(`Injecting into: ${channel}`);
+
+        let command = `{sudo}node powercord-injector/new-injectors/index.js inject ${channel} --no-exit-codes`;
+        if (process.platform === "linux") {
+            command = command.replace("{sudo}", "sudo ");
+        } else {
+            command = command.replace("{sudo}", "");
+        }
+    
+        try {
+            await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
+        } catch(err) {
+            return err;
+        }
     }
 }
 
@@ -108,8 +125,14 @@ export default async function(config) {
     lognewline("Cloning powercord repository...");
     const cloneRepositoryError = await cloneRepository();
     if (cloneRepositoryError) return fail(cloneRepositoryError.toString().includes("failed with status 128") ? "Folder Powercord already exists. Use uninstaller first." : null);
-    log("✅ Repository cloned");
+    log("✅ Repository powercord cloned");
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
+
+    lognewline("Cloning injectors repository...");
+    const cloneInjectorsRepositoryError = await cloneInjectorsRepository();
+    if (cloneInjectorsRepositoryError) return fail(cloneInjectorsRepositoryError.toString().includes("failed with status 128") ? "Folder powercord-injector already exists. Use uninstaller first." : null);
+    log("✅ Repository injectors cloned");
+    progress.set(DOWNLOAD_INJECTORS_PROGRESS)
 
     lognewline("Downloading dependencies...");
     const downloadDependenciesError = await downloadDependencies();
@@ -118,7 +141,7 @@ export default async function(config) {
     progress.set(DOWNLOAD_DEPENDENCIES_PROGRESS);
 
     lognewline("Injecting client...");
-    const injectClientErrors = await injectClient();
+    const injectClientErrors = await injectClient(channels);
     if (injectClientErrors) return fail();
     log("✅ Injection successful");
     progress.set(INJECT_PROGRESS);
