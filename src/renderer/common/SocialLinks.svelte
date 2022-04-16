@@ -1,5 +1,5 @@
 <script>
-    import { tooltip } from "./tooltip";
+    import {tooltip} from "./tooltip";
     
     const webUrl = "https://powercord.dev/";
     const githubUrl = "http://github.com/powercord-org/powercord";

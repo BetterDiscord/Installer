@@ -3,7 +3,7 @@
     import {handleKeyboardToggle, checkItem} from "../stores/controls.js";
 
     export let checked = false;
-    export let label = undefined;
+    export let label;
 
     let checkbox;
 

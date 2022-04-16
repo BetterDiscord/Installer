@@ -2,7 +2,7 @@
     export let value = 0;
     export let max = 100;
     let className;
-    export { className as class };
+    export {className as class};
 </script>
 
 <div class="progress-bar {className}" {...$$restProps}>

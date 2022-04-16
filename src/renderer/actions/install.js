@@ -3,7 +3,7 @@ import {remote} from "electron";
 import {promises as fs} from "fs";
 import path from "path";
 import cloneRepo from "git-clone/promise";
-import { execSync } from "child_process";
+import {execSync} from "child_process";
 
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -44,7 +44,7 @@ async function makeDirectories(...folders) {
 }
 
 async function cloneRepository() {
-    const success = await cloneRepo("git@github.com:powercord-org/powercord.git", powercordFolder)
+    const success = await cloneRepo("git@github.com:powercord-org/powercord.git", powercordFolder);
 
     if (!success) return success;
 }
@@ -57,9 +57,10 @@ export async function downloadDependencies() {
 
 export async function injectClient() {
     let command = "{sudo}npm run plug";
-    if (process.platform === 'linux') {
+    if (process.platform === "linux") {
         command = command.replace("{sudo}", "sudo ");
-    } else command = command.replace("{sudo}", "")
+    }
+ else {command = command.replace("{sudo}", "");}
 
     const success = await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
 
@@ -79,19 +80,19 @@ export default async function(config) {
     log("✅ Directories created");
     progress.set(MAKE_DIR_PROGRESS);
 
-    lognewline("Cloning powercord repository...")
+    lognewline("Cloning powercord repository...");
     const cloneRepositoryError = await cloneRepository();
     if (cloneRepositoryError) return fail();
     log("✅ Repository cloned");
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
 
-    lognewline("Downloading dependencies...")
+    lognewline("Downloading dependencies...");
     const downloadDependenciesError = await downloadDependencies();
     if (downloadDependenciesError) return fail();
     log("✅ Dependencies downloaded");
     progress.set(DOWNLOAD_DEPENDENCIES_PROGRESS);
 
-    lognewline("Injecting client...")
+    lognewline("Injecting client...");
     const injectClientErrors = await injectClient();
     if (injectClientErrors) return fail();
     log("✅ Injection successful");

@@ -1,6 +1,6 @@
 import originalFs from "original-fs";
 import rimraf from "rimraf";
-import { execSync } from "child_process";
+import {execSync} from "child_process";
 import {remote} from "electron";
 import path from "path";
 
@@ -22,9 +22,10 @@ const RESTART_DISCORD_PROGRESS = 100;
 
 export async function uninjectClient() {
     let command = "{sudo}npm run unplug";
-    if (process.platform === 'linux') {
+    if (process.platform === "linux") {
         command = command.replace("{sudo}", "sudo ");
-    } else command = command.replace("{sudo}", "")
+    }
+ else {command = command.replace("{sudo}", "");}
 
     const success = await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
 
@@ -44,7 +45,7 @@ export default async function(config) {
 
     const channels = Object.keys(config);
 
-    lognewline("Uninjecting client...")
+    lognewline("Uninjecting client...");
     const uninjectClientErrors = await uninjectClient();
     if (uninjectClientErrors) return fail();
     log("✅ Injection successful");

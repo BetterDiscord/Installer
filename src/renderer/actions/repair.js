@@ -1,6 +1,6 @@
 
 import {progress} from "../stores/installation";
-import { execSync } from "child_process";
+import {execSync} from "child_process";
 import {remote} from "electron";
 import path from "path";
 
@@ -10,7 +10,7 @@ import fail from "./utils/fail";
 import kill from "./utils/kill";
 import reset from "./utils/reset";
 import doSanityCheck from "./utils/sanity";
-import { downloadDependencies, injectClient } from "./install";
+import {downloadDependencies, injectClient} from "./install";
 
 const PULL_FROM_GIT = 40;
 const DOWNLOAD_DEPENDENCIES_PROGRESS = 60;
@@ -40,13 +40,13 @@ export default async function(config) {
     log("✅ Pull successful");
     progress.set(PULL_FROM_GIT);
 
-    lognewline("Downloading dependencies...")
+    lognewline("Downloading dependencies...");
     const downloadDependenciesError = await downloadDependencies();
     if (downloadDependenciesError) return fail();
     log("✅ Dependencies downloaded");
     progress.set(DOWNLOAD_DEPENDENCIES_PROGRESS);
 
-    lognewline("Injecting client...")
+    lognewline("Injecting client...");
     const injectClientErrors = await injectClient();
     if (injectClientErrors) return fail();
     log("✅ Injection successful");

@@ -1,8 +1,8 @@
 <script>
-    export let hasMargin = undefined;;
+    export let hasMargin; ;
     export let type = "paragraph";
-    let className = undefined;
-    export { className as class };
+    let className;
+    export {className as class};
 </script>
 
 {#if type === "header"}

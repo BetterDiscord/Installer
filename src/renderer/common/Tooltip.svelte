@@ -4,7 +4,7 @@
     export let position = "top";
     export let x = 0;
     export let y = 0;
-    export let element = undefined;
+    export let element;
 
     $: colors = ["default", "danger", "accent"];
     $: positions = ["top", "bottom", "left", "right"];
