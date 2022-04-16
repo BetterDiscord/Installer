@@ -9,6 +9,7 @@
 <p align="center">
   <img alt="Preview" width="524" alt="Hero image" src="https://i.imgur.com/evmFCAf.png"/>
   <br/>
+  <b>The official powercord only supports canary! I do not recommend installing it on other clients.</b><br/>
   A simple standalone program which automates the installation, removal and maintenance of <a href="https://github.com/powercord-org/powercord">Powercord</a>.
   <br/>
   <br/>
@@ -27,7 +28,7 @@
 
 # Overview
 
-This repository contains the source code for the BetterDiscord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/).
+This repository contains the source code for the Powercord installer. This installer is written with [electron-webpack](https://webpack.electron.build/) and [Svelte 3](https://svelte.dev/).
 
 ## Downloads
 
