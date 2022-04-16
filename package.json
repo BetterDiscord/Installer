@@ -3,7 +3,7 @@
   "productName": "Powercord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of Powercord.",
   "author": "BetterDiscord",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
