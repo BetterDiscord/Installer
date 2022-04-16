@@ -33,8 +33,8 @@ This repository contains the source code for the BetterDiscord installer. This i
 
 These will link you to the latest builds found in the [releases](https://github.com/xHyroM/powercord-installer/releases/) tab of this repository.
 
-| [Windows (7+)](https://github.com/xHyroM/powercord-installer/releases/latest/download/BetterDiscord-Windows.exe) | [macOS (10.10+)](https://github.com/xHyroM/powercord-installer/releases/latest/download/BetterDiscord-Mac.zip) | [Linux](https://github.com/xHyroM/powercord-installer/releases/latest/download/BetterDiscord-Linux.AppImage) |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [Windows (7+)](https://github.com/xHyroM/powercord-installer/releases/latest/download/Powercord-Windows.exe) | [macOS (10.10+)](https://github.com/xHyroM/powercord-installer/releases/latest/download/Powercord-Mac.zip) | [Linux](https://github.com/xHyroM/powercord-installer/releases/latest/download/Powercord-Linux.AppImage) |
+| ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 
 
 
