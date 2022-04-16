@@ -11,6 +11,7 @@ let mainWindow; // global reference to mainWindow (necessary to prevent window f
 function createMainWindow() {
     const window = new BrowserWindow({
         title: "Powercord Installer",
+        icon: path.join(__dirname, "../../assets/icon.ico"),
         frame: false,
         width: 550,
         height: 350,

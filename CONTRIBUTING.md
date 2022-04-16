@@ -1,4 +1,4 @@
-# Contributing to BetterDiscord's Installer
+# Contributing to Powercord's Installer
 
 Thanks for taking the time to contribute!
 

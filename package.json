@@ -2,8 +2,8 @@
   "name": "powercord-installer",
   "productName": "Powercord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of Powercord.",
-  "author": "BetterDiscord",
-  "version": "1.0.0",
+  "author": "xHyroM",
+  "version": "1.0.1",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -43,7 +43,7 @@
     "afterAllArtifactBuild": "scripts/fixmac.js",
     "win": {
       "artifactName": "${productName}-Windows.${ext}",
-      "icon": "assets/icon.png",
+      "icon": "assets/icon.ico",
       "target": {
         "target": "portable",
         "arch": [
@@ -57,7 +57,7 @@
     },
     "mac": {
       "artifactName": "${productName}-Mac.${ext}",
-      "icon": "assets/icon.png",
+      "icon": "assets/icon.icns",
       "category": "public.app-category.social-networking",
       "target": {
         "target": "zip",

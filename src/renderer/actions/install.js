@@ -22,6 +22,14 @@ const RESTART_DISCORD_PROGRESS = 100;
 
 const powercordFolder = path.join(remote.app.getPath("appData"), "Powercord");
 
+async function checkFor(type) {
+    try {
+        await execSync(`${type} --version`)
+    } catch(err) {
+        return err;
+    }
+}
+
 async function makeDirectories(...folders) {
     const progressPerLoop = (MAKE_DIR_PROGRESS - progress.value) / folders.length;
     for (const folder of folders) {
@@ -44,27 +52,34 @@ async function makeDirectories(...folders) {
 }
 
 async function cloneRepository() {
-    const success = await cloneRepo("git@github.com:powercord-org/powercord.git", powercordFolder);
-
-    if (!success) return success;
+    try {
+        await cloneRepo("git@github.com:powercord-org/powercord.git", powercordFolder);
+    } catch(err) {
+        return err;
+    }
 }
 
 export async function downloadDependencies() {
-    const success = await execSync("npm install", {cwd: powercordFolder, stdio: "inherit"});
-
-    if (!success) return success;
+    try {
+        await execSync("npm install", {cwd: powercordFolder, stdio: "inherit"});
+    } catch(err) {
+        return err;
+    }
 }
 
 export async function injectClient() {
     let command = "{sudo}npm run plug";
     if (process.platform === "linux") {
         command = command.replace("{sudo}", "sudo ");
+    } else {
+        command = command.replace("{sudo}", "");
     }
- else {command = command.replace("{sudo}", "");}
 
-    const success = await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
-
-    if (!success) return success;
+    try {
+        await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
+    } catch(err) {
+        return err;
+    }
 }
 
 export default async function(config) {
@@ -74,6 +89,16 @@ export default async function(config) {
 
     const channels = Object.keys(config);
 
+    lognewline("Checking for git...");
+    const checkForGitError = await checkFor("git");
+    if (checkForGitError) return fail("Git not found");
+    log("✅ Git found");
+
+    lognewline("Checking for node...");
+    const checkForNodeError = await checkFor("node");
+    if (checkForNodeError) return fail("Node.js not found");
+    log("✅ Node.js found");
+
     lognewline("Creating required directories...");
     const makeDirErr = await makeDirectories(powercordFolder);
     if (makeDirErr) return fail();
@@ -82,7 +107,7 @@ export default async function(config) {
 
     lognewline("Cloning powercord repository...");
     const cloneRepositoryError = await cloneRepository();
-    if (cloneRepositoryError) return fail();
+    if (cloneRepositoryError) return fail(cloneRepositoryError.toString().includes("failed with status 128") ? "Folder Powercord already exists. Use uninstaller first." : null);
     log("✅ Repository cloned");
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
 

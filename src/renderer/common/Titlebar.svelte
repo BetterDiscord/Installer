@@ -49,14 +49,6 @@
         -webkit-app-region: drag;
     }
 
-    .wordmark {
-        width: 15px;
-        height: auto;
-        margin: 0 8px;
-        fill: var(--text-muted);
-        opacity: .5;
-    }
-
     .window-controls {
         display: flex;
         align-items: center;
