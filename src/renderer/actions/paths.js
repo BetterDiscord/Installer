@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 import {remote} from "electron";
 
-export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
-export const locations = {stable: "", ptb: "", canary: ""};
+export const platforms = {canary: "Discord Canary"};
+export const locations = {canary: ""};
 
 const getDiscordPath = function(releaseChannel) {
     let resourcePath = "";
@@ -83,7 +83,7 @@ const validateMac = function(channel, proposedPath) {
 
 const validateLinux = function(channel, proposedPath) {
     if (proposedPath.includes("/snap/")) {
-        remote.dialog.showErrorBox("BetterDiscord Incompatible", "BetterDiscord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
+        remote.dialog.showErrorBox("Powercord Incompatible", "Powercord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
         return "";
     }
     const channelName = platforms[channel].toLowerCase().replace(" ", "");

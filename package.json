@@ -1,9 +1,9 @@
 {
-  "name": "betterdiscord-installer",
-  "productName": "BetterDiscord Installer",
-  "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
+  "name": "powercord-installer",
+  "productName": "Powercord Installer",
+  "description": "A simple standalone program which automates the installation, removal and maintenance of Powercord.",
   "author": "BetterDiscord",
-  "version": "1.1.1",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -15,6 +15,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "git-clone": "^0.2.0",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
@@ -36,13 +37,13 @@
     "webpack-bundle-analyzer": "^4.4.0"
   },
   "build": {
-    "appId": "app.betterdiscord.installer",
-    "productName": "BetterDiscord",
+    "appId": "app.powercord.installer",
+    "productName": "Powercord",
     "copyright": "Copyright © 2021 BetterDiscord",
     "afterAllArtifactBuild": "scripts/fixmac.js",
     "win": {
       "artifactName": "${productName}-Windows.${ext}",
-      "icon": "assets/icon.ico",
+      "icon": "assets/icon.png",
       "target": {
         "target": "portable",
         "arch": [
@@ -56,7 +57,7 @@
     },
     "mac": {
       "artifactName": "${productName}-Mac.${ext}",
-      "icon": "assets/icon.icns",
+      "icon": "assets/icon.png",
       "category": "public.app-category.social-networking",
       "target": {
         "target": "zip",

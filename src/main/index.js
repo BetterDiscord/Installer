@@ -4,13 +4,13 @@ import URL from "url";
 import updateInstaller from "./update_installer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
-app.name = "BetterDiscord";
+app.name = "Powercord";
 
 let mainWindow; // global reference to mainWindow (necessary to prevent window from being garbage collected)
 
 function createMainWindow() {
     const window = new BrowserWindow({
-        title: "BetterDiscord Installer",
+        title: "Powercord Installer",
         frame: false,
         width: 550,
         height: 350,

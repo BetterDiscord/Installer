@@ -1,7 +1,8 @@
 import {log} from "./log";
 import {action, status} from "../../stores/installation";
 
-const discordURL = "https://discord.gg/0Tmfo5ZbORCRqbAd";
+// Garlic-Team discord because unofficial installer :(
+const discordURL = "https://discord.gg/AjKJSBbGm2";
 
 export default function fail() {
     log("");

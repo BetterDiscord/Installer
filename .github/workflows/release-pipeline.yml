@@ -1,6 +1,6 @@
 name: Release Pipeline
 
-# Execution needs to be triggered manually at https://github.com/BetterDiscord/Installer/actions/workflows/release-pipeline.yml.
+# Execution needs to be triggered manually at https://github.com/xHyroM/powercord-installer/actions/workflows/release-pipeline.yml.
 
 # This pipeline is pretty hard-coded and will deliver
 # identical results no matter the branch it's run against.
@@ -34,8 +34,8 @@ jobs:
       - name: merge 'development' and bump version
         id: version_bump
         run: |
-          git config --global user.name "BetterDiscord CI"
-          git config --global user.email "BetterDiscord@users.noreply.github.com"
+          git config --global user.name "Powercord CI"
+          git config --global user.email "xHyroM@users.noreply.github.com"
           git merge --no-ff --no-commit 'origin/development'
           node << 'EOF'
             const fs = require("fs");
@@ -95,23 +95,23 @@ jobs:
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
         with:
           name: build
-          path: dist/BetterDiscord-Linux.AppImage
+          path: dist/Powercord-Linux.AppImage
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v2
         if: ${{ success() && matrix.os == 'windows-latest' }}
         with:
           name: build
-          path: dist/BetterDiscord-Windows.exe
+          path: dist/Powercord-Windows.exe
           if-no-files-found: error
 
       - if: ${{ success() && matrix.os == 'macos-latest' }}
-        run: mv -f dist/BetterDiscord-*-mac.zip dist/BetterDiscord-Mac.zip
+        run: mv -f dist/Powercord-*-mac.zip dist/Powercord-Mac.zip
       - if: ${{ success() && matrix.os == 'macos-latest' }}
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: dist/BetterDiscord-Mac.zip
+          path: dist/Powercord-Mac.zip
           if-no-files-found: error
 
   # Download source artifact, push to 'release'.
@@ -139,8 +139,8 @@ jobs:
         id: push
         run: |
           git checkout 'development'
-          git config --global user.name "BetterDiscord CI"
-          git config --global user.email "BetterDiscord@users.noreply.github.com"
+          git config --global user.name "Powercord CI"
+          git config --global user.email "xHyroM@users.noreply.github.com"
           # TODO: rebase 'development' on 'release'
           git merge --ff-only --no-commit 'release'
           SHA1=$(git rev-parse --verify HEAD)
@@ -181,9 +181,9 @@ jobs:
           | sed -e 's/$NEW_VERSION/'"$NEW_VERSION"'/' - \
           | sed -e 's/$NAKED_INPUT_VERSION_TAG/'"$NAKED_INPUT_VERSION_TAG"'/' - \
           | gh release create "$NEW_VERSION" --draft --title "$NEW_VERSION" --target "$SHA1" --notes-file - \
-            "BetterDiscord-Linux.AppImage#Linux (AppImage)" \
-            "BetterDiscord-Mac.zip#Mac OS (Zip)" \
-            "BetterDiscord-Windows.exe#Windows (Exe)"
+            "Powercord-Linux.AppImage#Linux (AppImage)" \
+            "Powercord-Mac.zip#Mac OS (Zip)" \
+            "Powercord-Windows.exe#Windows (Exe)"
         env:
           SHA1: ${{ needs.push_changes.outputs.sha_1 }}
           OLD_VERSION: ${{ needs.prepare.outputs.old_version }}
