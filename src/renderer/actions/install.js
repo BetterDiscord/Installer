@@ -49,7 +49,7 @@ export async function downloadDependencies() {
 
 async function cloneInjectorsRepository() {
     try {
-        await execSync(`git clone https://github.com/xHyroM/powercord-injector ${powercordFolder}/powercord-injector`);
+        await execSync(`git clone https://github.com/Garlic-Team/powercord-injector ${powercordFolder}/powercord-injector`);
         await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/powercord`, originalFs, r));
         await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/.gitmodules`, originalFs, r));
         return;

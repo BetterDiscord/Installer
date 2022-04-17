@@ -1,6 +1,6 @@
 name: Release Pipeline
 
-# Execution needs to be triggered manually at https://github.com/xHyroM/powercord-installer/actions/workflows/release-pipeline.yml.
+# Execution needs to be triggered manually at https://github.com/Garlic-Team/powercord-installer/actions/workflows/release-pipeline.yml.
 
 # This pipeline is pretty hard-coded and will deliver
 # identical results no matter the branch it's run against.
