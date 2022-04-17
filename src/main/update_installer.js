@@ -11,7 +11,7 @@ const getJSON = phin.defaults({
 });
 
 export default async function () {
-    const downloadUrl = "https://api.github.com/repos/xHyroM/powercord-installer/releases";
+    const downloadUrl = "https://api.github.com/repos/Garlic-Team/powercord-installer/releases";
     console.info(`Powercord Installer ${version}`);
 
     try {
