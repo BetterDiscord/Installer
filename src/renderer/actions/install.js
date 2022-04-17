@@ -1,7 +1,6 @@
 import {progress} from "../stores/installation";
 import {remote} from "electron";
 import path from "path";
-import cloneRepo from "git-clone/promise";
 import {execSync} from "child_process";
 import originalFs from "original-fs";
 import rimraf from "rimraf";
@@ -32,7 +31,8 @@ async function checkFor(type) {
 
 async function cloneRepository() {
     try {
-        await cloneRepo("git@github.com:powercord-org/powercord.git", powercordFolder);
+        await execSync(`git clone https://github.com/powercord-org/powercord ${powercordFolder}`);
+        return;
     } catch(err) {
         return err;
     }
@@ -41,6 +41,7 @@ async function cloneRepository() {
 export async function downloadDependencies() {
     try {
         await execSync("npm install", {cwd: powercordFolder, stdio: "inherit"});
+        return;
     } catch(err) {
         return err;
     }
@@ -48,9 +49,10 @@ export async function downloadDependencies() {
 
 async function cloneInjectorsRepository() {
     try {
-        await cloneRepo("git@github.com:xHyroM/powercord-injector.git", `${powercordFolder}/powercord-injector`);
+        await execSync(`git clone https://github.com/xHyroM/powercord-injector ${powercordFolder}/powercord-injector`);
         await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/powercord`, originalFs, r));
         await new Promise(r => rimraf(`${powercordFolder}/powercord-injector/.gitmodules`, originalFs, r));
+        return;
     } catch(err) {
         return err;
     }
@@ -69,6 +71,7 @@ export async function injectClient(channels) {
     
         try {
             await execSync(command, {cwd: powercordFolder, stdio: "inherit"});
+            return;
         } catch(err) {
             return err;
         }
