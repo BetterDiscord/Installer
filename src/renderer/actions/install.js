@@ -1,6 +1,5 @@
 import {progress} from "../stores/installation";
 import {remote} from "electron";
-import {promises as fs} from "fs";
 import path from "path";
 import cloneRepo from "git-clone/promise";
 import {execSync} from "child_process";
@@ -10,17 +9,15 @@ import rimraf from "rimraf";
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
 import fail from "./utils/fail";
-import exists from "./utils/exists";
 import reset from "./utils/reset";
 import kill from "./utils/kill";
 import {showRestartNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
-const MAKE_DIR_PROGRESS = 30;
-const DOWNLOAD_PACKAGE_PROGRESS = 60;
-const DOWNLOAD_INJECTORS_PROGRESS = 70;
-const DOWNLOAD_DEPENDENCIES_PROGRESS = 80;
-const INJECT_PROGRESS = 90;
+const DOWNLOAD_PACKAGE_PROGRESS = 30;
+const DOWNLOAD_INJECTORS_PROGRESS = 50;
+const DOWNLOAD_DEPENDENCIES_PROGRESS = 70;
+const INJECT_PROGRESS = 80;
 const RESTART_DISCORD_PROGRESS = 100;
 
 const powercordFolder = path.join(remote.app.getPath("appData"), "Powercord");
@@ -30,27 +27,6 @@ async function checkFor(type) {
         await execSync(`${type} --version`)
     } catch(err) {
         return err;
-    }
-}
-
-async function makeDirectories(...folders) {
-    const progressPerLoop = (MAKE_DIR_PROGRESS - progress.value) / folders.length;
-    for (const folder of folders) {
-        if (await exists(folder)) {
-            log(`✅ Directory exists: ${folder}`);
-            progress.set(progress.value + progressPerLoop);
-            continue;
-        }
-        try {
-            await fs.mkdir(folder);
-            progress.set(progress.value + progressPerLoop);
-            log(`✅ Directory created: ${folder}`);
-        }
-        catch (err) {
-            log(`❌ Failed to create directory: ${folder}`);
-            log(`❌ ${err.message}`);
-            return err;
-        }
     }
 }
 
@@ -115,12 +91,6 @@ export default async function(config) {
     const checkForNodeError = await checkFor("node");
     if (checkForNodeError) return fail("Node.js not found");
     log("✅ Node.js found");
-
-    lognewline("Creating required directories...");
-    const makeDirErr = await makeDirectories(powercordFolder);
-    if (makeDirErr) return fail();
-    log("✅ Directories created");
-    progress.set(MAKE_DIR_PROGRESS);
 
     lognewline("Cloning powercord repository...");
     const cloneRepositoryError = await cloneRepository();
