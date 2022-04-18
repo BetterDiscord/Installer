@@ -116,4 +116,4 @@ For information on contributing to this project, please see [CONTRIBUTING.md](/C
 
 # Credits
 
-The whole installer is forked from [BetterDiscord](https://github.com/Garlic-Team/powercord-installer) and modified for [Powercord](https://powercord.dev)
+The whole installer is forked from [BetterDiscord](https://github.com/BetterDiscord/Installer) and modified for [Powercord](https://powercord.dev)
