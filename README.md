@@ -74,7 +74,7 @@ These will link you to the latest builds found in the [releases](https://github.
 
 ### 1: Clone the repository.
 ```ps
-git clone https://github.com/Garlic-Team/powercord-installer && cd installer
+git clone https://github.com/Garlic-Team/powercord-installer && cd powercord-installer
 ```
 This will create a local copy of this repository and navigate you to the root folder of the repository.
 
