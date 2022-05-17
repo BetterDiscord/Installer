@@ -29,11 +29,11 @@
 
         /* Primary backgrounds */
         --bg1: #040405;
-        --bg2: #0c0d10;
-        --bg2-alt: #101116;
+        --bg2: #242831;
+        --bg2-alt: #1d1f28;
         --bg3: #14151b;
         --bg3-alt: #191a21;
-        --bg4: #20212b;
+        --bg4: #3b3d51;
 
         /* Text Colors */
         --text-light: #f1f1f1;
@@ -42,9 +42,9 @@
         --text-link: #5a88ce;
 
         /* Accent colors */
-        --accent: #3a71c1;
-        --accent-hover: #2f5b9d;
-        --accent-faded: rgba(58, 113, 193, 0.4);
+        --accent: #7289da;
+        --accent-hover: #5c6fb1;
+        --accent-faded: #7289da66;
 
         /* Danger colors */
         --danger: #c13a3a;
@@ -87,16 +87,16 @@
     }
 
     :global(::-webkit-scrollbar-thumb) {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 4px;
     }
 
     :global(::-webkit-scrollbar-thumb:hover) {
-        background-color: rgba(255, 255, 255, 0.075);
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
     :global(::-webkit-scrollbar-thumb:active) {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.15);
     }
 
     :global(::-webkit-scrollbar-corner) {
