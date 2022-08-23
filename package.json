@@ -15,25 +15,26 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
     "electron": "^13.6.9",
     "electron-builder": "^23.6.0",
     "electron-webpack": "^2.8.2",
-    "eslint": "^7.21.0",
-    "eslint-plugin-svelte3": "^3.1.2",
+    "eslint": "^8.22.0",
+    "eslint-plugin-svelte3": "^4.0.0",
     "find-process": "https://github.com/BetterDiscord/find-process",
     "focus-visible": "^5.2.0",
     "phin": "^3.7.0",
     "rimraf": "^3.0.2",
     "semver": "^7.3.8",
-    "svelte": "^3.38.2",
+    "svelte": "^3.49.0",
     "svelte-loader": "^3.1.7",
-    "svelte-spa-router": "^3.1.0",
+    "svelte-spa-router": "^3.3.0",
+    "tmp": "^0.2.1",
     "tree-kill": "^1.2.2",
     "webpack": "~5.76.0",
-    "webpack-bundle-analyzer": "^4.4.0"
+    "webpack-bundle-analyzer": "^4.6.0"
   },
   "build": {
     "appId": "app.betterdiscord.installer",
