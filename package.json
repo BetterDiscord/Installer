@@ -3,7 +3,7 @@
   "productName": "BetterDiscord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -15,25 +15,30 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.21"
   },
+  "//": [
+    "IMPORTANT: Electron 13 is the final version that supports our 'remote' API.",
+    "Migrating to Electron 14+ will require a large rewrite of this application."
+  ],
   "devDependencies": {
-    "electron": "^9.4.0",
-    "electron-builder": "^22.4.1",
+    "electron": "^13.6.9",
+    "electron-builder": "^23.3.3",
     "electron-webpack": "^2.8.2",
-    "eslint": "^7.21.0",
-    "eslint-plugin-svelte3": "^3.1.2",
+    "eslint": "^8.22.0",
+    "eslint-plugin-svelte3": "^4.0.0",
     "find-process": "^1.4.7",
     "focus-visible": "^5.2.0",
-    "phin": "^3.6.0",
+    "phin": "^3.6.1",
     "rimraf": "^3.0.2",
-    "semver": "^7.3.5",
-    "svelte": "^3.38.2",
-    "svelte-loader": "^3.0.0",
-    "svelte-spa-router": "^3.1.0",
+    "semver": "^7.3.7",
+    "svelte": "^3.49.0",
+    "svelte-loader": "^3.1.3",
+    "svelte-spa-router": "^3.3.0",
+    "tmp": "^0.2.1",
     "tree-kill": "^1.2.2",
-    "webpack": "~4.42.1",
-    "webpack-bundle-analyzer": "^4.4.0"
+    "webpack": "^4.46.0",
+    "webpack-bundle-analyzer": "^4.6.0"
   },
   "build": {
     "appId": "app.betterdiscord.installer",
