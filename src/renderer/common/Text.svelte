@@ -1,8 +1,8 @@
 <script>
-    export let hasMargin = undefined;;
+    export let hasMargin = undefined; // eslint-disable-line no-undef-init
     export let type = "paragraph";
-    let className = undefined;
-    export { className as class };
+    let className = undefined; // eslint-disable-line no-undef-init
+    export {className as class};
 </script>
 
 {#if type === "header"}

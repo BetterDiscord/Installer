@@ -1,5 +1,5 @@
 <script>
-    import { tooltip } from "./tooltip";
+    import {tooltip} from "./tooltip";
     
     const webUrl = "https://betterdiscord.app";
     const githubUrl = "http://github.com/BetterDiscord/BetterDiscord";

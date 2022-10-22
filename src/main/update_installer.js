@@ -10,6 +10,7 @@ const getJSON = phin.defaults({
     followRedirects: true
 });
 
+/* eslint-disable no-console */
 export default async function () {
     const downloadUrl = "https://api.github.com/repos/BetterDiscord/Installer/releases";
     console.info(`Better Discord Installer ${version}`);
@@ -35,7 +36,8 @@ export default async function () {
                 process.exit(0);
             }
             
-        } else {
+        }
+        else {
             console.info(`The installer is up to date.`);
         }
     }

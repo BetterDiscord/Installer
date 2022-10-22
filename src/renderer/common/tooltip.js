@@ -47,13 +47,16 @@ export function tooltip (node, {
             if (position === "top") {
                 component.x = node.getBoundingClientRect().left + (node.offsetWidth / 2) - (tooltipDOM.offsetWidth / 2);
                 component.y = (node.getBoundingClientRect().top - tooltipDOM.offsetHeight - 5) - spacing;
-            } else if (position === "bottom") {
+            }
+            else if (position === "bottom") {
                 component.x = node.getBoundingClientRect().left + (node.offsetWidth / 2) - (tooltipDOM.offsetWidth / 2);
                 component.y = (node.getBoundingClientRect().bottom + 5) + spacing;
-            } else if (position === "left") {
+            }
+            else if (position === "left") {
                 component.x = (node.getBoundingClientRect().left - tooltipDOM.offsetWidth - 5) - spacing;
                 component.y = node.getBoundingClientRect().top + (node.offsetHeight / 2) - (tooltipDOM.offsetHeight / 2);
-            } else if (position === "right") {
+            }
+            else if (position === "right") {
                 component.x = (node.getBoundingClientRect().left + node.offsetWidth + 5) + spacing;
                 component.y = node.getBoundingClientRect().top + (node.offsetHeight / 2) - (tooltipDOM.offsetHeight / 2);
             }
@@ -65,7 +68,7 @@ export function tooltip (node, {
 
     function unmountTooltip() {
         
-        let tooltipsLayer = document.getElementById("tooltips-layer");
+        const tooltipsLayer = document.getElementById("tooltips-layer");
         
         // Check if component is already rendered to prevent warnings
         if (isComponentRendered) {
@@ -92,7 +95,7 @@ export function tooltip (node, {
     });
 
     return {
-		destroy() {
+        destroy() {
             node.removeEventListener("mouseenter", renderTooltip);
             node.removeEventListener("mouseleave", unmountTooltip);
             node.removeEventListener("focus", renderTooltip);
@@ -102,6 +105,6 @@ export function tooltip (node, {
             node.childNodes.forEach(child => {
                 child.removeEventListener("blur", unmountTooltip);
             });
-		}
-	};
+        }
+    };
 }
