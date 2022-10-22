@@ -1,7 +1,7 @@
 <script>
-    import { afterUpdate, onMount } from "svelte";
-    export let value = undefined;
-    let className = undefined;
+    import {afterUpdate, onMount} from "svelte";
+    export let value = undefined; // eslint-disable-line no-undef-init
+    let className = undefined; // eslint-disable-line no-undef-init
     export {className as class};
 
     let circle;

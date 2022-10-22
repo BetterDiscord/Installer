@@ -3,7 +3,7 @@
   "productName": "BetterDiscord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -11,7 +11,7 @@
     "lint": "eslint --ext .svelte,.js src/",
     "stats": "webpack --json --profile --config webpack.renderer.js > dist/stats.json",
     "analyze": "webpack-bundle-analyzer dist/stats.json",
-    "dist": "yarn compile && electron-builder",
+    "dist": "yarn compile && electron-builder -p never",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
     "eslint-plugin-svelte3": "^3.1.2",
-    "find-process": "^1.4.4",
+    "find-process": "^1.4.7",
     "focus-visible": "^5.2.0",
     "phin": "^3.6.0",
     "rimraf": "^3.0.2",
