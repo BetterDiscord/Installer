@@ -56,7 +56,7 @@ async function renameAsar(paths) {
         const discordAsar = path.join(discordPath, "discord.asar");
         log("Renaming " + discordAsar);
         try {
-            if (originalFs.existsSync(appAsar)) await fs.rename(appAsar, discordAsar);
+            if (originalFs.existsSync(discordAsar)) await fs.rename(discordAsar, appAsar);
             log("✅ Rename successful");
             progress.set(progress.value + progressPerLoop);
         }
