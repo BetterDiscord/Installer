@@ -79,34 +79,32 @@ const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: tr
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
-    let downloadUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
-    let response;
+    const releaseApiUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
     try {
-        response = await getJSON(downloadUrl);
+        const response = await getJSON(releaseApiUrl);
         const releases = response.body;
         const asset = releases && releases.length && releases[0].assets && releases[0].assets.find(a => a.name.toLowerCase() === "betterdiscord.asar");
-        downloadUrl = asset && asset.url;
-        if (!downloadUrl) {
+        const assetUrl = asset && asset.url;
+        if (!assetUrl) {
             let errMessage = "Could not get the asset url";
             if (!asset) errMessage = "Could not get asset object";
             if (!releases) errMessage = "Could not get response body";
             if (!response) errMessage = "Could not get any response";
             throw new Error(errMessage);
         }
-
         try {
-            const resp = await downloadFile(downloadUrl);
+            const resp = await downloadFile(assetUrl);
             const originalFs = require("original-fs").promises; // because electron doesn't like when I write asar files
             await originalFs.writeFile(asarPath, resp.body);
         }
         catch (error) {
-            log(`❌ Failed to download package ${downloadUrl}`);
+            log(`❌ Failed to download package from ${assetUrl}`);
             log(`❌ ${error.message}`);
             return error;
         }
     }
     catch (err) {
-        log(`❌ Failed to get asset url ${downloadUrl}`);
+        log(`❌ Failed to get asset url from ${releaseApiUrl}`);
         log(`❌ ${err.message}`);
         return err;
     }
