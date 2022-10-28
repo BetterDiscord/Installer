@@ -11,9 +11,11 @@ import fail from "./utils/fail";
 import exists from "./utils/exists";
 import reset from "./utils/reset";
 import kill from "./utils/kill";
-import {showRestartNotice} from "./utils/notices";
+import restart from "./utils/restart";
+import {showRestartNotice, showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
+const KILL_DISCORD_PROGRESS = 20;
 const MAKE_DIR_PROGRESS = 30;
 const CHECK_OLD_INSTALL = 40;
 const TRANSFER_OLD_ADDONS = 50;
@@ -100,11 +102,15 @@ async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
         log("Injecting into: " + discordPath);
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
         const appPath = path.join(discordPath, "app");
         const pkgFile = path.join(appPath, "package.json");
         const indexFile = path.join(appPath, "index.js");
         try {
             if (process.platform === "win32" || process.platform === "darwin") {
+                const originalFs = require("original-fs");
+                if (originalFs.existsSync(appAsar)) await fs.rename(appAsar, discordAsar);
                 if (!(await exists(appPath))) await fs.mkdir(appPath);
                 await fs.writeFile(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
                 await fs.writeFile(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
@@ -132,6 +138,15 @@ export default async function(config) {
 
     const channels = Object.keys(config);
     const paths = Object.values(config);
+
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (killErr) {
+        showKillNotice();
+        return fail();
+    }
+    log("✅ Discord stopped");
+    progress.set(KILL_DISCORD_PROGRESS);
 
 
     lognewline("Creating required directories...");
@@ -179,8 +194,8 @@ export default async function(config) {
 
 
     lognewline("Restarting Discord...");
-    const killErr = await kill(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
-    if (killErr) showRestartNotice(); // No need to bail out and show failed
+    const restartErr = await restart(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (restartErr) showRestartNotice(); // No need to bail out and show failed
     else log("✅ Discord restarted");
     progress.set(RESTART_DISCORD_PROGRESS);
 

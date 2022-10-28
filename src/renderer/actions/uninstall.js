@@ -11,11 +11,14 @@ import fail from "./utils/fail";
 import exists from "./utils/exists";
 import reset from "./utils/reset";
 import kill from "./utils/kill";
-import {showRestartNotice} from "./utils/notices";
+import restart from "./utils/restart";
+import {showRestartNotice, showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
 
-const DELETE_SHIM_PROGRESS = 85;
+const KILL_DISCORD_PROGRESS = 25;
+const RENAME_ASAR_PROGRESS = 50;
+const DELETE_SHIM_PROGRESS = 75;
 const RESTART_DISCORD_PROGRESS = 100;
 
 
@@ -46,6 +49,26 @@ async function deleteShims(paths) {
     }
 }
 
+async function renameAsar(paths) {
+    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
+        log("Renaming " + discordAsar);
+        try {
+            if (originalFs.existsSync(appAsar)) await fs.rename(appAsar, discordAsar);
+            log("✅ Rename successful");
+            progress.set(progress.value + progressPerLoop);
+        }
+        catch (error) {
+            log(`❌ Could not rename asar ${discordAsar}`);
+            log(`❌ ${error.message}`);
+            return error;
+        }
+
+    }
+}
+
 
 export default async function(config) {
     await reset();
@@ -56,6 +79,15 @@ export default async function(config) {
     const channels = Object.keys(config);
     const paths = Object.values(config);
 
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (killErr) {
+        showKillNotice();
+        return fail();
+    }
+    log("✅ Discord stopped");
+    progress.set(KILL_DISCORD_PROGRESS);
+
 
     lognewline("Deleting shims...");
     const deleteErr = await deleteShims(paths);
@@ -64,9 +96,9 @@ export default async function(config) {
     progress.set(DELETE_SHIM_PROGRESS);
 
 
-    lognewline("Killing Discord...");
-    const killErr = await kill(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
-    if (killErr) showRestartNotice(); // No need to bail out
+    lognewline("Restarting Discord...");
+    const restartErr = await restart(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (restartErr) showRestartNotice(); // No need to bail out and show failed
     else log("✅ Discord restarted");
     progress.set(RESTART_DISCORD_PROGRESS);
 

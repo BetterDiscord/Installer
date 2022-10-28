@@ -17,6 +17,7 @@ import doSanityCheck from "./utils/sanity";
 
 const KILL_DISCORD_PROGRESS = 20;
 const DELETE_APP_DIRS_PROGRESS = 50;
+const RENAME_ASAR_PROGRESS = 80;
 const DELETE_MODULE_DIRS_PROGRESS = 100;
 
 async function deleteAppDirs(paths) {
@@ -27,13 +28,33 @@ async function deleteAppDirs(paths) {
         if (await exists(appPath)) {
             const error = await new Promise(resolve => rimraf(appPath, originalFs, resolve));
             if (error) {
-                log(` Could not delete folder ${appPath}`);
+                log(`❌ Could not delete folder ${appPath}`);
                 log(`❌ ${error.message}`);
                 return error;
             }
         }
         log("✅ Deletion successful");
         progress.set(progress.value + progressPerLoop);
+    }
+}
+
+async function renameAsar(paths) {
+    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
+        log("Renaming " + discordAsar);
+        try {
+            if (originalFs.existsSync(appAsar)) await fs.rename(appAsar, discordAsar);
+            log("✅ Rename successful");
+            progress.set(progress.value + progressPerLoop);
+        }
+        catch (error) {
+            log(`❌ Could not rename asar ${discordAsar}`);
+            log(`❌ ${error.message}`);
+            return error;
+        }
+
     }
 }
 
@@ -98,13 +119,13 @@ export default async function(config) {
     const paths = Object.values(config);
 
 
-    lognewline("Killing Discord...");
-    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length, false); // await killProcesses(channels);
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length); // await killProcesses(channels);
     if (killErr) {
         showKillNotice();
         return fail();
     }
-    log("✅ Discord Killed");
+    log("✅ Discord stopped");
     progress.set(KILL_DISCORD_PROGRESS);
 
 
@@ -113,6 +134,14 @@ export default async function(config) {
     const deleteShimErr = await deleteAppDirs(paths);
     if (deleteShimErr) return fail();
     log("✅ Shims deleted");
+    progress.set(DELETE_APP_DIRS_PROGRESS);
+
+
+    await new Promise(r => setTimeout(r, 200));
+    lognewline("Renaming asars...");
+    const renameAsarErr = await renameAsar(paths);
+    if (renameAsarErr) return fail();
+    log("✅ Asars renamed");
     progress.set(DELETE_APP_DIRS_PROGRESS);
     
 

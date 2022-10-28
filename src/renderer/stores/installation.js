@@ -8,4 +8,5 @@ export const platforms = writable({stable: false, canary: false, ptb: false});
 export const paths = writable({stable: locations.stable, canary: locations.canary, ptb: locations.ptb});
 
 export const progress = readwritable(0);
-export const action = readwritable("install"); 
+export const action = readwritable("install");
+export const bins = readwritable({});
