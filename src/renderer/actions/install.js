@@ -1,7 +1,7 @@
-import logs from "../stores/logs";
-import {progress, status} from "../stores/installation";
-import {remote, shell} from "electron";
+import {progress} from "../stores/installation";
+import {remote} from "electron";
 import {promises as fs} from "fs";
+import originalFs from "original-fs";
 import path from "path";
 import phin from "phin";
 
@@ -15,12 +15,13 @@ import restart from "./utils/restart";
 import {showRestartNotice, showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
-const KILL_DISCORD_PROGRESS = 20;
-const MAKE_DIR_PROGRESS = 30;
-const CHECK_OLD_INSTALL = 40;
-const TRANSFER_OLD_ADDONS = 50;
+const KILL_DISCORD_PROGRESS = 10;
+const MAKE_DIR_PROGRESS = 20;
+const CHECK_OLD_INSTALL = 30;
+const TRANSFER_OLD_ADDONS = 40;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
-const INJECT_SHIM_PROGRESS = 90;
+const INJECT_SHIM_PROGRESS = 80;
+const RENAME_ASAR_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
 const oldBDFolder = path.join(remote.app.getPath("home"), "Library", "Preferences", "betterdiscord"); // Old MacOS
@@ -95,8 +96,8 @@ async function downloadAsar() {
         }
         try {
             const resp = await downloadFile(assetUrl);
-            const originalFs = require("original-fs").promises; // because electron doesn't like when I write asar files
-            await originalFs.writeFile(asarPath, resp.body);
+            const ofs = originalFs.promises; // because electron doesn't like when I write asar files
+            await ofs.writeFile(asarPath, resp.body);
         }
         catch (error) {
             log(`❌ Failed to download package from ${assetUrl}`);
@@ -115,15 +116,11 @@ async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
         log("Injecting into: " + discordPath);
-        const appAsar = path.join(discordPath, "app.asar");
-        const discordAsar = path.join(discordPath, "discord.asar");
         const appPath = path.join(discordPath, "app");
         const pkgFile = path.join(appPath, "package.json");
         const indexFile = path.join(appPath, "index.js");
         try {
             if (process.platform === "win32" || process.platform === "darwin") {
-                const originalFs = require("original-fs");
-                if (originalFs.existsSync(appAsar)) await fs.rename(appAsar, discordAsar);
                 if (!(await exists(appPath))) await fs.mkdir(appPath);
                 await fs.writeFile(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
                 await fs.writeFile(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
@@ -139,6 +136,30 @@ async function injectShims(paths) {
             log(`❌ ${err.message}`);
             return err;
         }
+    }
+}
+
+async function renameAsar(paths) {
+    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
+        log("Renaming " + appAsar);
+        try {
+            const appAsarExists = originalFs.existsSync(appAsar);
+            const discordAsarExists = originalFs.existsSync(discordAsar);
+            if (!appAsarExists && !discordAsarExists) throw new Error("Discord installation corrupt, please reinstall.");
+            if (appAsarExists && discordAsarExists) originalFs.rmSync(discordAsar);
+            if (appAsarExists) originalFs.renameSync(appAsar, discordAsar);
+            log("✅ Rename successful");
+            progress.set(progress.value + progressPerLoop);
+        }
+        catch (error) {
+            log(`❌ Could not rename asar ${appAsar}`);
+            log(`❌ ${error.message}`);
+            return error;
+        }
+
     }
 }
 
@@ -204,6 +225,13 @@ export default async function(config) {
     if (injectErr) return fail();
     log("✅ Shims injected");
     progress.set(INJECT_SHIM_PROGRESS);
+
+
+    lognewline("Renaming asars...");
+    const renameAsarErr = await renameAsar(paths);
+    if (renameAsarErr) return fail();
+    log("✅ Asars renamed");
+    progress.set(RENAME_ASAR_PROGRESS);
 
 
     lognewline("Restarting Discord...");

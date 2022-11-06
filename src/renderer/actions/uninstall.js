@@ -56,7 +56,11 @@ async function renameAsar(paths) {
         const discordAsar = path.join(discordPath, "discord.asar");
         log("Renaming " + discordAsar);
         try {
-            if (originalFs.existsSync(discordAsar)) await fs.rename(discordAsar, appAsar);
+            const appAsarExists = originalFs.existsSync(appAsar);
+            const discordAsarExists = originalFs.existsSync(discordAsar);
+            if (!appAsarExists && !discordAsarExists) throw new Error("Discord installation corrupt, please reinstall.");
+            if (appAsarExists && discordAsarExists) originalFs.rmSync(appAsar);
+            if (discordAsarExists) originalFs.renameSync(discordAsar, appAsar);
             log("✅ Rename successful");
             progress.set(progress.value + progressPerLoop);
         }
@@ -87,6 +91,13 @@ export default async function(config) {
     }
     log("✅ Discord stopped");
     progress.set(KILL_DISCORD_PROGRESS);
+
+
+    lognewline("Renaming asars...");
+    const renameAsarErr = await renameAsar(paths);
+    if (renameAsarErr) return fail();
+    log("✅ Asars renamed");
+    progress.set(RENAME_ASAR_PROGRESS);
 
 
     lognewline("Deleting shims...");
