@@ -226,12 +226,13 @@ export default async function(config) {
     log("✅ Shims injected");
     progress.set(INJECT_SHIM_PROGRESS);
 
-
-    lognewline("Renaming asars...");
-    const renameAsarErr = await renameAsar(paths);
-    if (renameAsarErr) return fail();
-    log("✅ Asars renamed");
-    progress.set(RENAME_ASAR_PROGRESS);
+    if (process.platform === "win32" || process.platform === "darwin") {
+        lognewline("Renaming asars...");
+        const renameAsarErr = await renameAsar(paths);
+        if (renameAsarErr) return fail();
+        log("✅ Asars renamed");
+        progress.set(RENAME_ASAR_PROGRESS);
+    }
 
 
     lognewline("Restarting Discord...");

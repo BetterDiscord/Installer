@@ -140,12 +140,14 @@ export default async function(config) {
     progress.set(DELETE_APP_DIRS_PROGRESS);
 
 
-    await new Promise(r => setTimeout(r, 200));
-    lognewline("Renaming asars...");
-    const renameAsarErr = await renameAsar(paths);
-    if (renameAsarErr) return fail();
-    log("✅ Asars renamed");
-    progress.set(RENAME_ASAR_PROGRESS);
+    if (process.platform === "win32" || process.platform === "darwin") {
+        await new Promise(r => setTimeout(r, 200));
+        lognewline("Renaming asars...");
+        const renameAsarErr = await renameAsar(paths);
+        if (renameAsarErr) return fail();
+        log("✅ Asars renamed");
+        progress.set(RENAME_ASAR_PROGRESS);
+    }
     
 
     await new Promise(r => setTimeout(r, 200));
