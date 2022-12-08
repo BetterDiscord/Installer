@@ -17,7 +17,8 @@ import doSanityCheck from "./utils/sanity";
 
 const KILL_DISCORD_PROGRESS = 20;
 const DELETE_APP_DIRS_PROGRESS = 50;
-const DELETE_MODULE_DIRS_PROGRESS = 100;
+const RENAME_ASAR_PROGRESS = 80;
+const DELETE_PLUGINS_JSON_PROGRESS = 100;
 
 async function deleteAppDirs(paths) {
     const progressPerLoop = (DELETE_APP_DIRS_PROGRESS - progress.value) / paths.length;
@@ -27,7 +28,7 @@ async function deleteAppDirs(paths) {
         if (await exists(appPath)) {
             const error = await new Promise(resolve => rimraf(appPath, originalFs, resolve));
             if (error) {
-                log(` Could not delete folder ${appPath}`);
+                log(`❌ Could not delete folder ${appPath}`);
                 log(`❌ ${error.message}`);
                 return error;
             }
@@ -37,29 +38,52 @@ async function deleteAppDirs(paths) {
     }
 }
 
-const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
-async function deleteModuleDirs(config) {
-    const size = Object.keys(config).length;
-    const progressPerLoop = (DELETE_MODULE_DIRS_PROGRESS - progress.value) / size;
-    for (const channel in config) {
-        const roaming = path.join(remote.app.getPath("userData"), "..", platforms[channel].replace(" ", "").toLowerCase());
+async function renameAsar(paths) {
+    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
+        log("Renaming " + discordAsar);
         try {
-            const versionDir = (await fs.readdir(roaming)).find(d => d.split(".").length > 2);
-            const modulesPath = path.join(roaming, versionDir, "modules");
-            log("Removing " + modulesPath);
-            if (await exists(modulesPath)) {
-                const error = await new Promise(resolve => rimraf(path.join(modulesPath), originalFs, resolve));
-                if (error) {
-                    log(`❌ Could not delete modules in ${roaming}`);
-                    log(`❌ ${error.message}`);
-                    return error;
-                }
-            }
-            log("✅ Deletion successful");
+            const appAsarExists = originalFs.existsSync(appAsar);
+            const discordAsarExists = originalFs.existsSync(discordAsar);
+            if (!appAsarExists && !discordAsarExists) throw new Error("Discord installation corrupt, please reinstall.");
+            if (appAsarExists && discordAsarExists) originalFs.rmSync(appAsar);
+            if (discordAsarExists) originalFs.renameSync(discordAsar, appAsar);
+            log("✅ Rename successful");
             progress.set(progress.value + progressPerLoop);
         }
+        catch (error) {
+            log(`❌ Could not rename asar ${discordAsar}`);
+            log(`❌ ${error.message}`);
+            return error;
+        }
+
+    }
+}
+
+
+const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+const bdDataFolder = path.join(bdFolder, "data");
+
+async function disableAllPlugins(channels) {
+    const progressPerLoop = (DELETE_PLUGINS_JSON_PROGRESS - progress.value) / channels.length;
+    for (const channel of channels) {
+        const channelFolder = path.join(bdDataFolder, channel);
+        const pluginsJson = path.join(channelFolder, "plugins.json");
+        try {
+            if (originalFs.existsSync(pluginsJson)) {
+                await fs.unlink(pluginsJson);
+                log(`✅ Deleted plugins.json`);
+            }
+            else {
+                log(`✅ plugins.json does not exist`);
+            }
+            progress.set(progress.value + progressPerLoop);
+            
+        }
         catch (err) {
-            log(`❌ Could not delete modules in ${roaming}`);
+            log(`❌ Failed to delete plugins.json: ${pluginsJson}`);
             log(`❌ ${err.message}`);
             return err;
         }
@@ -98,13 +122,13 @@ export default async function(config) {
     const paths = Object.values(config);
 
 
-    lognewline("Killing Discord...");
-    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length, false); // await killProcesses(channels);
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length); // await killProcesses(channels);
     if (killErr) {
         showKillNotice();
         return fail();
     }
-    log("✅ Discord Killed");
+    log("✅ Discord stopped");
     progress.set(KILL_DISCORD_PROGRESS);
 
 
@@ -114,14 +138,24 @@ export default async function(config) {
     if (deleteShimErr) return fail();
     log("✅ Shims deleted");
     progress.set(DELETE_APP_DIRS_PROGRESS);
+
+
+    if (process.platform === "win32" || process.platform === "darwin") {
+        await new Promise(r => setTimeout(r, 200));
+        lognewline("Renaming asars...");
+        const renameAsarErr = await renameAsar(paths);
+        if (renameAsarErr) return fail();
+        log("✅ Asars renamed");
+        progress.set(RENAME_ASAR_PROGRESS);
+    }
     
 
     await new Promise(r => setTimeout(r, 200));
     lognewline("Deleting discord modules...");
-    const deleteModulesErr = await deleteModuleDirs(config);
-    if (deleteModulesErr) return fail();
+    const deleteJsonErr = await disableAllPlugins(channels);
+    if (deleteJsonErr) return fail();
     log("✅ Modules deleted");
-    progress.set(DELETE_MODULE_DIRS_PROGRESS);
+    progress.set(DELETE_PLUGINS_JSON_PROGRESS);
 
 
     showInstallNotice(config);
