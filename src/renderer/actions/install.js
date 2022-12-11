@@ -22,11 +22,14 @@ const DOWNLOAD_PACKAGE_PROGRESS = 60;
 const INJECT_SHIM_PROGRESS = 80;
 const RESTART_DISCORD_PROGRESS = 100;
 
+const RELEASE_API = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
+
 const oldBDFolder = path.join(remote.app.getPath("home"), "Library", "Preferences", "betterdiscord"); // Old MacOS
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 const bdPluginsFolder = path.join(bdFolder, "plugins");
 const bdThemesFolder = path.join(bdFolder, "themes");
+
 
 async function checkOldMacOS(folder) {
     if (await exists(folder)) {
@@ -79,9 +82,8 @@ const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: tr
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord Installer", "Accept": "application/octet-stream"}});
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
-    const releaseApiUrl = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
     try {
-        const response = await getJSON(releaseApiUrl);
+        const response = await getJSON(RELEASE_API);
         const releases = response.body;
         const asset = releases && releases.length && releases[0].assets && releases[0].assets.find(a => a.name.toLowerCase() === "betterdiscord.asar");
         const assetUrl = asset && asset.url;
@@ -104,7 +106,7 @@ async function downloadAsar() {
         }
     }
     catch (err) {
-        log(`❌ Failed to get asset url from ${releaseApiUrl}`);
+        log(`❌ Failed to get asset url from ${RELEASE_API}`);
         log(`❌ ${err.message}`);
         return err;
     }
@@ -114,28 +116,8 @@ async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
         log("Injecting into: " + discordPath);
-        const appAsar = path.join(discordPath, "app.asar");
-        const discordAsar = path.join(discordPath, "discord.asar");
-        const appPath = path.join(discordPath, "app");
-        const pkgFile = path.join(appPath, "package.json");
-        const indexFile = path.join(appPath, "index.js");
         try {
-            // if (process.platform === "win32" || process.platform === "darwin") {
-            //     const originalFs = require("original-fs").promises;
-            //     if (await exists(appAsar)) {
-            //         await originalFs.rename(appAsar, discordAsar);
-            //         // await originalFs.copyFile(appAsar, discordAsar);
-            //         // await originalFs.unlink(appAsar);
-            //         // const error = await new Promise(resolve => rimraf(appAsar, originalFs, resolve));
-            //         // if (error) throw error;
-            //     }
-            //     if (!(await exists(appPath))) await fs.mkdir(appPath);
-            //     await fs.writeFile(pkgFile, JSON.stringify({name: "betterdiscord", main: "index.js"}));
-            //     await fs.writeFile(indexFile, `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");`);
-            // }
-            // else {
-                await fs.writeFile(path.join(discordPath, "index.js"), `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");\nmodule.exports = require("./core.asar");`);
-            // }
+            await fs.writeFile(path.join(discordPath, "index.js"), `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");\nmodule.exports = require("./core.asar");`);
             log("✅ Injection successful");
             progress.set(progress.value + progressPerLoop);
         }

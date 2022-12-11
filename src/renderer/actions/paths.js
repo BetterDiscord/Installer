@@ -15,24 +15,26 @@ const safeIsDir = (fullpath) => {
 };
 
 const getDiscordPath = function(releaseChannel) {
-    let resourcePath = "";
+    let desktopCorePath = "";
     if (process.platform === "win32") {
         let basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, "")); // Normal install path in AppData\Local
         if (!fs.existsSync(basedir)) basedir = path.join(process.env.PROGRAMDATA, process.env.USERNAME, releaseChannel.replace(/ /g, "")); // Atypical location in ProgramData\%username%
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        resourcePath = path.join(basedir, version, "modules", "discord_desktop_core-1", "discord_desktop_core");
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(basedir, version, "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        desktopCorePath = path.join(basedir, version, "modules", coreWrap, "discord_desktop_core");
     }
     else {
         const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        resourcePath = path.join(basedir, version, "modules", "discord_desktop_core");
+        desktopCorePath = path.join(basedir, version, "modules", "discord_desktop_core");
     }
 
-    if (fs.existsSync(resourcePath)) return resourcePath;
+    if (fs.existsSync(desktopCorePath)) return desktopCorePath;
     return "";
 };
 
@@ -62,10 +64,16 @@ const validateWindows = function(channel, proposedPath) {
     if (isBaseDir) {
         const version = fs.readdirSync(proposedPath).filter(f => safeIsDir(path.join(proposedPath, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        corePath = path.join(proposedPath, version, "modules", "discord_desktop_core-1", "discord_desktop_core");
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(proposedPath, version, "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        corePath = path.join(proposedPath, version, "modules", coreWrap, "discord_desktop_core");
     }
 
-    if (selected.split(".").length > 2) corePath = path.join(proposedPath, "modules", "discord_desktop_core-1", "discord_desktop_core");
+    if (selected.split(".").length > 2) {
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(path.join(proposedPath), "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        corePath = path.join(proposedPath, "modules", coreWrap, "discord_desktop_core");
+    }
     if (selected === "discord_desktop_core") corePath = proposedPath;
 
     const coreAsar = path.join(corePath, `core.asar`);
