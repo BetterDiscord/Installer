@@ -23,7 +23,7 @@ const getDiscordPath = function(releaseChannel) {
         const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         // To account for discord_desktop_core-1 or discord_dekstop_core-2
-        const coreWrap = fs.readdirSync(basedir, version, "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        const coreWrap = fs.readdirSync(path.join(basedir, version, "modules")).filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
         desktopCorePath = path.join(basedir, version, "modules", coreWrap, "discord_desktop_core");
     }
     else {
@@ -65,7 +65,7 @@ const validateWindows = function(channel, proposedPath) {
         const version = fs.readdirSync(proposedPath).filter(f => safeIsDir(path.join(proposedPath, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
         // To account for discord_desktop_core-1 or discord_dekstop_core-2
-        const coreWrap = fs.readdirSync(proposedPath, version, "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        const coreWrap = fs.readdirSync(path.join(proposedPath, version, "modules")).filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
         corePath = path.join(proposedPath, version, "modules", coreWrap, "discord_desktop_core");
     }
 

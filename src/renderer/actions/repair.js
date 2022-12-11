@@ -16,24 +16,25 @@ import {showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
 const KILL_DISCORD_PROGRESS = 20;
-const DELETE_APP_DIRS_PROGRESS = 50;
+const DELETE_SHIM_PROGRESS = 60;
 const DELETE_PLUGINS_JSON_PROGRESS = 100;
 
-async function deleteAppDirs(paths) {
-    const progressPerLoop = (DELETE_APP_DIRS_PROGRESS - progress.value) / paths.length;
+
+async function deleteShims(paths) {
+    const progressPerLoop = (DELETE_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
-        log("Removing " + discordPath);
-        const appPath = path.join(discordPath, "app");
-        if (await exists(appPath)) {
-            const error = await new Promise(resolve => rimraf(appPath, originalFs, resolve));
-            if (error) {
-                log(` Could not delete folder ${appPath}`);
-                log(`❌ ${error.message}`);
-                return error;
-            }
+        const indexFile = path.join(discordPath, "index.js");
+        log("Removing " + indexFile);
+        try {
+            if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
+            log("✅ Deletion successful");
+            progress.set(progress.value + progressPerLoop);
         }
-        log("✅ Deletion successful");
-        progress.set(progress.value + progressPerLoop);
+        catch (err) {
+            log(`❌ Could not delete file ${indexFile}`);
+            log(`❌ ${err.message}`);
+            return err;
+        }
     }
 }
 
@@ -107,10 +108,10 @@ export default async function(config) {
 
     await new Promise(r => setTimeout(r, 200));
     lognewline("Deleting shims...");
-    const deleteShimErr = await deleteAppDirs(paths);
+    const deleteShimErr = await deleteShims(paths);
     if (deleteShimErr) return fail();
     log("✅ Shims deleted");
-    progress.set(DELETE_APP_DIRS_PROGRESS);
+    progress.set(DELETE_SHIM_PROGRESS);
     
 
     await new Promise(r => setTimeout(r, 200));
