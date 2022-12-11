@@ -1,5 +1,5 @@
 
-import {progress, status} from "../stores/installation";
+import {progress} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
 import originalFs from "original-fs";
@@ -17,7 +17,7 @@ import doSanityCheck from "./utils/sanity";
 
 const KILL_DISCORD_PROGRESS = 20;
 const DELETE_APP_DIRS_PROGRESS = 50;
-const DELETE_MODULE_DIRS_PROGRESS = 100;
+const DELETE_PLUGINS_JSON_PROGRESS = 100;
 
 async function deleteAppDirs(paths) {
     const progressPerLoop = (DELETE_APP_DIRS_PROGRESS - progress.value) / paths.length;
@@ -37,29 +37,26 @@ async function deleteAppDirs(paths) {
     }
 }
 
-const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
-async function deleteModuleDirs(config) {
-    const size = Object.keys(config).length;
-    const progressPerLoop = (DELETE_MODULE_DIRS_PROGRESS - progress.value) / size;
-    for (const channel in config) {
-        const roaming = path.join(remote.app.getPath("userData"), "..", platforms[channel].replace(" ", "").toLowerCase());
+const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+const bdDataFolder = path.join(bdFolder, "data");
+async function disableAllPlugins(channels) {
+    const progressPerLoop = (DELETE_PLUGINS_JSON_PROGRESS - progress.value) / channels.length;
+    for (const channel of channels) {
+        const channelFolder = path.join(bdDataFolder, channel);
+        const pluginsJson = path.join(channelFolder, "plugins.json");
         try {
-            const versionDir = (await fs.readdir(roaming)).find(d => d.split(".").length > 2);
-            const modulesPath = path.join(roaming, versionDir, "modules");
-            log("Removing " + modulesPath);
-            if (await exists(modulesPath)) {
-                const error = await new Promise(resolve => rimraf(path.join(modulesPath), originalFs, resolve));
-                if (error) {
-                    log(`❌ Could not delete modules in ${roaming}`);
-                    log(`❌ ${error.message}`);
-                    return error;
-                }
+            if (originalFs.existsSync(pluginsJson)) {
+                await fs.unlink(pluginsJson);
+                log(`✅ Deleted plugins.json`);
             }
-            log("✅ Deletion successful");
+            else {
+                log(`✅ plugins.json does not exist`);
+            }
             progress.set(progress.value + progressPerLoop);
+            
         }
         catch (err) {
-            log(`❌ Could not delete modules in ${roaming}`);
+            log(`❌ Failed to delete plugins.json: ${pluginsJson}`);
             log(`❌ ${err.message}`);
             return err;
         }
@@ -117,11 +114,11 @@ export default async function(config) {
     
 
     await new Promise(r => setTimeout(r, 200));
-    lognewline("Deleting discord modules...");
-    const deleteModulesErr = await deleteModuleDirs(config);
-    if (deleteModulesErr) return fail();
-    log("✅ Modules deleted");
-    progress.set(DELETE_MODULE_DIRS_PROGRESS);
+    lognewline("Disabling all plugins...");
+    const deleteJsonErr = await disableAllPlugins(channels);
+    if (deleteJsonErr) return fail();
+    log("✅ Plugins disabled");
+    progress.set(DELETE_PLUGINS_JSON_PROGRESS);
 
 
     showInstallNotice(config);
