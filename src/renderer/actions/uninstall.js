@@ -25,24 +25,15 @@ const RESTART_DISCORD_PROGRESS = 100;
 async function deleteShims(paths) {
     const progressPerLoop = (DELETE_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
-        log("Removing " + discordPath);
-        const appPath = path.join(discordPath, "app");
         const indexFile = path.join(discordPath, "index.js");
+        log("Removing " + indexFile);
         try {
-            if (process.platform === "win32" || process.platform === "darwin") {
-                if (await exists(appPath)) {
-                    const error = await new Promise(r => rimraf(appPath, originalFs, r));
-                    if (error) throw error; // Throw instead because there are multiple throw points
-                }
-            }
-            else {
-                if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
-            }
+            if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
             log("✅ Deletion successful");
             progress.set(progress.value + progressPerLoop);
         }
         catch (err) {
-            log(`❌ Could not delete folder ${appPath}`);
+            log(`❌ Could not delete file ${indexFile}`);
             log(`❌ ${err.message}`);
             return err;
         }

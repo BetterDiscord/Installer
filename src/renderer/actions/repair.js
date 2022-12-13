@@ -1,5 +1,5 @@
 
-import {progress, status} from "../stores/installation";
+import {progress} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
 import originalFs from "original-fs";
@@ -16,56 +16,30 @@ import {showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
 const KILL_DISCORD_PROGRESS = 20;
-const DELETE_APP_DIRS_PROGRESS = 50;
-const RENAME_ASAR_PROGRESS = 80;
+const DELETE_SHIM_PROGRESS = 60;
 const DELETE_PLUGINS_JSON_PROGRESS = 100;
 
-async function deleteAppDirs(paths) {
-    const progressPerLoop = (DELETE_APP_DIRS_PROGRESS - progress.value) / paths.length;
-    for (const discordPath of paths) {
-        log("Removing " + discordPath);
-        const appPath = path.join(discordPath, "app");
-        if (await exists(appPath)) {
-            const error = await new Promise(resolve => rimraf(appPath, originalFs, resolve));
-            if (error) {
-                log(`❌ Could not delete folder ${appPath}`);
-                log(`❌ ${error.message}`);
-                return error;
-            }
-        }
-        log("✅ Deletion successful");
-        progress.set(progress.value + progressPerLoop);
-    }
-}
 
-async function renameAsar(paths) {
-    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+async function deleteShims(paths) {
+    const progressPerLoop = (DELETE_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
-        const appAsar = path.join(discordPath, "app.asar");
-        const discordAsar = path.join(discordPath, "discord.asar");
-        log("Renaming " + discordAsar);
+        const indexFile = path.join(discordPath, "index.js");
+        log("Removing " + indexFile);
         try {
-            const appAsarExists = originalFs.existsSync(appAsar);
-            const discordAsarExists = originalFs.existsSync(discordAsar);
-            if (!appAsarExists && !discordAsarExists) throw new Error("Discord installation corrupt, please reinstall.");
-            if (appAsarExists && discordAsarExists) originalFs.rmSync(appAsar);
-            if (discordAsarExists) originalFs.renameSync(discordAsar, appAsar);
-            log("✅ Rename successful");
+            if (await exists(indexFile)) await fs.writeFile(indexFile, `module.exports = require("./core.asar");`);
+            log("✅ Deletion successful");
             progress.set(progress.value + progressPerLoop);
         }
-        catch (error) {
-            log(`❌ Could not rename asar ${discordAsar}`);
-            log(`❌ ${error.message}`);
-            return error;
+        catch (err) {
+            log(`❌ Could not delete file ${indexFile}`);
+            log(`❌ ${err.message}`);
+            return err;
         }
-
     }
 }
-
 
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
-
 async function disableAllPlugins(channels) {
     const progressPerLoop = (DELETE_PLUGINS_JSON_PROGRESS - progress.value) / channels.length;
     for (const channel of channels) {
@@ -134,27 +108,17 @@ export default async function(config) {
 
     await new Promise(r => setTimeout(r, 200));
     lognewline("Deleting shims...");
-    const deleteShimErr = await deleteAppDirs(paths);
+    const deleteShimErr = await deleteShims(paths);
     if (deleteShimErr) return fail();
     log("✅ Shims deleted");
-    progress.set(DELETE_APP_DIRS_PROGRESS);
-
-
-    if (process.platform === "win32" || process.platform === "darwin") {
-        await new Promise(r => setTimeout(r, 200));
-        lognewline("Renaming asars...");
-        const renameAsarErr = await renameAsar(paths);
-        if (renameAsarErr) return fail();
-        log("✅ Asars renamed");
-        progress.set(RENAME_ASAR_PROGRESS);
-    }
+    progress.set(DELETE_SHIM_PROGRESS);
     
 
     await new Promise(r => setTimeout(r, 200));
-    lognewline("Deleting discord modules...");
+    lognewline("Disabling all plugins...");
     const deleteJsonErr = await disableAllPlugins(channels);
     if (deleteJsonErr) return fail();
-    log("✅ Modules deleted");
+    log("✅ Plugins disabled");
     progress.set(DELETE_PLUGINS_JSON_PROGRESS);
 
 
