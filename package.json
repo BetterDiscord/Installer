@@ -18,7 +18,7 @@
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
-    "electron": "^13.6.9",
+    "electron": "^18.3.7",
     "electron-builder": "^23.6.0",
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
