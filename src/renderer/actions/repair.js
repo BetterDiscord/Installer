@@ -96,13 +96,13 @@ export default async function(config) {
     const paths = Object.values(config);
 
 
-    lognewline("Killing Discord...");
-    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length, false); // await killProcesses(channels);
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length); // await killProcesses(channels);
     if (killErr) {
         showKillNotice();
         return fail();
     }
-    log("✅ Discord Killed");
+    log("✅ Discord stopped");
     progress.set(KILL_DISCORD_PROGRESS);
 
 

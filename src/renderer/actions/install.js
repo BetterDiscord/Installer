@@ -1,6 +1,7 @@
 import {progress, status} from "../stores/installation";
 import {remote, shell} from "electron";
 import {promises as fs} from "fs";
+import originalFs from "original-fs";
 import path from "path";
 import phin from "phin";
 
@@ -10,12 +11,14 @@ import fail from "./utils/fail";
 import exists from "./utils/exists";
 import reset from "./utils/reset";
 import kill from "./utils/kill";
-import {showRestartNotice} from "./utils/notices";
+import restart from "./utils/restart";
+import {showRestartNotice, showKillNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
 
 const MAKE_DIR_PROGRESS = 30;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
-const INJECT_SHIM_PROGRESS = 90;
+const INJECT_SHIM_PROGRESS = 80;
+const RENAME_ASAR_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
 const RELEASE_API = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
@@ -51,7 +54,6 @@ const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: tr
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer", "Accept": "application/octet-stream"}});
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
-    try {
         const response = await getJSON(RELEASE_API);
         const releases = response.body;
         const asset = releases && releases.length && releases[0].assets && releases[0].assets.find(a => a.name.toLowerCase() === "betterdiscord.asar");
@@ -98,6 +100,30 @@ async function injectShims(paths) {
     }
 }
 
+async function renameAsar(paths) {
+    const progressPerLoop = (RENAME_ASAR_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const appAsar = path.join(discordPath, "app.asar");
+        const discordAsar = path.join(discordPath, "discord.asar");
+        log("Renaming " + appAsar);
+        try {
+            const appAsarExists = originalFs.existsSync(appAsar);
+            const discordAsarExists = originalFs.existsSync(discordAsar);
+            if (!appAsarExists && !discordAsarExists) throw new Error("Discord installation corrupt, please reinstall.");
+            if (appAsarExists && discordAsarExists) originalFs.rmSync(discordAsar);
+            if (appAsarExists) originalFs.renameSync(appAsar, discordAsar);
+            log("✅ Rename successful");
+            progress.set(progress.value + progressPerLoop);
+        }
+        catch (error) {
+            log(`❌ Could not rename asar ${appAsar}`);
+            log(`❌ ${error.message}`);
+            return error;
+        }
+
+    }
+}
+
 
 export default async function(config) {
     await reset();
@@ -107,6 +133,15 @@ export default async function(config) {
 
     const channels = Object.keys(config);
     const paths = Object.values(config);
+
+    lognewline("Stopping Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (killErr) {
+        showKillNotice();
+        return fail();
+    }
+    log("✅ Discord stopped");
+    progress.set(KILL_DISCORD_PROGRESS);
 
 
     lognewline("Creating required directories...");
@@ -129,10 +164,18 @@ export default async function(config) {
     log("✅ Shims injected");
     progress.set(INJECT_SHIM_PROGRESS);
 
+    if (process.platform === "win32" || process.platform === "darwin") {
+        lognewline("Renaming asars...");
+        const renameAsarErr = await renameAsar(paths);
+        if (renameAsarErr) return fail();
+        log("✅ Asars renamed");
+        progress.set(RENAME_ASAR_PROGRESS);
+    }
+
 
     lognewline("Restarting Discord...");
-    const killErr = await kill(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
-    if (killErr) showRestartNotice(); // No need to bail out and show failed
+    const restartErr = await restart(channels, (RESTART_DISCORD_PROGRESS - progress.value) / channels.length);
+    if (restartErr) showRestartNotice(); // No need to bail out and show failed
     else log("✅ Discord restarted");
     progress.set(RESTART_DISCORD_PROGRESS);
 
