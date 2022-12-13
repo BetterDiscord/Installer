@@ -9,4 +9,3 @@ export const paths = writable({stable: locations.stable, canary: locations.canar
 
 export const progress = readwritable(0);
 export const action = readwritable("install");
-export const bins = readwritable({});

@@ -1,4 +1,3 @@
-
 import {progress} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
@@ -96,13 +95,13 @@ export default async function(config) {
     const paths = Object.values(config);
 
 
-    lognewline("Stopping Discord...");
-    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length); // await killProcesses(channels);
+    lognewline("Killing Discord...");
+    const killErr = await kill(channels, (KILL_DISCORD_PROGRESS - progress.value) / channels.length, false); // await killProcesses(channels);
     if (killErr) {
         showKillNotice();
         return fail();
     }
-    log("✅ Discord stopped");
+    log("✅ Discord Killed");
     progress.set(KILL_DISCORD_PROGRESS);
 
 
