@@ -15,27 +15,26 @@ const safeIsDir = (fullpath) => {
 };
 
 const getDiscordPath = function(releaseChannel) {
-    let resourcePath = "";
+    let desktopCorePath = "";
     if (process.platform === "win32") {
         let basedir = path.join(process.env.LOCALAPPDATA, releaseChannel.replace(/ /g, "")); // Normal install path in AppData\Local
         if (!fs.existsSync(basedir)) basedir = path.join(process.env.PROGRAMDATA, process.env.USERNAME, releaseChannel.replace(/ /g, "")); // Atypical location in ProgramData\%username%
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        resourcePath = path.join(basedir, version, "resources");
-    }
-    else if (process.platform === "darwin") {
-        resourcePath = path.join("/Applications", `${releaseChannel}.app`, "Contents", "Resources");
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(path.join(basedir, version, "modules")).filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        desktopCorePath = path.join(basedir, version, "modules", coreWrap, "discord_desktop_core");
     }
     else {
         const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
         if (!fs.existsSync(basedir)) return "";
         const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        resourcePath = path.join(basedir, version, "modules", "discord_desktop_core");
+        desktopCorePath = path.join(basedir, version, "modules", "discord_desktop_core");
     }
 
-    if (fs.existsSync(resourcePath)) return resourcePath;
+    if (fs.existsSync(desktopCorePath)) return desktopCorePath;
     return "";
 };
 
@@ -45,14 +44,12 @@ for (const channel in platforms) {
 
 export const getBrowsePath = function(channel) {
     if (process.platform === "win32") return path.join(process.env.LOCALAPPDATA, platforms[channel].replace(" ", ""));
-    else if (process.platform === "darwin") return path.join("/Applications", `${platforms[channel]}.app`);
     return path.join(remote.app.getPath("userData"), "..", platforms[channel].toLowerCase().replace(" ", ""));
 };
 
 export const validatePath = function(channel, proposedPath) {
     if (process.platform === "win32") return validateWindows(channel, proposedPath);
-    else if (process.platform === "darwin") return validateMac(channel, proposedPath);
-    return validateLinux(channel, proposedPath);
+    return validateLinuxMac(channel, proposedPath);
 };
 
 const validateWindows = function(channel, proposedPath) {
@@ -61,36 +58,30 @@ const validateWindows = function(channel, proposedPath) {
     const isParentDir = fs.existsSync(path.join(proposedPath, channelName));
     if (isParentDir) proposedPath = path.join(proposedPath, channelName);
 
-    let resourcePath = "";
+    let corePath = "";
     const selected = path.basename(proposedPath);
     const isBaseDir = selected === channelName;
     if (isBaseDir) {
         const version = fs.readdirSync(proposedPath).filter(f => safeIsDir(path.join(proposedPath, f)) && f.split(".").length > 1).sort().reverse()[0];
         if (!version) return "";
-        resourcePath = path.join(proposedPath, version, "resources");
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(path.join(proposedPath, version, "modules")).filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        corePath = path.join(proposedPath, version, "modules", coreWrap, "discord_desktop_core");
     }
 
-    if (selected.startsWith("app-") && selected.split(".").length > 2) resourcePath = path.join(proposedPath, "resources");
-    if (selected === "resources") resourcePath = proposedPath;
+    if (selected.split(".").length > 2) {
+        // To account for discord_desktop_core-1 or discord_dekstop_core-2
+        const coreWrap = fs.readdirSync(path.join(proposedPath), "modules").filter(e => e.indexOf("discord_desktop_core") === 0).sort().reverse()[0];
+        corePath = path.join(proposedPath, "modules", coreWrap, "discord_desktop_core");
+    }
+    if (selected === "discord_desktop_core") corePath = proposedPath;
 
-    const executablePath = path.join(resourcePath, "..", `${channelName}.exe`);
-    if (fs.existsSync(executablePath)) return resourcePath;
+    const coreAsar = path.join(corePath, `core.asar`);
+    if (fs.existsSync(coreAsar)) return corePath;
     return "";
 };
 
-const validateMac = function(channel, proposedPath) {
-    let resourcePath = "";
-    const selected = path.basename(proposedPath);
-    if (selected === `${platforms[channel]}.app`) resourcePath = path.join(proposedPath, "Contents", "Resources");
-    if (selected === "Contents") resourcePath = path.join(proposedPath, "Resources");
-    if (selected === "Resources") resourcePath = proposedPath;
-
-    const executablePath = path.join(resourcePath, "..", "MacOS", platforms[channel]);
-    if (fs.existsSync(executablePath)) return resourcePath;
-    return "";
-};
-
-const validateLinux = function(channel, proposedPath) {
+const validateLinuxMac = function(channel, proposedPath) {
     if (proposedPath.includes("/snap/")) {
         remote.dialog.showErrorBox("BetterDiscord Incompatible", "BetterDiscord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
         return "";

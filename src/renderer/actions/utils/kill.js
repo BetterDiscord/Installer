@@ -1,4 +1,3 @@
-
 import path from "path";
 import findProcess from "find-process";
 import kill from "tree-kill";
