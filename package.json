@@ -23,7 +23,7 @@
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
     "eslint-plugin-svelte3": "^3.1.2",
-    "find-process": "^1.4.7",
+    "find-process": "https://github.com/BetterDiscord/find-process",
     "focus-visible": "^5.2.0",
     "phin": "^3.6.0",
     "rimraf": "^3.0.2",
