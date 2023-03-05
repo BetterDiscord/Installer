@@ -52,7 +52,8 @@
     },
     "portable": {
       "requestExecutionLevel": "user",
-      "useZip": true
+      "useZip": true,
+      "splashImage": "assets/images/splash.bmp"
     },
     "mac": {
       "artifactName": "${productName}-Mac.${ext}",
