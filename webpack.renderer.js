@@ -6,5 +6,8 @@ module.exports = {
                 use: "svelte-loader"
               }
         ]
+    },
+    output: {
+        hashFunction: "sha256"
     }
 };
