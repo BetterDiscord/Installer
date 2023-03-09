@@ -29,10 +29,10 @@
     "rimraf": "^3.0.2",
     "semver": "^7.3.8",
     "svelte": "^3.38.2",
-    "svelte-loader": "^3.0.0",
+    "svelte-loader": "^3.1.7",
     "svelte-spa-router": "^3.1.0",
     "tree-kill": "^1.2.2",
-    "webpack": "~4.42.1",
+    "webpack": "~5.76.0",
     "webpack-bundle-analyzer": "^4.4.0"
   },
   "build": {
@@ -81,6 +81,9 @@
     "staticSourceDirectory": "assets",
     "renderer": {
       "webpackConfig": "webpack.renderer.js"
+    },
+    "main": {
+      "webpackConfig": "webpack.main.js"
     }
   }
 }
