@@ -3,7 +3,7 @@
   "productName": "BetterDiscord Installer",
   "description": "A simple standalone program which automates the installation, removal and maintenance of BetterDiscord.",
   "author": "BetterDiscord",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -23,16 +23,16 @@
     "electron-webpack": "^2.8.2",
     "eslint": "^7.21.0",
     "eslint-plugin-svelte3": "^3.1.2",
-    "find-process": "^1.4.7",
+    "find-process": "https://github.com/BetterDiscord/find-process",
     "focus-visible": "^5.2.0",
-    "phin": "^3.6.0",
+    "phin": "^3.7.0",
     "rimraf": "^3.0.2",
-    "semver": "^7.3.5",
+    "semver": "^7.3.8",
     "svelte": "^3.38.2",
-    "svelte-loader": "^3.0.0",
+    "svelte-loader": "^3.1.7",
     "svelte-spa-router": "^3.1.0",
     "tree-kill": "^1.2.2",
-    "webpack": "~4.42.1",
+    "webpack": "~5.76.0",
     "webpack-bundle-analyzer": "^4.4.0"
   },
   "build": {
@@ -52,7 +52,8 @@
     },
     "portable": {
       "requestExecutionLevel": "user",
-      "useZip": true
+      "useZip": true,
+      "splashImage": "assets/images/splash.bmp"
     },
     "mac": {
       "artifactName": "${productName}-Mac.${ext}",
@@ -80,6 +81,9 @@
     "staticSourceDirectory": "assets",
     "renderer": {
       "webpackConfig": "webpack.renderer.js"
+    },
+    "main": {
+      "webpackConfig": "webpack.main.js"
     }
   }
 }
