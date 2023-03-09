@@ -8,6 +8,6 @@ module.exports = {
         ]
     },
     output: {
-        hashFunction: "sha256"
+        hashFunction: "xxhash64"
     }
 };
