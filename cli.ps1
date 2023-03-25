@@ -24,27 +24,25 @@ pnpm recursive install
 pnpm run build
 if($ptb)
 {
-    winget install discord -y
+    if (!(Test-Path ~\AppData\Local\DiscordPTB))
+    {
+        winget install discord.discord.ptb
+    }
     pnpm run inject ptb
 }
 if($canary)
 {
     if (!(Test-Path ~\AppData\Local\DiscordCanary))
     {
-        invoke-WebRequest -URI "https://dl-canary.discordapp.net/distro/app/canary/win/x86/1.0.49/DiscordCanarySetup.exe" -OutFile "canary.exe"
-        Start-Process -FilePath "./canary.exe" -Wait -Verb RunAs
-        Remove-Item ".\canary.exe" -Force
+        winget install discord.discord.canary
     }
     pnpm run inject canary
 }
-if(($stable) -or (!($ptb) -and !($canary) -and !($Stable)))
+if(($stable) -or (!($ptb) -and !($canary)))
 {
     if (!(Test-Path ~\AppData\Local\Discord))
     {
-
-        invoke-WebRequest -URI "https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9006/DiscordSetup.exe" -OutFile "stable.exe"
-        Start-Process -FilePath "./stable.exe" -Wait  -Verb RunAs
-        Remove-Item "./stable.exe" -Force
+        winget install discord.discord
     }
     pnpm run inject
 }
