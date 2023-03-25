@@ -5,8 +5,8 @@ Param(
 )
 Invoke-WebRequest -URI "https://community.chocolatey.org/install.ps1" -OutFile "choco.ps1"
 Start-Process -FilePath "pwsh" -Wait -ArgumentList "-f ./choco.ps1" -Verb RunAs
-choco upgrade git -y
-choco upgarde nodejs -y
+winget install git.git -e --force
+winget install OpenJS.NodeJS -e --force
 if(-not (Get-Command git -Type Application -ErrorAction Ignore)) {
     throw "unable to install git"
 }
@@ -24,7 +24,7 @@ pnpm recursive install
 pnpm run build
 if($ptb)
 {
-    choco install discord -y
+    winget install discord -y
     pnpm run inject ptb
 }
 if($canary)
