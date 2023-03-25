@@ -2,8 +2,6 @@ Param(
   [Switch]$ptb,
   [Switch]$canary
 )
-Invoke-WebRequest -URI "https://community.chocolatey.org/install.ps1" -OutFile "choco.ps1"
-Start-Process -FilePath "pwsh" -Wait -ArgumentList "-f ./choco.ps1" -Verb RunAs
 winget install git.git -e --force
 winget install OpenJS.NodeJS -e --force
 if(-not (Get-Command git -Type Application -ErrorAction Ignore)) {
