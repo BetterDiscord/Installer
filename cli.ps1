@@ -43,7 +43,4 @@ switch($client) {
         pnpm run inject
     }
   }
-
-
-
 Write-Host "sucessfully instlled to BetterDiscord" -ForegroundColor Green
