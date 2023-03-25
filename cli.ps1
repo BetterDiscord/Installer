@@ -2,6 +2,7 @@ Param(
     [ValidateSet('Ptb', 'Canary', 'Stable')]
     [string] $client
 )
+if ($PSBoundParameters.ContainsKey('client')) {$client = "Stable"}
 winget install git.git -e --force
 winget install OpenJS.NodeJS -e --force
 if(-not (Get-Command git -Type Application -ErrorAction Ignore)) {
