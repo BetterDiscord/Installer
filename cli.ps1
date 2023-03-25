@@ -1,6 +1,6 @@
 Param(
-  [Switch]$ptb,
-  [Switch]$canary
+    [ValidateSet('Ptb', 'Canary', 'Stable')]
+    [string] $client
 )
 winget install git.git -e --force
 winget install OpenJS.NodeJS -e --force
@@ -14,33 +14,35 @@ try {
 catch [System.Management.Automation.CommandNotFoundException]{
   throw "unable to install pnpm"
 }
-Set-Location ~
+Set-Location ~/downloads
 git clone https://github.com/BetterDiscord/BetterDiscord
 Set-Location BetterDiscord
 pnpm recursive install
 pnpm run build
-if($ptb)
-{
-    if (!(Test-Path ~\AppData\Local\DiscordPTB))
-    {
-        winget install discord.discord.ptb
+switch($client) {
+    Canary {
+            if (!(Test-Path ~\AppData\Local\DiscordCanary))
+        {
+            winget install discord.discord.canary
+        }
+        pnpm run inject canary
     }
-    pnpm run inject ptb
-}
-elseif ($canary)
-{
-    if (!(Test-Path ~\AppData\Local\DiscordCanary))
-    {
-        winget install discord.discord.canary
+    Ptb {
+        if (!(Test-Path ~\AppData\Local\DiscordPTB))
+        {
+            winget install discord.discord.ptb
+        }
+        pnpm run inject ptb
     }
-    pnpm run inject canary
-}
-else
-{
-    if (!(Test-Path ~\AppData\Local\Discord))
-    {
-        winget install discord.discord
+    Default {
+        if (!(Test-Path ~\AppData\Local\Discord))
+        {
+            winget install discord.discord
+        }
+        pnpm run inject
     }
-    pnpm run inject
-}
-Write-Output "sucessfully instlled to BetterDiscord"
+  }
+
+
+
+Write-Host "sucessfully instlled to BetterDiscord" -ForegroundColor Green
