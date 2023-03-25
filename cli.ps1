@@ -1,7 +1,6 @@
 Param(
   [Switch]$ptb,
-  [Switch]$canary,
-  [Switch]$Stable
+  [Switch]$canary
 )
 Invoke-WebRequest -URI "https://community.chocolatey.org/install.ps1" -OutFile "choco.ps1"
 Start-Process -FilePath "pwsh" -Wait -ArgumentList "-f ./choco.ps1" -Verb RunAs
@@ -30,7 +29,7 @@ if($ptb)
     }
     pnpm run inject ptb
 }
-if($canary)
+elseif ($canary)
 {
     if (!(Test-Path ~\AppData\Local\DiscordCanary))
     {
@@ -38,7 +37,7 @@ if($canary)
     }
     pnpm run inject canary
 }
-if(($stable) -or (!($ptb) -and !($canary)))
+else
 {
     if (!(Test-Path ~\AppData\Local\Discord))
     {
