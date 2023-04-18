@@ -49,13 +49,29 @@ async function makeDirectories(...folders) {
 
 const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer"}});
 const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer", "Accept": "application/octet-stream"}});
-const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function downloadAsar() {
+    try {
+        const response = await downloadFile("https://betterdiscord.app/Download/betterdiscord.asar")
+        const bdVersion = response.headers["x-bd-version"];
+        if (200 <= response.statusCode && response.statusCode < 300) {
+            log(`✅ Downloaded BetterDiscord version ${bdVersion} from the official website`);
+            return response.body;
+        }
+        throw new Error(`Status code did not indicate success: ${response.statusCode}`);
+    }
+    catch (error) {
+        log(`❌ Failed to download package from the official website`);
+        log(`❌ ${error.message}`);
+        log(`Falling back to GitHub...`);
+    }
+    let assetUrl;
+    let bdVersion;
     try {
         const response = await getJSON(RELEASE_API);
         const releases = response.body;
         const asset = releases && releases.length && releases[0].assets && releases[0].assets.find(a => a.name.toLowerCase() === "betterdiscord.asar");
-        const assetUrl = asset && asset.url;
+        assetUrl = asset && asset.url;
+        bdVersion = asset && releases[0].tag_name;
         if (!assetUrl) {
             let errMessage = "Could not get the asset url";
             if (!asset) errMessage = "Could not get asset object";
@@ -63,21 +79,47 @@ async function downloadAsar() {
             if (!response) errMessage = "Could not get any response";
             throw new Error(errMessage);
         }
-        try {
-            const resp = await downloadFile(assetUrl);
-            const originalFs = require("original-fs").promises; // because electron doesn't like when I write asar files
-            await originalFs.writeFile(asarPath, resp.body);
-        }
-        catch (error) {
-            log(`❌ Failed to download package from ${assetUrl}`);
-            log(`❌ ${error.message}`);
-            return error;
-        }
     }
-    catch (err) {
+    catch (error) {
         log(`❌ Failed to get asset url from ${RELEASE_API}`);
-        log(`❌ ${err.message}`);
-        return err;
+        log(`❌ ${error.message}`);
+        throw error;
+    }
+    try {
+        const response = await downloadFile(assetUrl);
+        if (200 <= response.statusCode && response.statusCode < 300) {
+            log(`✅ Downloaded BetterDiscord version ${bdVersion} from GitHub`);
+            return response.body;
+        }
+        throw new Error(`Status code did not indicate success: ${response.statusCode}`);
+    }
+    catch (error) {
+        log(`❌ Failed to download package from ${assetUrl}`);
+        log(`❌ ${error.message}`);
+        throw error;
+    }
+}
+
+const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
+async function installAsar(fileContent) {
+    try {
+        const originalFs = require("original-fs").promises; // because electron doesn't like writing asar files
+        await originalFs.writeFile(asarPath, fileContent);
+    }
+    catch (error) {
+        log(`❌ Failed to write package to disk: ${asarPath}`);
+        log(`❌ ${error.message}`);
+        throw error;
+    }
+}
+
+async function downloadAndInstallAsar() {
+    try {
+        const fileContent = await downloadAsar();
+        await installAsar(fileContent);
+    } 
+    catch (error) {
+        return error;
     }
 }
 
@@ -117,7 +159,7 @@ export default async function(config) {
     
 
     lognewline("Downloading asar file");
-    const downloadErr = await downloadAsar();
+    const downloadErr = await downloadAndInstallAsar();
     if (downloadErr) return fail();
     log("✅ Package downloaded");
     progress.set(DOWNLOAD_PACKAGE_PROGRESS);
