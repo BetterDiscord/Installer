@@ -1,5 +1,5 @@
-module.exports = {
-    output: {
-        hashFunction: "xxhash64"
-    }
+module.exports = config => {
+    delete config.optimization.namedModules;
+    config.output.hashFunction = "xxhash64";
+    return config;
 };
