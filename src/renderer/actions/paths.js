@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 import {remote} from "electron";
 
-export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
-export const locations = {stable: "", ptb: "", canary: ""};
+export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary", Development: "DiscordDevelopment"};
+export const locations = {stable: "", ptb: "", canary: "", development: ""};
 
 const safeIsDir = (fullpath) => {
     try {
