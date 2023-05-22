@@ -81,7 +81,6 @@ jobs:
           # ordered by how fast they build (muh cosmetics)
           - ubuntu-latest
           - windows-latest
-          - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
 
@@ -106,15 +105,6 @@ jobs:
         with:
           name: build
           path: dist/BetterDiscord-Windows.exe
-          if-no-files-found: error
-
-      - if: ${{ success() && matrix.os == 'macos-latest' }}
-        run: mv -f dist/BetterDiscord-*-mac.zip dist/BetterDiscord-Mac.zip
-      - if: ${{ success() && matrix.os == 'macos-latest' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: dist/BetterDiscord-Mac.zip
           if-no-files-found: error
 
   # Download source artifact, push to 'release'.
@@ -180,7 +170,6 @@ jobs:
         run: |
           gh release create "$NEW_VERSION" --draft --title "$NEW_VERSION" --target "$SHA1" --generate-notes \
             "BetterDiscord-Linux.AppImage#Linux (AppImage)" \
-            "BetterDiscord-Mac.zip#Mac OS (Zip)" \
             "BetterDiscord-Windows.exe#Windows (Exe)"
         env:
           SHA1: ${{ needs.push_changes.outputs.sha_1 }}
