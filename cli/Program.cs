@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using AngleSharp.Html.Parser;
 using Octokit;
 
-namespace cstest;
+namespace cli;
 
 public static class Installer
 {
