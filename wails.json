@@ -1,0 +1,14 @@
+{
+    "$schema": "https://wails.io/schemas/config.v2.json",
+    "name": "BetterDiscord Installer",
+    "outputfilename": "BetterDiscord-Installer",
+    "frontend:install": "npm install",
+    "frontend:build": "npm run build",
+    "frontend:dev:watcher": "npm run dev",
+    "frontend:dev:serverUrl": "auto",
+    "author": {
+      "name": "Zerebos",
+      "email": "me@zerebos.com"
+    }
+  }
+  
