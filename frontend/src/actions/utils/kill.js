@@ -1,7 +1,7 @@
 import path from "path";
 import findProcess from "find-process";
 import kill from "tree-kill";
-import {shell} from "electron";
+// import {shell} from "electron";
 import {progress} from "../../stores/installation";
 import {log} from "./log";
 
@@ -25,7 +25,8 @@ export default async function killProcesses(channels, progressPerLoop, shouldRes
             const discordPid = results.find(p => parentPids.includes(p.pid));
             const bin = process.platform === "darwin" ? path.resolve(discordPid.bin, "..", "..", "..") : discordPid.bin;
             await new Promise(r => kill(discordPid.pid, r));
-            if (shouldRestart) setTimeout(() => shell.openPath(bin), 1000);
+            // TODO: wails
+            // if (shouldRestart) setTimeout(() => shell.openPath(bin), 1000);
             progress.set(progress.value + progressPerLoop);
         }
         catch (err) {

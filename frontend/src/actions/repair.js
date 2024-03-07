@@ -1,9 +1,9 @@
 import {progress} from "../stores/installation";
-import {remote} from "electron";
-import {promises as fs} from "fs";
-import originalFs from "original-fs";
-import rimraf from "rimraf";
-import path from "path";
+// import {remote} from "electron";
+// import originalFs, {promises as fs} from "fs";
+// import originalFs from "original-fs";
+// import rimraf from "rimraf";
+// import path from "path";
 import install from "./install.js";
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -37,8 +37,10 @@ async function deleteShims(paths) {
     }
 }
 
-const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
-const bdDataFolder = path.join(bdFolder, "data");
+// TODO: wails
+// const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+// const bdFolder = path.join(__dirname, "BetterDiscord");
+// const bdDataFolder = path.join(bdFolder, "data");
 async function disableAllPlugins(channels) {
     const progressPerLoop = (DELETE_PLUGINS_JSON_PROGRESS - progress.value) / channels.length;
     for (const channel of channels) {
@@ -64,24 +66,25 @@ async function disableAllPlugins(channels) {
 }
 
 async function showInstallNotice(config) {
-    const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
-        type: "question",
-        title: "Reinstall BetterDiscord?",
-        message: "After repairing, you need to reinstall BetterDiscord. Would you like to do that now?",
-        noLink: true,
-        cancelId: 1,
-        buttons: ["Yes", "No"]
-    });
+    // TODO: wails
+    // const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
+    //     type: "question",
+    //     title: "Reinstall BetterDiscord?",
+    //     message: "After repairing, you need to reinstall BetterDiscord. Would you like to do that now?",
+    //     noLink: true,
+    //     cancelId: 1,
+    //     buttons: ["Yes", "No"]
+    // });
 
-    if (confirmation.response !== 0) return succeed();
+    // if (confirmation.response !== 0) return succeed();
 
-    await reset();
-    await install(config);
-    remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
-        type: "info",
-        title: "Reinstall Complete",
-        message: "Please relaunch discord manually to finish the repair."
-    });
+    // await reset();
+    // await install(config);
+    // remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
+    //     type: "info",
+    //     title: "Reinstall Complete",
+    //     message: "Please relaunch discord manually to finish the repair."
+    // });
 }
 
 

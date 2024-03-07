@@ -5,7 +5,7 @@
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {action, platforms, paths} from "../stores/installation";
     import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
-    import {remote} from "electron";
+    // import {remote} from "electron";
     import getStatic from "../getstatic";
 
     if (Object.values($platforms).some(r => r)) canGoForward.set(true);
@@ -28,11 +28,13 @@
 
     async function click(event) {
         const platform = event.detail;
-        const result = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
-            title: `Browsing to ${platformLabels[platform]}`,
-            defaultPath: getBrowsePath(platform),
-            properties: ["openDirectory", "treatPackageAsDirectory"]
-        });
+        // const result = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+        //     title: `Browsing to ${platformLabels[platform]}`,
+        //     defaultPath: getBrowsePath(platform),
+        //     properties: ["openDirectory", "treatPackageAsDirectory"]
+        // });
+        // TODO: wails
+        const result = {filePaths: []};
         if (result.canceled || !result.filePaths[0]) return;
 
         const resourcesPath = validatePath(platform, result.filePaths[0]);

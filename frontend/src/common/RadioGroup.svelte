@@ -12,6 +12,7 @@
     selected-index={index}
     style="--index: {index};"
     class="radio-group"
+    role="radiogroup"
     {...$$restProps}
 >
     <slot />

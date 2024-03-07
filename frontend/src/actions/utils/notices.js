@@ -1,17 +1,18 @@
-import {remote} from "electron";
+// import {remote} from "electron";
 
+// TODO: dialog
 export function showRestartNotice() {
-    remote.dialog.showMessageBox({
-        type: "info",
-        title: "Restart Discord",
-        message: "BetterDiscord could not restart Discord. Please restart it manually."
-    });
+    // remote.dialog.showMessageBox({
+    //     type: "info",
+    //     title: "Restart Discord",
+    //     message: "BetterDiscord could not restart Discord. Please restart it manually."
+    // });
 }
 
 export function showKillNotice() {
-    remote.dialog.showMessageBox({
-        type: "error",
-        title: "Shutdown Discord",
-        message: "BetterDiscord could not shut down Discord. Please make sure Discord is fully closed, then run the installer again."
-    });
+    // remote.dialog.showMessageBox({
+    //     type: "error",
+    //     title: "Shutdown Discord",
+    //     message: "BetterDiscord could not shut down Discord. Please make sure Discord is fully closed, then run the installer again."
+    // });
 }

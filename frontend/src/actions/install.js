@@ -1,8 +1,8 @@
 import {progress, status} from "../stores/installation";
-import {remote, shell} from "electron";
-import {promises as fs} from "fs";
-import path from "path";
-import phin from "phin";
+// import {remote, shell} from "electron";
+// import {promises as fs} from "fs";
+// import path from "path";
+// import phin from "phin";
 
 import {log, lognewline} from "./utils/log";
 import succeed from "./utils/succeed";
@@ -20,10 +20,12 @@ const RESTART_DISCORD_PROGRESS = 100;
 
 const RELEASE_API = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
 
-const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
-const bdDataFolder = path.join(bdFolder, "data");
-const bdPluginsFolder = path.join(bdFolder, "plugins");
-const bdThemesFolder = path.join(bdFolder, "themes");
+// TODO: wails
+// const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
+// const bdFolder = path.join(__dirname, "BetterDiscord");
+// const bdDataFolder = path.join(bdFolder, "data");
+// const bdPluginsFolder = path.join(bdFolder, "plugins");
+// const bdThemesFolder = path.join(bdFolder, "themes");
 
 
 async function makeDirectories(...folders) {
@@ -47,13 +49,14 @@ async function makeDirectories(...folders) {
     }
 }
 
-const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer"}});
-const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer", "Accept": "application/octet-stream"}});
+// TODO: wails
+// const getJSON = phin.defaults({method: "GET", parse: "json", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer"}});
+// const downloadFile = phin.defaults({method: "GET", followRedirects: true, headers: {"User-Agent": "BetterDiscord/Installer", "Accept": "application/octet-stream"}});
 async function downloadAsar() {
     try {
         const response = await downloadFile("https://betterdiscord.app/Download/betterdiscord.asar")
         const bdVersion = response.headers["x-bd-version"];
-        if (200 <= response.statusCode && response.statusCode < 300) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
             log(`✅ Downloaded BetterDiscord version ${bdVersion} from the official website`);
             return response.body;
         }
@@ -87,7 +90,7 @@ async function downloadAsar() {
     }
     try {
         const response = await downloadFile(assetUrl);
-        if (200 <= response.statusCode && response.statusCode < 300) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
             log(`✅ Downloaded BetterDiscord version ${bdVersion} from GitHub`);
             return response.body;
         }
@@ -100,11 +103,13 @@ async function downloadAsar() {
     }
 }
 
-const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
+// TODO: wails
+// const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
 async function installAsar(fileContent) {
     try {
-        const originalFs = require("original-fs").promises; // because electron doesn't like writing asar files
-        await originalFs.writeFile(asarPath, fileContent);
+        // TODO: confirm wails
+        // const originalFs = require("original-fs").promises; // because electron doesn't like writing asar files
+        await fs.writeFile(asarPath, fileContent);
     }
     catch (error) {
         log(`❌ Failed to write package to disk: ${asarPath}`);

@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-import {remote} from "electron";
+// const fs = require("fs");
+// const path = require("path");
+// import {remote} from "electron";
 
 export const platforms = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
 export const locations = {stable: "", ptb: "", canary: ""};
@@ -32,7 +32,9 @@ const getDiscordPath = function(releaseChannel) {
             desktopCorePath = path.join(modulePath, coreWrap, "discord_desktop_core");
         }
         else {
-            const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
+            // TODO: wails
+            // const basedir = path.join(remote.app.getPath("userData"), "..", releaseChannel.toLowerCase().replace(" ", ""));
+            const basedir = path.join(__dirname, "..", releaseChannel.toLowerCase().replace(" ", ""));
             if (!fs.existsSync(basedir)) return "";
             const version = fs.readdirSync(basedir).filter(f => safeIsDir(path.join(basedir, f)) && f.split(".").length > 1).sort().reverse()[0];
             if (!version) return "";
@@ -50,7 +52,7 @@ const getDiscordPath = function(releaseChannel) {
 };
 
 for (const channel in platforms) {
-    locations[channel] = getDiscordPath(platforms[channel]);
+    // locations[channel] = getDiscordPath(platforms[channel]);
 }
 
 export const getBrowsePath = function(channel) {
@@ -94,7 +96,8 @@ const validateWindows = function(channel, proposedPath) {
 
 const validateLinuxMac = function(channel, proposedPath) {
     if (proposedPath.includes("/snap/")) {
-        remote.dialog.showErrorBox("BetterDiscord Incompatible", "BetterDiscord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
+        // TODO: wails
+        // remote.dialog.showErrorBox("BetterDiscord Incompatible", "BetterDiscord is currently incompatible with Snap installs of Discord. Support for snap installs is coming soon!");
         return "";
     }
     const channelName = platforms[channel].toLowerCase().replace(" ", "");

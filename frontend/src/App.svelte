@@ -8,8 +8,11 @@
     import routes from "./routes";
 </script>
 
-<div class="main-window platform-{process.platform || "win32"}">
-    <Titlebar macButtons={process.platform === "darwin"} />
+<!-- TODO: platform -->
+<!-- <div class="main-window platform-{process.platform || "win32"}">
+    <Titlebar macButtons={process.platform === "darwin"} /> -->
+<div class="main-window platform-{"win32"}">
+    <Titlebar macButtons={"darwin"} />
     <main class="installer-body">
         <div class="sections">
             <Router {routes} />

@@ -1,4 +1,4 @@
-module betterdiscord-installer
+module installer
 
 go 1.21
 

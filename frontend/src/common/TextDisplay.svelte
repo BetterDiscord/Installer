@@ -47,6 +47,7 @@
         on:mouseleave={() => copyButtonVisible = false}
         class="text-display{value ? "" : " loading"}"
     >
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div bind:this={scroller} on:scroll={() => copyButtonVisible = false} class="display-inner" tabindex="0">
             {value}
         </div>

@@ -7,6 +7,7 @@ const app = new App({
 });
 
 // Setup this in a var because otherwise it won't work in prod
+// TODO: wails
 appElement.style.setProperty("--background", `url('${getStatic("images/background.png").replace(/\\/g, "\\\\")}')`);
 
 window.refresh = () => window.location.href = `http://${window.location.host}/`;

@@ -1,6 +1,7 @@
 {
+    "extends": ["eslint:recommended", "plugin:import/recommended"],
 	"env": {
-        "node": true,
+        "node": false,
         "browser": true
     },
     "plugins": [
@@ -13,7 +14,7 @@
         }
     ],
     "parserOptions": {
-        "ecmaVersion": 2019,
+        "ecmaVersion": 2022,
         "sourceType": "module"
     },
     "rules": {
@@ -91,16 +92,6 @@
         "yoda": "error"
     },
     "globals": {
-        "Proxy": "readonly",
-        "Set": "readonly",
-        "WeakMap": "readonly",
-        "Map": "readonly",
-        "Promise": "readonly",
-        "Reflect": "readonly",
-        "DiscordNative": "readonly",
-        "__non_webpack_require__": "readonly",
-        "Symbol": "readonly",
-        "__static": "readonly",
-        "status": "off"
+        "__INSTALLER_LICENSE__": "readonly"
     }
 }

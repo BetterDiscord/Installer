@@ -3,8 +3,8 @@
     import page from "../transitions/page.js";
     import Checkbox from "../common/Checkbox.svelte";
     import TextDisplay from "../common/TextDisplay.svelte";
-    import fs from "fs";
-    import path from "path";
+    // import fs from "fs";
+    // import path from "path";
     import {canGoBack, canGoForward, nextPage, hasLoaded} from "../stores/navigation";
     import {hasAgreed} from "../stores/installation";
     import {onMount} from "svelte";
@@ -24,17 +24,17 @@
 
     nextPage.set("/actions");
 
-    let licenseText = "";
+    const licenseText = __INSTALLER_LICENSE__;
 
-    function readLicenseFile() {
-        fs.readFile(path.join(__static, "/license.txt"), (err, data) => {
-            if (err) return licenseText = "See license at https://github.com/BetterDiscord/BetterDiscord/blob/master/LICENSE";
-            licenseText = data;
-        });
-    }
+    // function readLicenseFile() {
+    //     fs.readFile(path.join(__static, "/license.txt"), (err, data) => {
+    //         if (err) return licenseText = "See license at https://github.com/BetterDiscord/BetterDiscord/blob/master/LICENSE";
+    //         licenseText = data;
+    //     });
+    // }
 
     // setTimeout(readLicenseFile, 5000); // Use for testing spinner
-    readLicenseFile();
+    // readLicenseFile();
 </script>
 
 <section class="page" in:page="{{duration: $hasLoaded ? undefined : 0}}" out:page="{{out: true}}">

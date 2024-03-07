@@ -1,11 +1,13 @@
-import path from "path";
-import * as url from "url";
+// import path from "path";
+// import * as url from "url";
 
-const isDevelopment = process.env.NODE_ENV !== "production";
+// TODO: determine if needed
+const isDevelopment = true; // process.env.NODE_ENV !== "production";
 
 export default function getStatic(val) {
-    if (isDevelopment) {
-      return url.resolve(window.location.origin, val);
-    }
-    return path.resolve(__static, val);
+  return `assets/${val}`;
+    // if (isDevelopment) {
+    //   return url.resolve(window.location.origin, val);
+    // }
+    // return path.resolve(__static, val);
 }

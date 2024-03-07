@@ -19,7 +19,7 @@
 
 <label class="check-container" {...$$restProps}>
     <input bind:this={checkbox} type="checkbox" hidden {disabled} {checked} on:change {value} />
-    <div on:keypress={handleKeyboardToggle(checkbox)} tabindex="0" class="check-item" class:disabled>
+    <div on:keypress={handleKeyboardToggle(checkbox)} tabindex="0" class="check-item" class:disabled role="listbox">
         <div class="icon">
             <slot name="icon" />
         </div>

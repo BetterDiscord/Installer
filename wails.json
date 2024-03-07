@@ -6,6 +6,7 @@
     "frontend:build": "npm run build",
     "frontend:dev:watcher": "npm run dev",
     "frontend:dev:serverUrl": "auto",
+    "assetdir": "./assets",
     "author": {
       "name": "Zerebos",
       "email": "me@zerebos.com"
