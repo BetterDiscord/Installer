@@ -26,15 +26,6 @@
 
     const licenseText = __INSTALLER_LICENSE__;
 
-    // function readLicenseFile() {
-    //     fs.readFile(path.join(__static, "/license.txt"), (err, data) => {
-    //         if (err) return licenseText = "See license at https://github.com/BetterDiscord/BetterDiscord/blob/master/LICENSE";
-    //         licenseText = data;
-    //     });
-    // }
-
-    // setTimeout(readLicenseFile, 5000); // Use for testing spinner
-    // readLicenseFile();
 </script>
 
 <section class="page" in:page="{{duration: $hasLoaded ? undefined : 0}}" out:page="{{out: true}}">
@@ -47,5 +38,5 @@
         License Agreement
     </PageHeader>
     <TextDisplay value={licenseText} />
-    <Checkbox checked={$hasAgreed} disabled={!licenseText} label="I accept the license agreement." on:change={toggleAgree} />
+    <Checkbox checked={$hasAgreed} label="I accept the license agreement." on:change={toggleAgree} />
 </section>

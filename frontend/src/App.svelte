@@ -1,6 +1,8 @@
 <script>
     import "focus-visible";
 
+    import {os} from "./stores/installation";
+
     // import Page from "./containers/Page.svelte";
     import Titlebar from "./common/Titlebar.svelte";
     import Footer from "./common/Footer.svelte";
@@ -8,11 +10,8 @@
     import routes from "./routes";
 </script>
 
-<!-- TODO: platform -->
-<!-- <div class="main-window platform-{process.platform || "win32"}">
-    <Titlebar macButtons={process.platform === "darwin"} /> -->
-<div class="main-window platform-{"win32"}">
-    <Titlebar macButtons={"darwin"} />
+<div class="main-window platform-{$os || "windows"}">
+    <Titlebar macButtons={$os === "darwin"} />
     <main class="installer-body">
         <div class="sections">
             <Router {routes} />

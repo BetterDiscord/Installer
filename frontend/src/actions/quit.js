@@ -1,17 +1,10 @@
-// import {remote} from "electron";
+import {Quit as exit} from "@wails/runtime";
+import {ConfirmAction as showMessageBox} from "@backend/Dialogs";
 
-// TODO: quit dialog
+
 export default async function() {
-    // const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
-    //     type: "question",
-    //     title: "Are you sure?",
-    //     message: "Are you sure you want to quit the installation?",
-    //     noLink: true,
-    //     cancelId: 1,
-    //     buttons: ["Quit", "Cancel"]
-    // });
-
-    // if (confirmation.response === 0) {
-    //     remote.app.exit();
-    // }
+    const confirmation = await showMessageBox("Are you sure?", "Are you sure you want to quit the installation?");
+    if (confirmation === "Yes") {
+        exit();
+    }
 }

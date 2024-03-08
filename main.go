@@ -1,14 +1,10 @@
 package main
 
 import (
+	"context"
 	"embed"
 
 	"installer/backend"
-
-	"fmt"
-	"net/http"
-	"os"
-	"strings"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -18,38 +14,31 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
-type FileLoader struct {
-	http.Handler
+type App struct {
+	ctx context.Context
 }
 
-func NewFileLoader() *FileLoader {
-	return &FileLoader{}
+// CreateApp creates a new App application struct
+func CreateApp() *App {
+	return &App{}
 }
 
-func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	var err error
-	requestedFilename := strings.TrimPrefix(req.URL.Path, "/")
-
-	if !strings.HasPrefix(requestedFilename, "assets") {
-		res.WriteHeader(http.StatusForbidden)
-		res.Write([]byte(fmt.Sprintf("Access to file %s not allowed", requestedFilename)))
-		return
-	}
-
-	// println("Requesting file:", requestedFilename)
-	fileData, err := os.ReadFile(requestedFilename)
-	if err != nil {
-		res.WriteHeader(http.StatusBadRequest)
-		res.Write([]byte(fmt.Sprintf("Could not load file %s", requestedFilename)))
-		return
-	}
-
-	res.Write(fileData)
+// startup is called when the app starts. The context is saved
+// so we can call the runtime methods
+func (a *App) SetContext(ctx context.Context) {
+	a.ctx = ctx
 }
 
 func main() {
 	// Create an instance of the app structure
-	app := backend.NewApp()
+	app := CreateApp()
+	backend := backend.CreateBackend()
+
+	bound := []interface{}{app, backend}
+	others := backend.GetModules()
+	for o := 0; o < len(others); o++ {
+		bound = append(bound, others[o])
+	}
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -58,14 +47,14 @@ func main() {
 		Width:     550,
 		Height:    350,
 		AssetServer: &assetserver.Options{
-			Assets:  assets,
-			Handler: NewFileLoader(),
+			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.Startup,
-		Bind: []interface{}{
-			app,
+		OnStartup: func(ctx context.Context) {
+			app.SetContext(ctx)
+			backend.SetContext(ctx)
 		},
+		Bind: bound,
 	})
 
 	if err != nil {

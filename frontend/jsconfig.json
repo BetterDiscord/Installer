@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "es2022",
+      "allowSyntheticDefaultImports": false,
+      "baseUrl": "./",
+      "paths": {
+        "@assets/*": ["./assets/*"],
+        "@wails/*": ["./wailsjs/runtime/*"],
+        "@backend/*": ["./wailsjs/go/backend/*"],
+      }
+    },
+    "exclude": ["node_modules"]
+  }

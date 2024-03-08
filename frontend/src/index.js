@@ -1,5 +1,9 @@
 import App from "./App.svelte";
-import getStatic from "./getstatic";
+import {paths, os} from "./stores/installation";
+import {GetPlatform as platform} from "@backend/Backend";
+import {GetDiscordPath as getDiscordPath} from "@backend/Paths";
+
+import backgroundUrl from "@assets/images/background.png";
 
 const appElement = document.getElementById("app");
 const app = new App({
@@ -7,8 +11,7 @@ const app = new App({
 });
 
 // Setup this in a var because otherwise it won't work in prod
-// TODO: wails
-appElement.style.setProperty("--background", `url('${getStatic("images/background.png").replace(/\\/g, "\\\\")}')`);
+appElement.style.setProperty("--background", `url('${backgroundUrl}')`);
 
 window.refresh = () => window.location.href = `http://${window.location.host}/`;
 
@@ -20,5 +23,15 @@ window.addEventListener("keydown", (e) => {
         e.preventDefault();
     }
 });
+
+platform().then(osName => os.set(osName));
+
+const channels = ["stable", "ptb", "canary"];
+
+for (const channel of channels) {
+    getDiscordPath(channel).then(path => {
+        paths.update(current => ({...current, [channel]: path}));
+    });
+}
 
 export default app;

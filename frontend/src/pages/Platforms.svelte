@@ -4,9 +4,19 @@
     import Multiselect from "../common/Multiselect.svelte";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {action, platforms, paths} from "../stores/installation";
-    import {platforms as platformLabels, validatePath, getBrowsePath} from "../actions/paths";
-    // import {remote} from "electron";
-    import getStatic from "../getstatic";
+    import {BrowseForDiscord as findDiscordDialog} from "@backend/Dialogs";
+
+    import stableUrl from "@assets/images/stable.png";
+    import canaryUrl from "@assets/images/canary.png";
+    import ptbUrl from "@assets/images/ptb.png";
+
+    const imageUrls = {
+        stable: stableUrl,
+        canary: canaryUrl,
+        ptb: ptbUrl,
+    };
+
+    const platformLabels = {stable: "Discord", ptb: "Discord PTB", canary: "Discord Canary"};
 
     if (Object.values($platforms).some(r => r)) canGoForward.set(true);
     else canGoForward.set(false);
@@ -28,16 +38,7 @@
 
     async function click(event) {
         const platform = event.detail;
-        // const result = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
-        //     title: `Browsing to ${platformLabels[platform]}`,
-        //     defaultPath: getBrowsePath(platform),
-        //     properties: ["openDirectory", "treatPackageAsDirectory"]
-        // });
-        // TODO: wails
-        const result = {filePaths: []};
-        if (result.canceled || !result.filePaths[0]) return;
-
-        const resourcesPath = validatePath(platform, result.filePaths[0]);
+        const resourcesPath = await findDiscordDialog(platform);
         paths.update(obj => {
             obj[platform] = resourcesPath;
             return obj;
@@ -68,7 +69,7 @@
             checked={$paths[channel] && $platforms[channel]}
             disabled={!$paths[channel]}
         >
-            <img src={getStatic(`images/${channel}.png`)} slot="icon" alt="Platform Icon" />
+            <img src={imageUrls[channel]} slot="icon" alt="Platform Icon" />
             {label}
         </Multiselect>
     {/each}
