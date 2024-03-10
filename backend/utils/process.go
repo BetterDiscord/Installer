@@ -11,7 +11,7 @@ func KillProcess(name string) error {
 
 	// If we can't even list processes, bail out
 	if err != nil {
-		return fmt.Errorf("Could not list processes")
+		return fmt.Errorf("could not list processes")
 	}
 
 	// Search for desired processe(s)
@@ -36,4 +36,24 @@ func KillProcess(name string) error {
 
 	// If we got here, everything was killed without error
 	return nil
+}
+
+func GetProcessExe(name string) string {
+	var exe = ""
+	processes, err := process.Processes()
+	if err != nil {
+		return exe
+	}
+	for _, p := range processes {
+		n, err := p.Name()
+		if err != nil {
+			continue
+		}
+		if n == name {
+			if len(exe) == 0 {
+				exe, _ = p.Exe()
+			}
+		}
+	}
+	return exe
 }

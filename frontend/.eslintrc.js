@@ -17,7 +17,8 @@ module.exports = {
     },
     "env": {
         node: false,
-        browser: true
+        browser: true,
+        es6: true
     },
     "plugins": [
         "svelte3"

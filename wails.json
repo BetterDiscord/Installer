@@ -7,6 +7,10 @@
     "frontend:dev:watcher": "npm run dev",
     "frontend:dev:serverUrl": "auto",
     "assetdir": "./assets",
+    "info": {
+      "productName": "BetterDiscord Installer",
+      "productVersion": "2.0.0-alpha"
+    },
     "author": {
       "name": "Zerebos",
       "email": "me@zerebos.com"
