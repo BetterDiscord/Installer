@@ -25,7 +25,7 @@ export default async function () {
 
             const result = await dialog.showMessageBox({
                 title: "New Installer Version Available",
-                message: `A new version of the BetterDiscord installer is available. Click "Download" to download the newest version.`,
+                message: `A new version of the BetterDiscord installer is available.\n\nClick "Download" to get the latest version.`,
                 buttons: ["Download", "Later"],
                 defaultId: 0,
                 cancelId: 1
@@ -35,7 +35,7 @@ export default async function () {
                 await shell.openExternal(latestRelease.html_url);
                 process.exit(0);
             }
-            
+
         }
         else {
             console.info(`The installer is up to date.`);
