@@ -83,11 +83,15 @@ Run this command at the root folder to install dependencies:
 yarn install
 ```
 
+If you are using Visual Studio Code for development, you can go into View > Command Pallete > "Tasks: Run Tasks" > "Install yarn dependencies" to install as well.
+
 ### 3: Run Build Script
 To run the installer in development mode, simply run the following command:
 ```ps
 yarn dev
 ```
+
+If you are using Visual Studio Code for development, you can debug by opening the "Run and Debug" menu and launch "Run yarn dev"
 
 ## Additional Scripts
 
