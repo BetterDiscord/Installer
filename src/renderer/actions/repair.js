@@ -40,6 +40,22 @@ async function deleteShims(paths) {
 const bdFolder = path.join(remote.app.getPath("appData"), "BetterDiscord");
 const bdDataFolder = path.join(bdFolder, "data");
 async function disableAllPlugins(channels) {
+    const confirmation = await remote.dialog.showMessageBox(remote.BrowserWindow.getFocusedWindow(), {
+        type: "question",
+        title: "Plugin Enabled",
+        message: "Would you like to keep your plugins enabled?",
+        noLink: true,
+        cancelId: 1,
+        buttons: ["Yes", "No"]
+    });
+
+    // If the user chooses to keep the plugins enabled, skip deleting plugins.json
+    if (confirmation.response === 0) {
+        log(`✅ Keeping plugins enabled`);
+        progress.set(DELETE_PLUGINS_JSON_PROGRESS);
+        return;
+    }
+
     const progressPerLoop = (DELETE_PLUGINS_JSON_PROGRESS - progress.value) / channels.length;
     for (const channel of channels) {
         const channelFolder = path.join(bdDataFolder, channel);
@@ -53,7 +69,6 @@ async function disableAllPlugins(channels) {
                 log(`✅ plugins.json does not exist`);
             }
             progress.set(progress.value + progressPerLoop);
-            
         }
         catch (err) {
             log(`❌ Failed to delete plugins.json: ${pluginsJson}`);
