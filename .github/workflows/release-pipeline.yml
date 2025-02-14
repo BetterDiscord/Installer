@@ -90,6 +90,9 @@ jobs:
           name: source
 
       - run: yarn install && yarn dist
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
 
       - uses: actions/upload-artifact@v2
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
@@ -175,12 +178,7 @@ jobs:
 
       - name: upload release draft
         run: |
-          cat "$RELEASE_NOTES_TEMPLATE_LOCATION" \
-          | sed -e 's/$SHA1/'"$SHA1"'/' - \
-          | sed -e 's/$OLD_VERSION/'"$OLD_VERSION"'/' - \
-          | sed -e 's/$NEW_VERSION/'"$NEW_VERSION"'/' - \
-          | sed -e 's/$NAKED_INPUT_VERSION_TAG/'"$NAKED_INPUT_VERSION_TAG"'/' - \
-          | gh release create "$NEW_VERSION" --draft --title "$NEW_VERSION" --target "$SHA1" --notes-file - \
+          gh release create "$NEW_VERSION" --draft --title "$NEW_VERSION" --target "$SHA1" --generate-notes \
             "BetterDiscord-Linux.AppImage#Linux (AppImage)" \
             "BetterDiscord-Mac.zip#Mac OS (Zip)" \
             "BetterDiscord-Windows.exe#Windows (Exe)"
