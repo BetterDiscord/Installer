@@ -78,16 +78,24 @@ git clone https://github.com/BetterDiscord/installer && cd installer
 This will create a local copy of this repository and navigate you to the root folder of the repository.
 
 ### 2: Install Dependencies
+**If you are using Visual Studio Code for development, you can go into View > Command Pallete > "Tasks: Run Tasks" > "Install yarn dependencies" to install as well.**
+
 Run this command at the root folder to install dependencies:
 ```ps
 yarn install
 ```
 
+
+
 ### 3: Run Build Script
+**If you are using Visual Studio Code for development, you can debug by opening the "Run and Debug" menu and launch "Run yarn dev"**
+
 To run the installer in development mode, simply run the following command:
 ```ps
 yarn dev
 ```
+
+
 
 ## Additional Scripts
 
