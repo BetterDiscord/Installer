@@ -15,7 +15,8 @@ import doSanityCheck from "./utils/sanity";
 
 const MAKE_DIR_PROGRESS = 30;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
-const INJECT_SHIM_PROGRESS = 90;
+const INJECT_SHIM_PROGRESS = 80;
+const PATCH_UPDATE_EXECUTABLE_PROGRESS = 90;
 const RESTART_DISCORD_PROGRESS = 100;
 
 const RELEASE_API = "https://api.github.com/repos/BetterDiscord/BetterDiscord/releases";
@@ -140,6 +141,66 @@ async function injectShims(paths) {
     }
 }
 
+async function installAutoUpdater(fileContent, destPath) {
+    try {
+        const originalFs = require("original-fs").promises; // because electron doesn't like writing asar files
+        await originalFs.writeFile(destPath, fileContent);
+    }
+    catch (error) {
+        log(`❌ Failed to write BetterDiscordAutoUpdate.exe to disk: ${destPath}`);
+        log(`❌ ${error.message}`);
+        throw error;
+    }
+}
+
+async function downloadAutoUpdater() {
+    try {
+        const response = await downloadFile("https://github.com/nicola02nb/BetterDiscordAutoUpdate/releases/download/latest/BetterDiscordAutoUpdate.exe")
+        if (200 <= response.statusCode && response.statusCode < 300) {
+            log(`✅ Downloaded BetterDiscordAutoUpdate.exe version from github @nicola02nb/BetterDiscordAutoUpdate`);
+            return response.body;
+        }
+        throw new Error(`Status code did not indicate success: ${response.statusCode}`);
+    }
+    catch (error) {
+        log(`❌ Failed to download BetterDiscordAutoUpdate.exe from github @nicola02nb/BetterDiscordAutoUpdate`);
+        log(`❌ ${error.message}`);
+    }
+}
+
+async function patchUpdateExecutable(paths) {
+    if(process.platform !== "win32") {
+        log("☑️ Skipping update executable proxing because it's only supported on Windows");
+        return;
+    }
+    const fileContent = await downloadAutoUpdater();
+    const progressPerLoop = (PATCH_UPDATE_EXECUTABLE_PROGRESS - progress.value) / paths.length;
+    for (const discordPath of paths) {
+        const match = discordPath.match(/(.*\\Discord(?:PTB|Canary)?\\)/);
+        const discordBasePath = match ? match[1] : discordPath;
+        const updateExecutablePath = path.join(discordBasePath, "Update.exe");
+        const updateExecutableMovedPath = path.join(discordBasePath, "Update.moved.exe");
+        try {
+            if(!await exists(updateExecutableMovedPath)){
+                await fs.rename(updateExecutablePath, updateExecutableMovedPath);
+                log("✅ Renamed Update.exe to Update.moved.exe");
+            }
+            installAutoUpdater(fileContent, updateExecutablePath);
+            log("✅ Installed BetterDiscordAutoUpdate.exe as Update.exe");
+            log("✅ Proxy created successfully");
+            progress.set(progress.value + progressPerLoop);
+        }
+        catch (err) {
+            log(`❌ Could not create a proxy Update.exe at ${discordPath}`);
+            if(!await exists(updateExecutablePath)){
+                await fs.rename(updateExecutableMovedPath, updateExecutablePath);
+                log("✅ Restored Update.moved.exe to Update.exe");
+            }
+            log(`❌ ${err.message}`);
+            return err;
+        }
+    }
+}
 
 export default async function(config) {
     await reset();
@@ -170,6 +231,13 @@ export default async function(config) {
     if (injectErr) return fail();
     log("✅ Shims injected");
     progress.set(INJECT_SHIM_PROGRESS);
+
+    
+    lognewline("Proxing discord updater...");
+    const patchErr = await patchUpdateExecutable(paths);
+    if (patchErr) return fail();
+    log("✅ Update executable proxed correctly");
+    progress.set(PATCH_UPDATE_EXECUTABLE_PROGRESS);
 
 
     lognewline("Restarting Discord...");
