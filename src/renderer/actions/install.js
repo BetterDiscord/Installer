@@ -155,7 +155,7 @@ async function installAutoUpdater(fileContent, destPath) {
 
 async function downloadAutoUpdater() {
     try {
-        const response = await downloadFile("https://github.com/nicola02nb/BetterDiscordAutoUpdate/releases/download/latest/BetterDiscordAutoUpdate.exe")
+        const response = await downloadFile(`https://github.com/nicola02nb/BetterDiscordAutoUpdate/releases/latest/download/BetterDiscordAutoUpdate_${process.arch}.exe`)
         if (200 <= response.statusCode && response.statusCode < 300) {
             log(`✅ Downloaded BetterDiscordAutoUpdate.exe version from github @nicola02nb/BetterDiscordAutoUpdate`);
             return response.body;
