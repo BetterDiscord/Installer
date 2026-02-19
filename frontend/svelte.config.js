@@ -9,9 +9,8 @@ const config = {
         adapter: adapter({fallback: "index.html"}),
         alias: {
             "@assets/*": "./src/lib/assets/*",
-            "@wails/*": "./src/lib/wailsjs/runtime/*",
-            "@api": "./src/lib/wailsjs/go/api/Controller",
-            "@app": "./src/lib/wailsjs/go/main/App",
+            "@backend/*": "./src/lib/wails/installer/internal/services/*",
+            "@backend": "./src/lib/wails/installer/internal/services/index.ts",
         }
     }
 };
