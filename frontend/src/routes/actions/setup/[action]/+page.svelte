@@ -1,7 +1,7 @@
 <script lang="ts">
     import Multiselect from "$lib/components/Multiselect.svelte";
     import app from "$lib/stores/state.svelte";
-    import {BrowseForDiscord as findDiscordDialog} from "@api";
+    import {BrowseForDiscord as findDiscordDialog} from "@backend/dialogservice";
 
     import stableUrl from "@assets/images/stable.png";
     import canaryUrl from "@assets/images/canary.png";

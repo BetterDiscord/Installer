@@ -2,14 +2,14 @@
     import Page from "$lib/components/Page.svelte";
     import ProgressBar from "$lib/components/ProgressBar.svelte";
     import Spinner from "$lib/components/Spinner.svelte";
-    import {WindowCenter, WindowSetSize} from "@wails/runtime";
+    import {Window} from "@wailsio/runtime";
     import {onMount} from "svelte";
 
     onMount(() => {
         // eslint-disable-next-line new-cap
-        void WindowSetSize(1100, 700);
+        void Window.SetSize(1100, 700);
         // eslint-disable-next-line new-cap
-        setTimeout(() => void WindowCenter(), 100);
+        setTimeout(() => void Window.Center(), 100);
     });
 
     let progress = $state(0);

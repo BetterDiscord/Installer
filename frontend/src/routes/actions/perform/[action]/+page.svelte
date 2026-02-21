@@ -1,10 +1,12 @@
+
 <script lang="ts">
+    /* eslint-disable new-cap */
     import ProgressBar from "$lib/components/ProgressBar.svelte";
     import TextDisplay from "$lib/components/TextDisplay.svelte";
     import app from "$lib/stores/state.svelte";
     import {onDestroy, onMount} from "svelte";
-    import {EventsOn as listenFor, EventsOff as unlistenFor} from "@wails/runtime";
-    import {Install as install, Repair as repair, Uninstall as uninstall} from "@api";
+    import {Events} from "@wailsio/runtime";
+    import {Install as install, Repair as repair, Uninstall as uninstall} from "@backend/installerservice";
     import Page from "$lib/components/Page.svelte";
     import type {DiscordChannel} from "$lib/types";
     import quit from "$lib/utils/quit";
@@ -37,17 +39,17 @@
     }
 
     onMount(() => {
-        listenFor("log", (message: string) => log(message.trim()));
-        listenFor("success", () => succeed());
-        listenFor("failure", () => fail());
-        listenFor("reset", reset);
+        Events.On("log", (event) => log((event.data as string).trim()));
+        Events.On("success", () => succeed());
+        Events.On("failure", () => fail());
+        Events.On("reset", reset);
     });
 
     onDestroy(() => {
-        unlistenFor("log");
-        unlistenFor("success");
-        unlistenFor("failure");
-        unlistenFor("reset");
+        Events.Off("log");
+        Events.Off("success");
+        Events.Off("failure");
+        Events.Off("reset");
     });
 
     const currentAction = app.action;
