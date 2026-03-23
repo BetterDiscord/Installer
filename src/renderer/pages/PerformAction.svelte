@@ -10,6 +10,8 @@
     import debug from "../actions/debug";
     import {canGoBack, canGoForward, nextPage} from "../stores/navigation";
     import {action, paths, progress, platforms, status} from "../stores/installation";
+    import {isSilentInstall} from "../stores/runtime";
+    import {remote} from "electron";
     import {onDestroy} from "svelte";
 
     canGoForward.set(false);
@@ -22,7 +24,16 @@
         if (!display) return;
     });
 
-    onDestroy(unsubscribe);
+    const statusUnsubscribe = status.subscribe(currentStatus => {
+        if (!isSilentInstall) return;
+        if (currentStatus === "success") remote.app.exit(0);
+        if (currentStatus === "error") remote.app.exit(1);
+    });
+
+    onDestroy(() => {
+        unsubscribe();
+        statusUnsubscribe();
+    });
 
     const currentAction = $action;
     logs.set([]);

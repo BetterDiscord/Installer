@@ -36,7 +36,26 @@ These will link you to the latest builds found in the [releases](https://github.
 | [Windows (7+)](https://github.com/BetterDiscord/Installer/releases/latest/download/BetterDiscord-Windows.exe)  | [macOS (10.10+)](https://github.com/BetterDiscord/Installer/releases/latest/download/BetterDiscord-Mac.zip) | [Linux](https://github.com/BetterDiscord/Installer/releases/latest/download/BetterDiscord-Linux.AppImage) |
 | ------------- | ------------- | ------------- |
 
+## Command Line Install
 
+The installer supports silent installs, useful for startup scripts or task scheduler jobs.
+
+Supported parameters:
+
+- `--silent` or `-s`: Runs without showing the installer window.
+- `--install`: Forces install action (implicit when `--silent` is used).
+- `--action=install|repair|uninstall`: Selects an action.
+- `--channel=stable,ptb,canary` (also supports `--channels=` or `--branch=`): Limits target Discord channels.
+
+Examples:
+
+```ps
+BetterDiscord-Windows.exe --silent
+BetterDiscord-Windows.exe --silent --channel=stable
+BetterDiscord-Windows.exe --silent --channels=stable,canary
+```
+
+In silent install mode, the process exits with code `0` on success and `1` on failure.
 
 ## Codebase
 

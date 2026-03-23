@@ -4,8 +4,31 @@
     // import Page from "./containers/Page.svelte";
     import Titlebar from "./common/Titlebar.svelte";
     import Footer from "./common/Footer.svelte";
-    import Router from "svelte-spa-router";
+    import Router, {push} from "svelte-spa-router";
     import routes from "./routes";
+    import {onMount} from "svelte";
+    import {paths, platforms, action, hasAgreed} from "./stores/installation";
+    import {locations} from "./actions/paths";
+    import {isSilentInstall, cli} from "./stores/runtime";
+
+    onMount(() => {
+        if (!isSilentInstall) return;
+
+        const targetChannels = cli.channels.length
+            ? cli.channels
+            : Object.keys(locations).filter(channel => Boolean(locations[channel]));
+        const selectedPlatforms = {stable: false, canary: false, ptb: false};
+        for (const channel in selectedPlatforms) {
+            selectedPlatforms[channel] = targetChannels.includes(channel) && Boolean(locations[channel]);
+        }
+
+        hasAgreed.set(true);
+        action.set("install");
+        paths.set({...locations});
+        platforms.set(selectedPlatforms);
+
+        push("/install");
+    });
 </script>
 
 <div class="main-window platform-{process.platform || "win32"}">
