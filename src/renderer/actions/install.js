@@ -12,6 +12,7 @@ import reset from "./utils/reset";
 import kill from "./utils/kill";
 import {showRestartNotice} from "./utils/notices";
 import doSanityCheck from "./utils/sanity";
+import {isSilentInstall} from "../stores/runtime";
 
 const MAKE_DIR_PROGRESS = 30;
 const DOWNLOAD_PACKAGE_PROGRESS = 60;
@@ -101,6 +102,8 @@ async function downloadAsar() {
 }
 
 const asarPath = path.join(bdDataFolder, "betterdiscord.asar");
+const shimContent = `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");\nmodule.exports = require("./core.asar");`;
+
 async function installAsar(fileContent) {
     try {
         const originalFs = require("original-fs").promises; // because electron doesn't like writing asar files
@@ -123,12 +126,32 @@ async function downloadAndInstallAsar() {
     }
 }
 
+async function isAlreadyInstalled(discordPaths) {
+    if (!await exists(asarPath)) return false;
+
+    for (const discordPath of discordPaths) {
+        const indexFile = path.join(discordPath, "index.js");
+        if (!await exists(indexFile)) return false;
+
+        try {
+            const existing = await fs.readFile(indexFile, "utf8");
+            // Normalize line-endings so this works across prior writes and OS defaults.
+            if (existing.replace(/\r\n/g, "\n").trim() !== shimContent.trim()) return false;
+        }
+        catch {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 async function injectShims(paths) {
     const progressPerLoop = (INJECT_SHIM_PROGRESS - progress.value) / paths.length;
     for (const discordPath of paths) {
         log("Injecting into: " + discordPath);
         try {
-            await fs.writeFile(path.join(discordPath, "index.js"), `require("${asarPath.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}");\nmodule.exports = require("./core.asar");`);
+            await fs.writeFile(path.join(discordPath, "index.js"), shimContent);
             log("✅ Injection successful");
             progress.set(progress.value + progressPerLoop);
         }
@@ -149,6 +172,16 @@ export default async function(config) {
 
     const channels = Object.keys(config);
     const paths = Object.values(config);
+
+    if (isSilentInstall) {
+        lognewline("Checking existing install state...");
+        const alreadyInstalled = await isAlreadyInstalled(paths);
+        if (alreadyInstalled) {
+            log("✅ BetterDiscord is already installed for selected Discord channels");
+            progress.set(RESTART_DISCORD_PROGRESS);
+            return succeed();
+        }
+    }
 
 
     lognewline("Creating required directories...");
