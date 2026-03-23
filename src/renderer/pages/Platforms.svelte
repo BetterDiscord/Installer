@@ -8,6 +8,23 @@
     import {remote} from "electron";
     import getStatic from "../getstatic";
 
+    function autoSelectSingleDetectedPlatform() {
+        const detectedPlatforms = Object.entries($paths)
+            .filter(([, detectedPath]) => Boolean(detectedPath))
+            .map(([channel]) => channel);
+
+        if (detectedPlatforms.length !== 1) return;
+        if (Object.values($platforms).some(selected => selected)) return;
+
+        const [singleChannel] = detectedPlatforms;
+        platforms.update(state => {
+            state[singleChannel] = true;
+            return state;
+        });
+    }
+
+    autoSelectSingleDetectedPlatform();
+
     if (Object.values($platforms).some(r => r)) canGoForward.set(true);
     else canGoForward.set(false);
     canGoBack.set(true);
