@@ -62,7 +62,7 @@
       "target": {
         "target": "zip",
         "arch": [
-          "x64"
+          "universal"
         ]
       }
     },

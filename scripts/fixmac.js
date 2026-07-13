@@ -12,15 +12,19 @@ const packageInfo = require(path.join(currentWorkingDirectory, "package.json"));
 const APP_NAME = packageInfo.build.productName;
 const APP_VERSION = process.argv[2] ? process.argv[2] : packageInfo.version;
 const APP_DIST_PATH = path.join(currentWorkingDirectory, "dist");
+const APP_OUTPUT_PATHS = ["mac-universal", "mac", "mac-arm64"]
+    .map(directory => path.join(APP_DIST_PATH, directory, `${APP_NAME}.app`));
 
 
 /* eslint-disable no-console */
 module.exports = function(buildResult) {
     if (!buildResult.artifactPaths.some(p => p.toLowerCase().endsWith("mac.zip"))) return console.log("No Mac build detected");
+    const appOutputPath = APP_OUTPUT_PATHS.find(fs.existsSync);
+    if (!appOutputPath) throw new Error(`Could not locate ${APP_NAME}.app in the macOS build output`);
     console.log("Zipping Started");
 
     execSync(
-        `ditto -c -k --sequesterRsrc --keepParent --zlibCompressionLevel 9 "${APP_DIST_PATH}/mac/${APP_NAME}.app" "${APP_DIST_PATH}/${APP_NAME}-${APP_VERSION}-mac.zip"`
+        `ditto -c -k --sequesterRsrc --keepParent --zlibCompressionLevel 9 "${appOutputPath}" "${APP_DIST_PATH}/${APP_NAME}-${APP_VERSION}-mac.zip"`
     );
 
     console.log("Zipping Completed");
