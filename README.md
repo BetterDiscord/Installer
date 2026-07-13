@@ -39,7 +39,7 @@ This repository contains the source code for the BetterDiscord installer. The ap
 | Platform | Minimum Version | Support Status | Notes |
 | --- | --- | --- | --- |
 | Windows | Windows 10+ | ✅ | x64, ARM64, and x86 builds are available. |
-| macOS | macOS 11+ (Big Sur) | ✅ | x64 and ARM64 builds are available. |
+| macOS | macOS 11+ (Big Sur) | ✅ | A Universal 2 build supports x64 and ARM64. |
 | Linux | Ubuntu 20.04+ and Debian 11+, openSUSE 16.2+, Fedora Linux 32+ | ✅ | See Linux install support notes below. |
 
 Linux install support:

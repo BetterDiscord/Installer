@@ -73,7 +73,7 @@ jobs:
       - name: Build installer (macOS)
         if: ${{ matrix.os == 'macos-latest' }}
         shell: bash
-        run: wails build -ldflags="-X main.version=${{ steps.version.outputs.version }}"
+        run: ./scripts/build-macos-universal.sh -ldflags="-X main.version=${{ steps.version.outputs.version }}"
 
       - name: Upload Linux binary
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -96,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: build-macos
-          path: build/bin/BetterDiscord-Installer.app
+          path: build/bin/BetterDiscord-Mac.zip
           if-no-files-found: error
 
   release:
@@ -128,5 +128,5 @@ jobs:
         run: |
           gh release create "${GITHUB_REF_NAME}" --draft --title "${GITHUB_REF_NAME}" --generate-notes \
             "release/BetterDiscord-Installer#Linux" \
-            "release/BetterDiscord-Installer.app#macOS" \
+            "release/BetterDiscord-Mac.zip#macOS (Universal 2)" \
             "release/BetterDiscord-Installer.exe#Windows"
