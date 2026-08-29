@@ -11,6 +11,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
 //go:embed all:frontend/build
@@ -26,10 +27,11 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "BetterDiscord Installer",
-		Frameless: true,
-		Width:     550,
-		Height:    350,
+		Title:         "BetterDiscord Installer",
+		Frameless:     true,
+		Width:         550,
+		Height:        350,
+		DisableResize: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -53,6 +55,9 @@ func main() {
 		},
 		EnumBind: []any{
 			types.Channels,
+		},
+		Windows: &windows.Options{
+			IsZoomControlEnabled: false,
 		},
 	})
 
