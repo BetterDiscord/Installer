@@ -83,9 +83,9 @@ builds:
 
 # Merge the two macOS arch builds into a single universal binary so one
 # download (and one homebrew cask URL) serves both Intel and Apple Silicon.
-# The slashed name places the binary at its .app bundle location, so the
-# darwin archive below only needs to add Info.plist and the icon to form a
-# complete "BetterDiscord Installer.app".
+# The slashed name places the binary at its .app bundle location, so the post
+# hook can finish the bundle in place (Info.plist + icon) and codesign it as a
+# real "BetterDiscord Installer.app" before the darwin archive zips it up.
 universal_binaries:
   - id: installer-darwin-universal
     ids:
@@ -93,10 +93,12 @@ universal_binaries:
     name_template: BetterDiscord Installer.app/Contents/MacOS/BetterDiscord-Installer
     replace: true
     hooks:
-      # Render Info.plist with the release version for the .app archive below.
+      # Assemble the .app (rendered Info.plist + icon) and ad-hoc sign it.
       # Runs here (not in before.hooks) because dist/ must not exist yet when
       # GoReleaser starts, and this pipe only runs on the darwin leg anyway.
-      post: sh ./scripts/render-plist.sh {{ .Version }}
+      # It must also run after the universal merge, since codesign rewrites the
+      # main executable and the archive below picks that binary up as-is.
+      post: sh ./scripts/bundle-macos-app.sh {{ .Version }}
 
 # Artifact names intentionally exclude the version (so that stable
 # releases/latest/download/... deep links in the README and on
@@ -116,6 +118,12 @@ archives:
       - src: LICENSE
 
   # macOS ships as a proper .app bundle inside the zip.
+  #
+  # These come from the bundle scripts/bundle-macos-app.sh already sealed, not
+  # from their original sources: codesign hashes Info.plist and the icon into
+  # Contents/_CodeSignature/CodeResources, so the zip has to reassemble exactly
+  # the bytes that were signed. The executable needs no entry here — GoReleaser
+  # adds the universal binary artifact itself, which the script signed in place.
   - id: darwin-app
     ids:
       - installer-darwin-universal
@@ -123,10 +131,12 @@ archives:
       - zip
     name_template: "{{ .ProjectName }}-Mac"
     files:
-      - src: dist/darwin/Info.plist
+      - src: dist/darwin/sealed/Contents/Info.plist
         dst: BetterDiscord Installer.app/Contents/Info.plist
-      - src: build/darwin/icon.icns
+      - src: dist/darwin/sealed/Contents/Resources/iconfile.icns
         dst: BetterDiscord Installer.app/Contents/Resources/iconfile.icns
+      - src: dist/darwin/sealed/Contents/_CodeSignature/CodeResources
+        dst: BetterDiscord Installer.app/Contents/_CodeSignature/CodeResources
 
   # Keep Windows as a raw .exe as requested.
   - id: windows-raw

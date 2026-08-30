@@ -13,7 +13,7 @@ A Wails app: Go backend + Svelte (SvelteKit) frontend, packaged as a single nati
 - `types/`, `utils/`, `wsl/` — shared Go types, backend helpers, and WSL detection/path mapping.
 - `main.go` / `app.go` — Wails entry point, window options, and the startup update check.
 - `build/` — product icons plus plist/manifest/packaging templates (scaffolded/generated; not usually hand-edited).
-- `scripts/` — release helpers: `build-frontend.sh`, `build-appimage.sh`, `render-plist.sh`, and the `winres` Go generator.
+- `scripts/` — release helpers: `build-frontend.sh`, `build-appimage.sh`, `bundle-macos-app.sh`, and the `winres` Go generator.
 - `wails.json` — Wails config + frontend hooks (`frontend:install` = `bun install`, `frontend:build` = `bun run build`). Keep it synchronized with the commands you run locally.
 - `Taskfile.yml` — dev/build/check/release shortcuts. `.goreleaser.yaml` — release build + publishing config.
 
@@ -147,7 +147,8 @@ Releases are **tag-driven via GoReleaser**, not a bespoke pipeline.
 ## 9. Security, secrets, and environment
 
 - **Never commit credentials, tokens, or `.env` files.** Release publishing relies solely on GitHub Actions secrets: `GITHUB_TOKEN` (create/upload the release) and `GH_PAT` (open cross-repo PRs to the Homebrew tap and the winget-pkgs fork). No secret is needed to build locally.
-- **The app is currently unsigned/unnotarized** — there is no code-signing secret. Windows SmartScreen and macOS Gatekeeper warnings are expected and documented in the README FAQ; do not add signing config unless the certs/secrets actually exist.
+- **The app is not notarized and has no Developer ID** — there is no code-signing secret. Windows SmartScreen and macOS Gatekeeper warnings are expected and documented in the README FAQ; do not add signing config that needs certs/secrets unless they actually exist.
+- **macOS builds are ad-hoc signed** by `scripts/bundle-macos-app.sh` (`codesign --sign -`), which needs no Apple account. This is not about Gatekeeper — it seals the `.app` so macOS keeps App Management (TCC) grants across launches; without it the permission silently resets and injection fails (#424). Keep the archive's `files:` entries pointed at the sealed staging copies, and don't sign a copy of the bundle: `codesign` rewrites the main executable, and the archive ships GoReleaser's own binary artifact.
 - **Supply chain.** `scripts/build-appimage.sh` pins `appimagetool` to a version and verifies its SHA-256 before use. The downloaded `betterdiscord.asar` is fetched over TLS from the official site (GitHub release as a fallback) — there is no checksum verification of that asar yet; treat it as a known gap, not something to silently remove.
 - **Auto-update is non-silent.** `app.go` checks the latest GitHub release and, if newer, asks the user and opens the download in a browser — it never downloads or executes an update itself. Preserve that confirmation flow.
 - Keep tracked config (`wails.json`, `frontend/package.json`, `go.mod`) clean; do not add untracked credential copies to the tree.

@@ -83,6 +83,24 @@ The app is not yet notarized with Apple. Right-click the app and choose **Open**
 xattr -d com.apple.quarantine "/Applications/BetterDiscord Installer.app"
 ```
 
+### macOS keeps turning the installer's App Management permission back off
+
+Installer builds before this fix shipped an unsealed `.app`, so macOS couldn't
+re-validate the app's signature and discarded the App Management grant — the
+toggle appeared to switch itself off and injection kept getting denied.
+Releases are now ad-hoc signed, which makes the grant stick.
+
+If you already approved an affected build, macOS may still be holding the old,
+unusable entry. Clear it once, then grant the permission again:
+
+```sh
+tccutil reset SystemPolicyAppBundles app.betterdiscord.installer
+```
+
+Because the installer is ad-hoc signed rather than signed with a Developer ID,
+its signature changes on every release, so macOS asks for App Management again
+after each update. That's expected.
+
 ### Does the installer support Flatpak Discord on Linux?
 
 Yes, for **per-user** Flatpak installs (the default `flatpak install --user …`). **System-wide/global** Flatpak installs live under `/var/lib/flatpak`, which is root-owned; the installer needs to write into the app to inject BetterDiscord, and it doesn't request elevation yet, so global Flatpak installs aren't supported for now.
