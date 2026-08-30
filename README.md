@@ -90,8 +90,10 @@ re-validate the app's signature and discarded the App Management grant — the
 toggle appeared to switch itself off and injection kept getting denied.
 Releases are now ad-hoc signed, which makes the grant stick.
 
-If you already approved an affected build, macOS may still be holding the old,
-unusable entry. Clear it once, then grant the permission again:
+Updating to a fixed build should be enough: macOS re-asks for the permission and
+you grant it as normal. If the toggle instead shows as already enabled while
+injection still fails, macOS is holding a stale entry from the old build — clear
+it once and grant the permission again:
 
 ```sh
 tccutil reset SystemPolicyAppBundles app.betterdiscord.installer
@@ -99,7 +101,8 @@ tccutil reset SystemPolicyAppBundles app.betterdiscord.installer
 
 Because the installer is ad-hoc signed rather than signed with a Developer ID,
 its signature changes on every release, so macOS asks for App Management again
-after each update. That's expected.
+after each update. That's expected, and needs no terminal command — just approve
+the prompt.
 
 ### Does the installer support Flatpak Discord on Linux?
 
