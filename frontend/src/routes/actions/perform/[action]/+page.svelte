@@ -3,12 +3,11 @@
     import TextDisplay from "$lib/components/TextDisplay.svelte";
     import app from "$lib/stores/state.svelte";
     import {onDestroy, onMount} from "svelte";
-    import {EventsOn as listenFor, EventsOff as unlistenFor} from "@wails/runtime";
+    import {EventsOn as listenFor, EventsOff as unlistenFor, Quit as exit} from "@wails/runtime";
     import {goto} from "$app/navigation";
     import {Install as install, Repair as repair, Uninstall as uninstall} from "@api";
     import Page from "$lib/components/Page.svelte";
     import type {DiscordChannel} from "$lib/types";
-    import quit from "$lib/utils/quit";
 
 
     let status = $state("");
@@ -88,7 +87,7 @@
 </script>
 
 
-<Page title="{currentAction[0].toUpperCase()}{currentAction.slice(1)}" previous="/actions/configure/{app.action}" nextAction={quit} nextLabel="Quit" canGoNext={!active} canGoPrevious={!active}>
+<Page title="{currentAction[0].toUpperCase()}{currentAction.slice(1)}" previous="/actions/configure/{app.action}" nextAction={exit} nextLabel="Quit" canGoNext={!active} canGoPrevious={!active}>
     {#snippet icon()}
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             {#if currentAction === "install"}
