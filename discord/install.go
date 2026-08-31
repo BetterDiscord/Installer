@@ -41,20 +41,20 @@ func (discord *DiscordInstall) InstallBD(options types.InstallOptions) error {
 	log.Println("✅ BetterDiscord prepared for install")
 	log.Println("")
 
+	// Discord locks app.asar and betterdiscord.asar while running, so it must be stopped before we can
+	// modify it. Capture the executable so it can be relaunched afterward.
+	exe, wasRunning, err := discord.stop()
+	if err != nil {
+		return err
+	}
+	log.Println("")
+
 	// Download and write betterdiscord.asar
 	log.Println("📥 Downloading BetterDiscord...")
 	if err := bd.Download(options.UseDevBuild); err != nil {
 		return err
 	}
 	log.Println("✅ BetterDiscord downloaded")
-	log.Println("")
-
-	// Discord locks app.asar while running, so it must be stopped before we can
-	// modify it. Capture the executable so it can be relaunched afterward.
-	exe, wasRunning, err := discord.stop()
-	if err != nil {
-		return err
-	}
 	log.Println("")
 
 	// Shadow app.asar with our loader
