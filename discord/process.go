@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/shirou/gopsutil/v3/process"
+	"github.com/shirou/gopsutil/v4/process"
 )
 
 // killWaitTimeout bounds how long kill() waits for Discord's processes to fully
