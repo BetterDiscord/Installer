@@ -26,10 +26,11 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "BetterDiscord Installer",
-		Frameless: true,
-		Width:     550,
-		Height:    350,
+		Title:         "BetterDiscord Installer",
+		Frameless:     true,
+		DisableResize: true,
+		Width:         550,
+		Height:        350,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
